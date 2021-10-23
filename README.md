@@ -1,4 +1,4 @@
-# Pinme v2 (node + mongoDB)
+# D Office (React js)
 
 ### Installation
 
