@@ -1,0 +1,17 @@
+#app {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 24px;
+
+    .user {
+        border: 1px solid lightgray;
+        display: flex;
+        padding: 24px 12px;
+        box-sizing: border-box;
+        
+        .avatar {
+            width: 125px;
+            margin-right: 24px;
+        }
+    }
+}
