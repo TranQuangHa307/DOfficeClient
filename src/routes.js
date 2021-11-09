@@ -9,22 +9,13 @@ export const Routes = {
     BootstrapTables: { path: "/tables/bootstrap-tables" },
     Billing: { path: "/examples/billing" },
     Invoice: { path: "/examples/invoice" },
-    Signin: { path: "/examples/sign-in" },
-    Signup: { path: "/examples/sign-up" },
+    Signin: { path: "/sign-in" },
+    Signup: { path: "/sign-up" },
     ForgotPassword: { path: "/examples/forgot-password" },
     ResetPassword: { path: "/examples/reset-password" },
     Lock: { path: "/examples/lock" },
     NotFound: { path: "/examples/404" },
     ServerError: { path: "/examples/500" },
-
-    // docs
-    DocsOverview: { path: "/documentation/overview" },
-    DocsDownload: { path: "/documentation/download" },
-    DocsQuickStart: { path: "/documentation/quick-start" },
-    DocsLicense: { path: "/documentation/license" },
-    DocsFolderStructure: { path: "/documentation/folder-structure" },
-    DocsBuild: { path: "/documentation/build-tools" },
-    DocsChangelog: { path: "/documentation/changelog" },
 
     // components
     Accordions: { path: "/components/accordions" },
@@ -44,5 +35,9 @@ export const Routes = {
     Tabs: { path: "/components/tabs" },
     Tooltips: { path: "/components/tooltips" },
     Toasts: { path: "/components/toasts" },
-    WidgetsComponent: { path: "/components/widgets" }
+    WidgetsComponent: { path: "/components/widgets" },
+
+    // dashboard
+    User: { path: '/dashboard/user' },
+    AddUser: { path: '/dashboard/user/add' }
 };

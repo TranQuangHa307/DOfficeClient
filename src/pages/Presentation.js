@@ -293,7 +293,7 @@ export default () => {
               <div className="d-none d-lg-block mt-5">
                 <h4>The perfect folder structure for your project</h4>
                 <p className="lead mb-4">The folder structure is based on the popular <code>create-react-app</code> repository using Sass source files for CSS preprocessing.</p>
-                <Button as={Link} variant="secondary" size="md" to={Routes.DocsFolderStructure.path} target="_blank" className="text-dark">
+                <Button as={Link} variant="secondary" size="md" to={'/'} target="_blank" className="text-dark">
                   <FontAwesomeIcon icon={faCodeBranch} className="me-2" /> Folder Structure
                 </Button>
               </div>
@@ -359,7 +359,7 @@ export default () => {
                 </div>
               </div>
               <p className="mt-4 text-white text-center mb-0">
-                Looks unfamiliar? Don’t worry! Our <Link to={Routes.DocsQuickStart.path} className="text-white text-underline fw-bold" target="_blank">documentation</Link> has got you covered.
+                Looks unfamiliar? Don’t worry! Our <Link to={'/'} className="text-white text-underline fw-bold" target="_blank">documentation</Link> has got you covered.
               </p>
             </Col>
           </Row>
@@ -501,10 +501,6 @@ export default () => {
             <Col xs={6} md={2} className="mb-5 mb-lg-0">
               <span className="h5">Other</span>
               <ul className="links-vertical mt-2">
-                <li>
-                  <Card.Link as={Link} to={Routes.DocsQuickStart.path} target="_blank">Getting started</Card.Link>
-                </li>
-                <li><Card.Link as={Link} to={Routes.DocsChangelog.path} target="_blank">Changelog</Card.Link></li>
                 <li><Card.Link target="_blank" href="https://themesberg.com/licensing">License</Card.Link></li>
               </ul>
             </Col>
