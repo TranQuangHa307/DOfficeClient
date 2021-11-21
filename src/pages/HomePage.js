@@ -46,6 +46,7 @@ import {useDispatch, useSelector} from "react-redux";
 import authenticationActions from "../actions/authentication.actions";
 import ComingDispatchManagement from "./components/ComingDispatch/ComingDispatchManagement";
 import OutGoingDispatchManagement from "./components/OutgoingDispatch/OutGoingDispatchManagement";
+import AddComingDispatch from "./components/OutgoingDispatch/AddComingDispatch";
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -151,6 +152,7 @@ export default () => (
 
       {/*  Coming dispatch  */}
     <RouteWithSidebar exact path={Routes.ComingDispatchManagement.path} component={ComingDispatchManagement} />
+    <RouteWithSidebar exact path={Routes.AddComingDispatch.path} component={AddComingDispatch} />
 
       {/*Out going dispatch*/}
     <RouteWithSidebar exact path={Routes.OutGoingDispatchManagement.path} component={OutGoingDispatchManagement} />

@@ -27,7 +27,7 @@ const ComingDispatchManagement = () => {
                     <div classemail="d-block mb-4 mb-xl-0">
                         <h4>Quản lý văn bản đến</h4>
                         <Button variant="secondary" classemail="m-1 mb-4">
-                            <Link to={Routes.AddUser.path}> Thêm mới </Link>
+                            <Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>
                         </Button>
                     </div>
                 </div>
