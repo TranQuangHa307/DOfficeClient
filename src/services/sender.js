@@ -1,6 +1,9 @@
 import axios from'axios';
+import Cookie from 'js-cookie';
 
-const ROUTE_PATH = 'https://6173bb4d110a7400172230e6.mockapi.io'; // api fake
+const ROUTE_PATH = 'http://localhost:8091'; // services fake
+
+const getAuthToken = () => Cookie.get('authToken');
 
 const handleResponse = (res) => {
 
@@ -31,9 +34,23 @@ const handleError = (error) => {
 };
 
 export const get = (endpoint, params) => {
-    return axios.get(`${ROUTE_PATH}${endpoint}`, {params}).then(handleResponse).catch(handleError);
+    return axios
+        .get(
+            `${ROUTE_PATH}${endpoint}`,
+            {
+                params,
+                headers: {
+                    'Authorization': `Bearer ${getAuthToken()}`
+                }
+            })
+        .then(handleResponse)
+        .catch(handleError);
 };
 
 export const post = (endpoint, data) => {
-    return axios.post(`${ROUTE_PATH}${endpoint}`, data).then(handleResponse).catch(handleError);
+    return axios.post(`${ROUTE_PATH}${endpoint}`, data, {
+        headers: {
+            'Authorization': `Bearer ${getAuthToken()}`
+        }
+    }).then(handleResponse).catch(handleError);
 };

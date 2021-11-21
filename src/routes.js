@@ -39,5 +39,11 @@ export const Routes = {
 
     // dashboard
     User: { path: '/dashboard/user' },
-    AddUser: { path: '/dashboard/user/add' }
+    AddUser: { path: '/dashboard/user/add' },
+
+    // Coming dispatch management
+    ComingDispatchManagement: { path: '/coming-dispatch'},
+
+    // Out going dispatch management
+    OutGoingDispatchManagement: { path: '/out-going-dispatch'}
 };

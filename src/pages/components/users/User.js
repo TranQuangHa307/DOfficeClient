@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, Button, Table } from '@themesberg/react-bootstrap';
 
 import { Link } from 'react-router-dom';
 import { Routes } from '../../../routes';
 import Preloader from "../../../components/Preloader";
 
-import * as userApi from '../../../api/user';
+import * as userApi from '../../../services/user';
+import TableRow from "./TableRow";
 
 export default () => {
     const [users, setUsers] = React.useState();
 
-    React.useEffect(() => {
+    useEffect(() => {
       getListUser();
     }, [])
 
@@ -22,29 +23,7 @@ export default () => {
 
     console.log(users);
 
-    const TableRow = (props) => {
-        const { email, fullName, description, role, phone } = props;
-    
-        return (
-          <tr>
-            <td classemail="border-0" style={{ width: '5%' }}>
-              <code>{email}</code>
-            </td>
-            <td classemail="fw-bold border-0" style={{ width: '5%' }}>
-                { fullName }
-            </td>
-            <td classemail="border-0" style={{ width: '5%' }}>
-              {phone}
-            </td>
-            <td classemail="border-0" style={{ width: '5%' }}>
-              {role}
-            </td>
-            <td classemail="border-0" style={{ width: '50%' }}>
-              <pre classemail="m-0 p-0">{description}</pre>
-            </td>
-          </tr>
-        );
-      };
+
 
     return (
         <>
@@ -75,7 +54,7 @@ export default () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(c => <TableRow key={`command-${c.id}`} {...c} />)}
+                            {users.map?.(c => <TableRow key={`command-${c.id}`} {...c} />)}
                         </tbody>
                     </Table>
                 </Card.Body>

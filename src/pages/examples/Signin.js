@@ -10,11 +10,16 @@ import { useHistory } from 'react-router-dom';
 
 import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
+import authenticateServices from "../../services/authenticate.services";
+import Cookie from "js-cookie";
+import authenticationActions from "../../actions/authentication.actions";
+import {useDispatch} from "react-redux";
 
 
 export default () => {
   const [loginInput, setLoginInput] = React.useState({ email: '', password: '' });
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const onChange = (e) => {
     const name = e.target.name;
@@ -26,19 +31,26 @@ export default () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    dispatch(authenticationActions.authenticate(loginInput.email, loginInput.password))
+      .then((res) => {
+        history.push(Routes.User.path);
+      })
+        .catch((e) => {
+          // TODO: alert error
+          console.log(e);
+        });
 
-    history.push(Routes.User.path);
   }
 
   return (
     <main>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
-          <p className="text-center">
-            <Card.Link as={Link} to={Routes.DashboardOverview.path} className="text-gray-700">
-              <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to homepage
-            </Card.Link>
-          </p>
+          {/*<p className="text-center">*/}
+          {/*  <Card.Link as={Link} to={Routes.DashboardOverview.path} className="text-gray-700">*/}
+          {/*    <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to homepage*/}
+          {/*  </Card.Link>*/}
+          {/*</p>*/}
           <Row className="justify-content-center form-bg-image" style={{ backgroundImage: `url(${BgImage})` }}>
             <Col xs={12} className="d-flex align-items-center justify-content-center">
               <div className="bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">

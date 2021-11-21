@@ -7,11 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBoxOpen, faChartPie, faFileAlt, faHandHoldingUsd, faSignOutAlt, faTable, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Nav, Badge, Image, Button, Dropdown, Accordion, Navbar } from '@themesberg/react-bootstrap';
 import { Link } from 'react-router-dom';
+import Cookie from 'js-cookie';
 
 import { Routes } from "../routes";
 import ThemesbergLogo from "../assets/img/themesberg.svg";
 import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "../assets/img/team/profile-picture-3.jpg";
+import authenticationActions from "../actions/authentication.actions";
 
 export default (props = {}) => {
   const location = useLocation();
@@ -20,6 +22,11 @@ export default (props = {}) => {
   const showClass = show ? "show" : "";
 
   const onCollapse = () => setShow(!show);
+
+  const signOut = () => {
+    Cookie.remove('authToken');
+    window.location.href = '/';
+  }
 
   const CollapsableNavItem = (props) => {
     const { eventKey, title, icon, children = null } = props;
@@ -87,7 +94,7 @@ export default (props = {}) => {
                 </div>
                 <div className="d-block">
                   <h6>Hi, Jane</h6>
-                  <Button as={Link} variant="secondary" size="xs" to={Routes.Signin.path} className="text-dark">
+                  <Button onClick={signOut} variant="secondary" size="xs" className="text-dark">
                     <FontAwesomeIcon icon={faSignOutAlt} className="me-2" /> Sign Out
                   </Button>
                 </div>
@@ -101,6 +108,19 @@ export default (props = {}) => {
 
               {/* <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faChartPie} /> */}
               <NavItem title="User" link={Routes.User.path} icon={faUser} />
+              <NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faUser} />
+              <NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faUser} />
+
+              {/*<CollapsableNavItem eventKey="tables/" title="Tables" icon={faTable}>*/}
+              {/*  <NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faUser} />*/}
+              {/*</CollapsableNavItem>*/}
+
+              {/*<CollapsableNavItem eventKey="tables/" title="Tables" icon={faTable}>*/}
+              {/*  <NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faUser} />*/}
+              {/*</CollapsableNavItem>*/}
+
+
+
 {/* 
               <CollapsableNavItem eventKey="tables/" title="Tables" icon={faTable}>
                 <NavItem title="Bootstrap Table" link={Routes.BootstrapTables.path} />
@@ -136,6 +156,10 @@ export default (props = {}) => {
                 <NavItem title="Toasts" link={Routes.Toasts.path} />
                 <NavItem title="Tooltips" link={Routes.Tooltips.path} />
               </CollapsableNavItem> */}
+
+
+
+
             </Nav>
           </div>
         </SimpleBar>
