@@ -7,6 +7,7 @@ import comingDispatchReducer from "../reducers/comingDispatch.reducer";
 import documentTypeReducer from "../reducers/documentType.reducer";
 import storageLocationReducer from "../reducers/storageLocation.reducer";
 import userReducer from "../reducers/user.reducer";
+import releaseDepartmentReducer from "../reducers/releaseDepartment.reducer";
 
 const allReducers = combineReducers({
     authentication: authenticationReducer,
@@ -14,6 +15,7 @@ const allReducers = combineReducers({
     documentType: documentTypeReducer,
     storageLocation: storageLocationReducer,
     user: userReducer,
+    releaseDepartment: releaseDepartmentReducer,
 });
 
 const middlewares = [applyMiddleware(thunk, createLogger())];

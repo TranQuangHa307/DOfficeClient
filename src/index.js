@@ -23,11 +23,13 @@ import "./scss/volt.scss";
 // vendor styles
 import "@fortawesome/fontawesome-free/css/all.css";
 import "react-datetime/css/react-datetime.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import HomePage from "./pages/HomePage";
 import ScrollToTop from "./components/ScrollToTop";
 import {Provider} from "react-redux";
 import store from "./store";
+import {ToastContainer} from "react-toastify";
 
 ReactDOM.render(
     <Provider store={store}>
@@ -35,6 +37,7 @@ ReactDOM.render(
         <ScrollToTop />
         <HomePage />
       </Router>
+        <ToastContainer />
     </Provider>,
   document.getElementById("root")
 );

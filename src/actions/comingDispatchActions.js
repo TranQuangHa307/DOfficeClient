@@ -62,10 +62,44 @@ function getAllStorageLocation() {
     }
 }
 
+function getAllReleaseDepartment() {
+    return (dispatch) => {
+        dispatch({type: 'RELEASE_DEPARTMENT_LOADING',})
+        return comingDispatchServices.getAllReleaseDepartment()
+            .then((result) => {
+                dispatch({
+                    type: 'RELEASE_DEPARTMENT_LOADED',
+                    payload: result.data,
+                });
+                return result.data;
+            })
+            .catch((err) => {
+                console.log(err);
+                dispatch({
+                    type: 'RELEASE_DEPARTMENT_FAILED',
+                });
+            })
+    }
+}
+
+function createDispatchByForm(data) {
+    return () => {
+        return comingDispatchServices.createDispatchByForm(data)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
 const comingDispatchActions = {
     getAll,
     getAllDocumentType,
     getAllStorageLocation,
+    getAllReleaseDepartment,
+    createDispatchByForm,
 }
 
 export default comingDispatchActions;

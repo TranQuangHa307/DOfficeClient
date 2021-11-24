@@ -44,6 +44,7 @@ export const Routes = {
     // Coming dispatch management
     ComingDispatchManagement: { path: '/coming-dispatch'},
     AddComingDispatch: { path: '/coming-dispatch/add'},
+    ComingDispatchDetail: {path: '/coming-dispatch/:id'},
 
     // Out going dispatch management
     OutGoingDispatchManagement: { path: '/out-going-dispatch'}

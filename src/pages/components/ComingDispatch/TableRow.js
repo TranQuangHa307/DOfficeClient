@@ -1,13 +1,14 @@
 import React from "react";
 import moment from "moment";
+import {Link} from "react-router-dom";
 
 const TableRow = (props) => {
-    const { documentNumber, releaseDepartment, signBy, signDate, arrivalDate, mainContent } = props;
+    const { documentNumber, releaseDepartment, signBy, signDate, arrivalDate, mainContent, id } = props;
 
     return (
         <tr>
             <td classemail="border-0" style={{ width: '5%' }}>
-                <code>{documentNumber}</code>
+                <Link to={`/coming-dispatch/${id}`}> {documentNumber} </Link>
             </td>
             <td classemail="border-0" style={{ width: '5%' }}>
                 {releaseDepartment[0].department_name}

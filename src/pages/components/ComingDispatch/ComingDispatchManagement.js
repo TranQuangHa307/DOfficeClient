@@ -6,7 +6,6 @@ import {Routes} from "../../../routes";
 import comingDispatchActions from "../../../actions/comingDispatchActions";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {logger} from "redux-logger/src";
 
 
 const ComingDispatchManagement = () => {
