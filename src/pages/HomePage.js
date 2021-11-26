@@ -41,6 +41,7 @@ import Tooltips from "./components/Tooltips";
 import Toasts from "./components/Toasts";
 import User from './components/users/User';
 import AddUser from './components/users/AddUser';
+import Document from './components/documents/Document';
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -130,6 +131,8 @@ export default () => (
     <RouteWithSidebar exact path={Routes.User.path} component={User} />
 
     <RouteWithSidebar exact path={Routes.AddUser.path} component={AddUser} />
+    {/* Document */}
+    <RouteWithSidebar exact path={Routes.Document.path} component={Document} />
 
     <Redirect to={Routes.NotFound.path} />
   </Switch>
