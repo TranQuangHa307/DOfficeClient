@@ -196,7 +196,7 @@ Volt React Dashboard
 │   │   ├── tables.js
 │   │   ├── teamMembers.js
 │   │   └── transactions.js
-│   ├── index.js
+│   ├── ComingDispatchManagement.js
 │   ├── pages
 │   │   ├── HomePage.js
 │   │   ├── Presentation.js

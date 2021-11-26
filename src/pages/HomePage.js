@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, Redirect } from "react-router-dom";
+import {Route, Switch, Redirect, useHistory} from "react-router-dom";
 import { Routes } from "../routes";
 
 // pages
@@ -41,7 +41,17 @@ import Tooltips from "./components/Tooltips";
 import Toasts from "./components/Toasts";
 import User from './components/users/User';
 import AddUser from './components/users/AddUser';
+<<<<<<< HEAD
 import Document from './components/documents/Document';
+=======
+import authenticateServices from "../services/authenticate.services";
+import {useDispatch, useSelector} from "react-redux";
+import authenticationActions from "../actions/authentication.actions";
+import ComingDispatchManagement from "./components/ComingDispatch/ComingDispatchManagement";
+import OutGoingDispatchManagement from "./components/OutgoingDispatch/OutGoingDispatchManagement";
+import AddComingDispatch from "./components/OutgoingDispatch/AddComingDispatch";
+import ComingDispatchDetail from "./components/ComingDispatch/ComingDispatchDetail";
+>>>>>>> 8010d0307b8fdfbd873d6a30f79a30fa8e1c383b
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -58,8 +68,12 @@ const RouteWithLoader = ({ component: Component, ...rest }) => {
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { userLoaded, user } = useSelector(state => state.authentication);
 
   useEffect(() => {
+    dispatch(authenticationActions.validateToken());
     const timer = setTimeout(() => setLoaded(true), 0);
     return () => clearTimeout(timer);
   }, []);
@@ -73,6 +87,16 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const toggleSettings = () => {
     setShowSettings(!showSettings);
     localStorage.setItem('settingsVisible', !showSettings);
+  }
+
+  if (!userLoaded) {
+      return (
+          <div>Loading...</div>
+      );
+  }
+
+  if (!user) {
+      return <Redirect to={Routes.Signin.path} />;
   }
 
   return (
@@ -94,7 +118,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 
 export default () => (
   <Switch>
-    <RouteWithLoader exact path={Routes.Presentation.path} component={Signin} />
     <RouteWithLoader exact path={Routes.Signin.path} component={Signin} />
     <RouteWithLoader exact path={Routes.Signup.path} component={Signup} />
     <RouteWithLoader exact path={Routes.ForgotPassword.path} component={ForgotPassword} />
@@ -133,6 +156,16 @@ export default () => (
     <RouteWithSidebar exact path={Routes.AddUser.path} component={AddUser} />
     {/* Document */}
     <RouteWithSidebar exact path={Routes.Document.path} component={Document} />
+
+      {/*  Coming dispatch  */}
+    <RouteWithSidebar exact path={Routes.ComingDispatchManagement.path} component={ComingDispatchManagement} />
+    <RouteWithSidebar exact path={Routes.AddComingDispatch.path} component={AddComingDispatch} />
+    <RouteWithSidebar exact path={Routes.ComingDispatchDetail.path} component={ComingDispatchDetail} />
+
+      {/*Out going dispatch*/}
+    <RouteWithSidebar exact path={Routes.OutGoingDispatchManagement.path} component={OutGoingDispatchManagement} />
+
+    <RouteWithSidebar exact path={Routes.Presentation.path} component={DashboardOverview} />
 
     <Redirect to={Routes.NotFound.path} />
   </Switch>

@@ -41,7 +41,17 @@ export const Routes = {
     User: { path: '/dashboard/user' },
     AddUser: { path: '/dashboard/user/add' },
 
+<<<<<<< HEAD
     // Document
     Document: {path: '/dashboard/document'},
     
+=======
+    // Coming dispatch management
+    ComingDispatchManagement: { path: '/coming-dispatch'},
+    AddComingDispatch: { path: '/coming-dispatch/add'},
+    ComingDispatchDetail: {path: '/coming-dispatch/:id'},
+
+    // Out going dispatch management
+    OutGoingDispatchManagement: { path: '/out-going-dispatch'}
+>>>>>>> 8010d0307b8fdfbd873d6a30f79a30fa8e1c383b
 };

@@ -7,6 +7,7 @@ import { Row, Col, Nav, Form, Image, Navbar, Dropdown, Container, ListGroup, Inp
 
 import NOTIFICATIONS_DATA from "../data/notifications";
 import Profile3 from "../assets/img/team/profile-picture-3.jpg";
+import Cookie from "js-cookie";
 
 
 export default (props) => {
@@ -18,6 +19,11 @@ export default (props) => {
       setNotifications(notifications.map(n => ({ ...n, read: true })));
     }, 300);
   };
+
+  const signOut = () => {
+    Cookie.remove('authToken');
+    window.location.href = '/';
+  }
 
 
   const Notification = (props) => {
@@ -51,14 +57,14 @@ export default (props) => {
       <Container fluid className="px-0">
         <div className="d-flex justify-content-between w-100">
           <div className="d-flex align-items-center">
-            <Form className="navbar-search">
-              <Form.Group id="topbarSearch">
-                <InputGroup className="input-group-merge search-bar">
-                  <InputGroup.Text><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
-                  <Form.Control type="text" placeholder="Search" />
-                </InputGroup>
-              </Form.Group>
-            </Form>
+            {/*<Form className="navbar-search">*/}
+            {/*  <Form.Group id="topbarSearch">*/}
+            {/*    <InputGroup className="input-group-merge search-bar">*/}
+            {/*      <InputGroup.Text><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>*/}
+            {/*      <Form.Control type="text" placeholder="Search" />*/}
+            {/*    </InputGroup>*/}
+            {/*  </Form.Group>*/}
+            {/*</Form>*/}
           </div>
           <Nav className="align-items-center">
             <Dropdown as={Nav.Item} onToggle={markNotificationsAsRead} >
@@ -108,7 +114,7 @@ export default (props) => {
 
                 <Dropdown.Divider />
 
-                <Dropdown.Item className="fw-bold">
+                <Dropdown.Item className="fw-bold" onClick={signOut}>
                   <FontAwesomeIcon icon={faSignOutAlt} className="text-danger me-2" /> Logout
                 </Dropdown.Item>
               </Dropdown.Menu>
