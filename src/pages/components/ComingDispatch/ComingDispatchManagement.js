@@ -14,6 +14,7 @@ const ComingDispatchManagement = () => {
 
     const { loading, comingDispatchs } = useSelector(state => state.comingDispatch);
 
+    console.log(111111, comingDispatchs);
     useEffect( () => {
         dispatch(comingDispatchActions.getAll());
 

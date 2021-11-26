@@ -2,6 +2,7 @@ const defaultState = {
     comingDispatchs : [],
     loading : false,
     editingComingDispatch : undefined,
+    comingDispatchDetail : {},
 };
 
 const comingDispatchReducer = (state = defaultState, action) => {
@@ -18,6 +19,23 @@ const comingDispatchReducer = (state = defaultState, action) => {
                 loading: false,
             };
         case 'COMING_DISPATCH_LOADING':
+            return {
+                ...state,
+                loading: true,
+            };
+
+        case 'COMING_DISPATCH_DETAIL_LOADED':
+            return {
+                ...state,
+                comingDispatchDetail: action.payload,
+                loading: false,
+            };
+        case 'COMING_DISPATCH_DETAIL_FAILED':
+            return {
+                ...state,
+                loading: false,
+            };
+        case 'COMING_DISPATCH_DETAIL_LOADING':
             return {
                 ...state,
                 loading: true,

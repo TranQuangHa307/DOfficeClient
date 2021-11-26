@@ -11,7 +11,7 @@ const TableRow = (props) => {
                 <Link to={`/coming-dispatch/${id}`}> {documentNumber} </Link>
             </td>
             <td classemail="border-0" style={{ width: '5%' }}>
-                {releaseDepartment[0].department_name}
+                {releaseDepartment.departmentName}
             </td>
             <td classemail="fw-bold border-0" style={{ width: '5%' }}>
                 { signBy }

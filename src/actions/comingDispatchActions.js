@@ -20,6 +20,25 @@ function getAll() {
     }
 }
 
+function getComingDispatchById(id) {
+    return (dispatch) => {
+        dispatch({type: 'COMING_DISPATCH_DETAIL_LOADING',})
+        return comingDispatchServices.getComingDispatchById(id)
+            .then((result) => {
+                dispatch({
+                    type: 'COMING_DISPATCH_DETAIL_LOADED',
+                    payload: result.data,
+                });
+                return result.data;
+            })
+            .catch((err) => {
+                dispatch({
+                    type: 'COMING_DISPATCH_DETAIL_FAILED',
+                });
+            })
+    }
+}
+
 
 function getAllDocumentType() {
     return (dispatch) => {
@@ -96,6 +115,7 @@ function createDispatchByForm(data) {
 
 const comingDispatchActions = {
     getAll,
+    getComingDispatchById,
     getAllDocumentType,
     getAllStorageLocation,
     getAllReleaseDepartment,

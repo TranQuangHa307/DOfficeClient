@@ -4,6 +4,10 @@ function getAll() {
     return get('/api/official-dispatch/coming-dispatch');
 }
 
+function getComingDispatchById(id) {
+    return get(`/api/official-dispatch/coming-dispatch/${id}`);
+}
+
 function getAllDocumentType() {
     return get('/api/official-dispatch/document-type');
 }
@@ -20,8 +24,11 @@ function createDispatchByForm(data) {
     return post('/api/official-dispatch/coming-dispatch', data);
 }
 
+
+
 const comingDispatchServices = {
     getAll,
+    getComingDispatchById,
     getAllDocumentType,
     getAllStorageLocation,
     getAllReleaseDepartment,
