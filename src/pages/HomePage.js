@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {Route, Switch, Redirect, useHistory} from "react-router-dom";
-import { Routes } from "../routes";
+import {Routes} from "../routes";
 
 // pages
 import Presentation from "./Presentation";
@@ -48,119 +48,126 @@ import ComingDispatchManagement from "./components/ComingDispatch/ComingDispatch
 import OutGoingDispatchManagement from "./components/OutgoingDispatch/OutGoingDispatchManagement";
 import AddComingDispatch from "./components/OutgoingDispatch/AddComingDispatch";
 import ComingDispatchDetail from "./components/ComingDispatch/ComingDispatchDetail";
+import Helmet from 'react-helmet';
 
-const RouteWithLoader = ({ component: Component, ...rest }) => {
-  const [loaded, setLoaded] = useState(false);
+import '../index.scss';
 
-  useEffect(() => {
-    const timer = setTimeout(() => setLoaded(true), 0);
-    return () => clearTimeout(timer);
-  }, []);
+const RouteWithLoader = ({component: Component, ...rest}) => {
+    const [loaded, setLoaded] = useState(false);
 
-  return (
-    <Route {...rest} render={props => ( <> <Preloader show={loaded ? false : true} /> <Component {...props} /> </> ) } />
-  );
+    useEffect(() => {
+        const timer = setTimeout(() => setLoaded(true), 0);
+        return () => clearTimeout(timer);
+    }, []);
+
+    return (
+        <Route {...rest} render={props => (<> <Preloader show={loaded ? false : true}/> <Component {...props} /> </>)}/>
+    );
 };
 
-const RouteWithSidebar = ({ component: Component, ...rest }) => {
-  const [loaded, setLoaded] = useState(false);
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { userLoaded, user } = useSelector(state => state.authentication);
+const RouteWithSidebar = ({component: Component, ...rest}) => {
+    const [loaded, setLoaded] = useState(false);
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const {userLoaded, user} = useSelector(state => state.authentication);
 
-  useEffect(() => {
-    dispatch(authenticationActions.validateToken());
-    const timer = setTimeout(() => setLoaded(true), 0);
-    return () => clearTimeout(timer);
-  }, []);
+    useEffect(() => {
+        dispatch(authenticationActions.validateToken());
+        const timer = setTimeout(() => setLoaded(true), 0);
+        return () => clearTimeout(timer);
+    }, []);
 
-  const localStorageIsSettingsVisible = () => {
-    return localStorage.getItem('settingsVisible') === 'false' ? false : true
-  }
+    const localStorageIsSettingsVisible = () => {
+        return localStorage.getItem('settingsVisible') === 'false' ? false : true
+    }
 
-  const [showSettings, setShowSettings] = useState(localStorageIsSettingsVisible);
+    const [showSettings, setShowSettings] = useState(localStorageIsSettingsVisible);
 
-  const toggleSettings = () => {
-    setShowSettings(!showSettings);
-    localStorage.setItem('settingsVisible', !showSettings);
-  }
+    const toggleSettings = () => {
+        setShowSettings(!showSettings);
+        localStorage.setItem('settingsVisible', !showSettings);
+    }
 
-  if (!userLoaded) {
-      return (
-          <div>Loading...</div>
-      );
-  }
+    if (!userLoaded) {
+        return (
+            <div>Loading...</div>
+        );
+    }
 
-  if (!user) {
-      return <Redirect to={Routes.Signin.path} />;
-  }
+    if (!user) {
+        return <Redirect to={Routes.Signin.path}/>;
+    }
 
-  return (
-    <Route {...rest} render={props => (
-      <>
-        <Preloader show={loaded ? false : true} />
-        <Sidebar />
+    return (
 
-        <main className="content">
-          <Navbar />
-          <Component {...props} />
-          <Footer toggleSettings={toggleSettings} showSettings={showSettings} />
-        </main>
-      </>
-    )}
-    />
-  );
+        <Route {...rest} render={props => (
+            <>
+                <Helmet>
+                    <title>DOffice</title>
+                </Helmet>
+                <Preloader show={loaded ? false : true}/>
+                <Sidebar/>
+
+                <main className="content">
+                    <Navbar/>
+                    <Component {...props} />
+                    <Footer toggleSettings={toggleSettings} showSettings={showSettings}/>
+                </main>
+            </>
+        )}
+        />
+    );
 };
 
 export default () => (
-  <Switch>
-    <RouteWithLoader exact path={Routes.Signin.path} component={Signin} />
-    <RouteWithLoader exact path={Routes.Signup.path} component={Signup} />
-    <RouteWithLoader exact path={Routes.ForgotPassword.path} component={ForgotPassword} />
-    <RouteWithLoader exact path={Routes.ResetPassword.path} component={ResetPassword} />
-    <RouteWithLoader exact path={Routes.Lock.path} component={Lock} />
-    <RouteWithLoader exact path={Routes.NotFound.path} component={NotFoundPage} />
-    <RouteWithLoader exact path={Routes.ServerError.path} component={ServerError} />
+    <Switch>
+        <RouteWithLoader exact path={Routes.Signin.path} component={Signin}/>
+        <RouteWithLoader exact path={Routes.Signup.path} component={Signup}/>
+        <RouteWithLoader exact path={Routes.ForgotPassword.path} component={ForgotPassword}/>
+        <RouteWithLoader exact path={Routes.ResetPassword.path} component={ResetPassword}/>
+        <RouteWithLoader exact path={Routes.Lock.path} component={Lock}/>
+        <RouteWithLoader exact path={Routes.NotFound.path} component={NotFoundPage}/>
+        <RouteWithLoader exact path={Routes.ServerError.path} component={ServerError}/>
 
-    {/* pages */}
-    <RouteWithSidebar exact path={Routes.DashboardOverview.path} component={DashboardOverview} />
-    <RouteWithSidebar exact path={Routes.Upgrade.path} component={Upgrade} />
-    <RouteWithSidebar exact path={Routes.Transactions.path} component={Transactions} />
-    <RouteWithSidebar exact path={Routes.Settings.path} component={Settings} />
-    <RouteWithSidebar exact path={Routes.BootstrapTables.path} component={BootstrapTables} />
+        {/* pages */}
+        <RouteWithSidebar exact path={Routes.DashboardOverview.path} component={DashboardOverview}/>
+        <RouteWithSidebar exact path={Routes.Upgrade.path} component={Upgrade}/>
+        <RouteWithSidebar exact path={Routes.Transactions.path} component={Transactions}/>
+        <RouteWithSidebar exact path={Routes.Settings.path} component={Settings}/>
+        <RouteWithSidebar exact path={Routes.BootstrapTables.path} component={BootstrapTables}/>
 
-    {/* components */}
-    <RouteWithSidebar exact path={Routes.Accordions.path} component={Accordion} />
-    <RouteWithSidebar exact path={Routes.Alerts.path} component={Alerts} />
-    <RouteWithSidebar exact path={Routes.Badges.path} component={Badges} />
-    <RouteWithSidebar exact path={Routes.Breadcrumbs.path} component={Breadcrumbs} />
-    <RouteWithSidebar exact path={Routes.Buttons.path} component={Buttons} />
-    <RouteWithSidebar exact path={Routes.Forms.path} component={Forms} />
-    <RouteWithSidebar exact path={Routes.Modals.path} component={Modals} />
-    <RouteWithSidebar exact path={Routes.Navs.path} component={Navs} />
-    <RouteWithSidebar exact path={Routes.Navbars.path} component={Navbars} />
-    <RouteWithSidebar exact path={Routes.Pagination.path} component={Pagination} />
-    <RouteWithSidebar exact path={Routes.Popovers.path} component={Popovers} />
-    <RouteWithSidebar exact path={Routes.Progress.path} component={Progress} />
-    <RouteWithSidebar exact path={Routes.Tables.path} component={Tables} />
-    <RouteWithSidebar exact path={Routes.Tabs.path} component={Tabs} />
-    <RouteWithSidebar exact path={Routes.Tooltips.path} component={Tooltips} />
-    <RouteWithSidebar exact path={Routes.Toasts.path} component={Toasts} />
+        {/* components */}
+        <RouteWithSidebar exact path={Routes.Accordions.path} component={Accordion}/>
+        <RouteWithSidebar exact path={Routes.Alerts.path} component={Alerts}/>
+        <RouteWithSidebar exact path={Routes.Badges.path} component={Badges}/>
+        <RouteWithSidebar exact path={Routes.Breadcrumbs.path} component={Breadcrumbs}/>
+        <RouteWithSidebar exact path={Routes.Buttons.path} component={Buttons}/>
+        <RouteWithSidebar exact path={Routes.Forms.path} component={Forms}/>
+        <RouteWithSidebar exact path={Routes.Modals.path} component={Modals}/>
+        <RouteWithSidebar exact path={Routes.Navs.path} component={Navs}/>
+        <RouteWithSidebar exact path={Routes.Navbars.path} component={Navbars}/>
+        <RouteWithSidebar exact path={Routes.Pagination.path} component={Pagination}/>
+        <RouteWithSidebar exact path={Routes.Popovers.path} component={Popovers}/>
+        <RouteWithSidebar exact path={Routes.Progress.path} component={Progress}/>
+        <RouteWithSidebar exact path={Routes.Tables.path} component={Tables}/>
+        <RouteWithSidebar exact path={Routes.Tabs.path} component={Tabs}/>
+        <RouteWithSidebar exact path={Routes.Tooltips.path} component={Tooltips}/>
+        <RouteWithSidebar exact path={Routes.Toasts.path} component={Toasts}/>
 
-    <RouteWithSidebar exact path={Routes.User.path} component={User} />
+        <RouteWithSidebar exact path={Routes.User.path} component={User}/>
 
-    <RouteWithSidebar exact path={Routes.AddUser.path} component={AddUser} />
+        <RouteWithSidebar exact path={Routes.AddUser.path} component={AddUser}/>
 
-      {/*  Coming dispatch  */}
-    <RouteWithSidebar exact path={Routes.ComingDispatchManagement.path} component={ComingDispatchManagement} />
-    <RouteWithSidebar exact path={Routes.AddComingDispatch.path} component={AddComingDispatch} />
-    <RouteWithSidebar exact path={Routes.ComingDispatchDetail.path} component={ComingDispatchDetail} />
+        {/*  Coming dispatch  */}
+        <RouteWithSidebar exact path={Routes.ComingDispatchManagement.path} component={ComingDispatchManagement}/>
+        <RouteWithSidebar exact path={Routes.AddComingDispatch.path} component={AddComingDispatch}/>
+        <RouteWithSidebar exact path={Routes.ComingDispatchDetail.path} component={ComingDispatchDetail}/>
 
-      {/*Out going dispatch*/}
-    <RouteWithSidebar exact path={Routes.OutGoingDispatchManagement.path} component={OutGoingDispatchManagement} />
+        {/*Out going dispatch*/}
+        <RouteWithSidebar exact path={Routes.OutGoingDispatchManagement.path} component={OutGoingDispatchManagement}/>
 
-    <RouteWithSidebar exact path={Routes.Presentation.path} component={DashboardOverview} />
+        <RouteWithSidebar exact path={Routes.Presentation.path} component={DashboardOverview}/>
 
-    <Redirect to={Routes.NotFound.path} />
-  </Switch>
+        <Redirect to={Routes.NotFound.path}/>
+    </Switch>
 );

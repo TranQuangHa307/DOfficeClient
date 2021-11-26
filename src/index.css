@@ -1,0 +1,39 @@
+.mainContent .body__left__1__content__left__field {
+  display: flex;
+}
+.mainContent .body__left__1__content__left__field .body__left__1__content__left__field__title {
+  font-weight: 700;
+}
+.mainContent .body__left__1__content__left__field .body__left__1__content__left__field__result {
+  padding-left: 5px;
+}
+.mainContent .nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.mainContent .body {
+  display: flex;
+  justify-content: space-between;
+}
+.mainContent .body .body__left {
+  background-color: #61DAFB;
+  width: calc(100% - 100px);
+}
+.mainContent .body .body__left .body__left__1 .body__left__1__content {
+  display: flex;
+  justify-content: space-around;
+}
+.mainContent .body .body__right {
+  background-color: #f5b759;
+  width: 300px;
+}
+.mainContent .body .body__right .body__right__field {
+  margin-bottom: 20px;
+}
+.mainContent .body .body__right .body__right__field .body__right__field__title {
+  font-weight: 700;
+}
+
+/*# sourceMappingURL=index.css.map */
