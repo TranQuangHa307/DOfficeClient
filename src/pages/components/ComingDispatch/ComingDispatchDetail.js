@@ -25,7 +25,7 @@ const ComingDispatchDetail = () => {
     }
 
     const processUrlAttachment = (url) => {
-
+        return `http://localhost:8091/api${url}`;
     }
 
     return (
@@ -126,7 +126,13 @@ const ComingDispatchDetail = () => {
                             <h2>Tệp đính kèm</h2>
                             <ul>
                                 {comingDispatchDetail.attachments &&
-                                comingDispatchDetail.attachments.map((item) => <li><a href={item.uri}>{item.url}</a></li>)}
+                                    comingDispatchDetail.attachments.map((item) => (
+                                        <li key={item.id}>
+                                            <a href={processUrlAttachment(item.url)} target="_blank" rel="noopener noreferrer">
+                                                {item.fileName}
+                                            </a>
+                                        </li>
+                                ))}
                             </ul>
                         </div>
                         {/*<div className="body__left__3">*/}

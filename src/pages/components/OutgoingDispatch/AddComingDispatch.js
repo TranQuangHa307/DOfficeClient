@@ -48,7 +48,6 @@ const AddComingDispatch = () => {
     const onChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        console.log(name, '  ', value);
 
         if (name !== 'attachments') {
             setInput({ ...input, [name]: value });
