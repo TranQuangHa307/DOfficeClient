@@ -113,6 +113,26 @@ function createDispatchByForm(data) {
     }
 }
 
+function getDispatchStream(dispatchId) {
+    return (dispatch) => {
+        dispatch({type: 'ACTIVITY_HISTORY_LOADING',})
+        return comingDispatchServices.getDispatchStream(dispatchId)
+            .then((result) => {
+                dispatch({
+                    type: 'ACTIVITY_HISTORY_LOADED',
+                    payload: result.data,
+                });
+                return result.data;
+            })
+            .catch((err) => {
+                console.log(err);
+                dispatch({
+                    type: 'ACTIVITY_HISTORY_FAILED',
+                });
+            })
+    }
+}
+
 const comingDispatchActions = {
     getAll,
     getComingDispatchById,
@@ -120,6 +140,7 @@ const comingDispatchActions = {
     getAllStorageLocation,
     getAllReleaseDepartment,
     createDispatchByForm,
+    getDispatchStream,
 }
 
 export default comingDispatchActions;

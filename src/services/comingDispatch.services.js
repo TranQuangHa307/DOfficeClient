@@ -24,7 +24,9 @@ function createDispatchByForm(data) {
     return post('/api/official-dispatch/coming-dispatch', data);
 }
 
-
+function getDispatchStream(dispatchId) {
+    return get(`/api/official-dispatch/get-official-dispatch-stream/${dispatchId}`);
+}
 
 const comingDispatchServices = {
     getAll,
@@ -33,6 +35,7 @@ const comingDispatchServices = {
     getAllStorageLocation,
     getAllReleaseDepartment,
     createDispatchByForm,
+    getDispatchStream,
 }
 
 export default comingDispatchServices;

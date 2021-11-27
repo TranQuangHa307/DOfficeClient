@@ -1,11 +1,10 @@
 import React, {useEffect} from "react";
 import {Link, useHistory, useParams} from "react-router-dom";
-import {Button} from "@themesberg/react-bootstrap";
+import {Button, Card, Table} from "@themesberg/react-bootstrap";
 import comingDispatchActions from "../../../actions/comingDispatchActions";
 import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
-import comingDispatchServices from "../../../services/comingDispatch.services";
-
+import TableRow from "./TableRow";
 
 const ComingDispatchDetail = () => {
 
@@ -14,11 +13,13 @@ const ComingDispatchDetail = () => {
     const history = useHistory();
 
     const {loading, comingDispatchDetail} = useSelector(state => state.comingDispatch);
+    const {activityHistories} = useSelector(state => state.activityHistory);
 
-    console.log(111, comingDispatchDetail);
+    console.log(111, activityHistories);
 
     useEffect(() => {
        dispatch(comingDispatchActions.getComingDispatchById(id));
+       dispatch(comingDispatchActions.getDispatchStream(id));
     }, []);
 
     const back = () => {
@@ -139,6 +140,32 @@ const ComingDispatchDetail = () => {
                         {/*</div>*/}
                         <div className="body__left__3">
                             <h2>Luồng văn bản</h2>
+                            <Table striped bordered hover>
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Thời gian thực hiện</th>
+                                    <th>Hành động</th>
+                                    <th>Người thực hiện</th>
+                                    <th>Thông tin</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {
+                                    activityHistories.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{++index}</td>
+                                            <td>{ moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') }</td>
+                                            <td>{item.action?.actionName}</td>
+                                            <td>{item.user?.fullName}</td>
+                                            <td>{item?.metaData && Object.keys(item.metaData).map((key, value) => (
+                                                `${item.user?.fullName} ${key}: ${item.metaData[key].fullName}`
+                                            ))}</td>
+                                        </tr>
+                                    ))
+                                }
+                                </tbody>
+                            </Table>
                         </div>
                     </div>
                     <div className="body__right">

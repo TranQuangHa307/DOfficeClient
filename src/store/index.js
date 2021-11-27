@@ -8,6 +8,7 @@ import documentTypeReducer from "../reducers/documentType.reducer";
 import storageLocationReducer from "../reducers/storageLocation.reducer";
 import userReducer from "../reducers/user.reducer";
 import releaseDepartmentReducer from "../reducers/releaseDepartment.reducer";
+import activityHistoryReducer from "../reducers/activityHistory.reducer";
 
 const allReducers = combineReducers({
     authentication: authenticationReducer,
@@ -16,6 +17,7 @@ const allReducers = combineReducers({
     storageLocation: storageLocationReducer,
     user: userReducer,
     releaseDepartment: releaseDepartmentReducer,
+    activityHistory: activityHistoryReducer,
 });
 
 const middlewares = [applyMiddleware(thunk, createLogger())];
