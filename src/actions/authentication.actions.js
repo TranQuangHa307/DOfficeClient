@@ -31,7 +31,7 @@ function authenticate(username, password) {
                 type: 'AUTHENTICATION_LOGGED_IN',
                 payload: username,
             });
-            Cookie.set('authToken', res.jwtToken);
+            Cookie.set('authToken', res.data.jwtToken);
         } catch (e) {
             throw e;
         }
