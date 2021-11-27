@@ -11,10 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 const ComingDispatchManagement = () => {
     const dispatch = useDispatch();
 
-
     const { loading, comingDispatchs } = useSelector(state => state.comingDispatch);
 
-    console.log(111111, comingDispatchs);
     useEffect( () => {
         dispatch(comingDispatchActions.getAll());
 
