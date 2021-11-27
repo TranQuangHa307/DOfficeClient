@@ -46,7 +46,7 @@ import {useDispatch, useSelector} from "react-redux";
 import authenticationActions from "../actions/authentication.actions";
 import ComingDispatchManagement from "./components/ComingDispatch/ComingDispatchManagement";
 import OutGoingDispatchManagement from "./components/OutgoingDispatch/OutGoingDispatchManagement";
-import AddComingDispatch from "./components/OutgoingDispatch/AddComingDispatch";
+import AddComingDispatch from "./components/ComingDispatch/AddComingDispatch";
 import ComingDispatchDetail from "./components/ComingDispatch/ComingDispatchDetail";
 import Helmet from 'react-helmet';
 

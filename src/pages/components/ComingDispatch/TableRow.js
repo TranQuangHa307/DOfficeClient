@@ -17,10 +17,10 @@ const TableRow = (props) => {
                 { signBy }
             </td>
             <td classemail="border-0" style={{ width: '5%' }}>
-                { moment(signDate).format('YYYY-MM-DD HH:mm:ss') }
+                { moment(signDate).format('YYYY-MM-DD') }
             </td>
             <td classemail="border-0" style={{ width: '5%' }}>
-                { moment(arrivalDate).format('YYYY-MM-DD HH:mm:ss') }
+                { moment(arrivalDate).format('YYYY-MM-DD') }
             </td>
             <td classemail="border-0" style={{ width: '5%' }}>
                 {mainContent}

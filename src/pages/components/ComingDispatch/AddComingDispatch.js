@@ -48,31 +48,44 @@ const AddComingDispatch = () => {
     const onChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-
         if (name !== 'attachments') {
             setInput({ ...input, [name]: value });
         } else {
             setInput({ ...input, [name]: e.target.files });
         }
-
     }
 
     const onSubmit = (e) => {
         e.preventDefault();
-        // console.log(input);
         const errorData = {};
         let isValid = true;
-        if (!input.mainContent) {
-            errorData.mainContent = 'Khong duoc de trong noi dung';
+        if (!input.documentNumber) {
+            errorData.documentNumber = 'Không được để trống số văn bản';
             isValid = false;
         }
-
+        if (!input.releaseDepartmentId) {
+            errorData.releaseDepartmentId = 'Không được để trống nơi ban hành';
+            isValid = false;
+        }
+        if (!input.documentTypeId) {
+            errorData.documentTypeId = 'Không được để trống loại văn bản';
+            isValid = false;
+        }
+        if (!input.mainContent) {
+            errorData.mainContent = 'Không được để trống nội dung';
+            isValid = false;
+        }
+        if (input.attachments.length <= 0) {
+            errorData.attachments = 'Không được để trống tệp đính kèm';
+            isValid = false;
+        }
         if (!isValid) {
             setError(errorData);
-            toast.error("Loiiiiiii");
+            toast.error("Vui lòng điền đầy đủ các trường thông tin");
             return;
         }
         setError({});
+
         // submit...
         setSubmiting(true);
         const formData = new FormData();
@@ -88,13 +101,13 @@ const AddComingDispatch = () => {
         });
         dispatch(comingDispatchActions.createDispatchByForm(formData))
             .then(() => {
-                toast.success("success");
+                toast.success("Thêm mới văn bản đến thành công");
                 history.push("/coming-dispatch");
                 setSubmiting(false);
             })
             .catch((err) => {
                 console.log(err);
-                toast.error("error");
+                toast.error("Đã xảy ra lỗi. Vui lòng liên hệ quản trị viên để được hỗ trợ");
                 setSubmiting(false);
             });
     }
@@ -121,6 +134,7 @@ const AddComingDispatch = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Số văn bản</Form.Label>
                     <Form.Control type="text" placeholder="Số văn bản" name="documentNumber" onChange={onChange}/>
+                    {error.documentNumber && <span style={{color: 'red'}}>{error.documentNumber}</span>}
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -129,6 +143,7 @@ const AddComingDispatch = () => {
                         <option>---Chọn nơi ban hành---</option>
                         {releaseDepartments.map((v, i) => (<option key={i} value={v.id}>{v.departmentName}</option>))}
                     </Form.Select>
+                    {error.releaseDepartmentId && <span style={{color: 'red'}}>{error.releaseDepartmentId}</span>}
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -152,6 +167,7 @@ const AddComingDispatch = () => {
                         <option>---Chọn loại văn bản---</option>
                         {documentTypes.map((v, i) => (<option key={i} value={v.id}>{v.typeName}</option>))}
                     </Form.Select>
+                    {error.documentTypeId && <span style={{color: 'red'}}>{error.documentTypeId}</span>}
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -198,7 +214,7 @@ const AddComingDispatch = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Trích yếu</Form.Label>
                     <Form.Control type="text" placeholder="Nhập nội dung" name="mainContent" onChange={onChange}/>
-                    {error.mainContent && <span>{error.mainContent}</span>}
+                    {error.mainContent && <span style={{color: 'red'}}>{error.mainContent}</span>}
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -212,6 +228,7 @@ const AddComingDispatch = () => {
                 <Form.Group controlId="formFileMultiple" className="mb-3">
                     <Form.Label>Tệp đính kèm</Form.Label>
                     <Form.Control type="file" multiple name="attachments" onChange={onChange} />
+                    {error.attachments && <span style={{color: 'red'}}>{error.attachments}</span>}
                 </Form.Group>
 
                 <Button variant="primary" type="submit" className="w-100">
@@ -219,7 +236,7 @@ const AddComingDispatch = () => {
                 </Button>
 
             </Form>
-            <Button variant="primary" className="w-100" onClick={back}>
+            <Button style={{marginTop: '10px'}} variant="light" className="w-100" onClick={back}>
                 Quay lại
             </Button>
         </>
