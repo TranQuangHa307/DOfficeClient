@@ -14,11 +14,12 @@ const handleResponse = (res) => {
     return new Promise((resolve, reject) => {
         if(res.status === 200) {
             if(res.data) {
+                if (!res.data.success) {
+                    return reject(new Error(res.data.message));
+                }
                 return resolve(res.data);
             }
-
         }
-
         return reject(new Error('Unknown Error'));
     });
 };
