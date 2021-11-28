@@ -4,7 +4,7 @@ import {Button, Card, Table} from "@themesberg/react-bootstrap";
 import comingDispatchActions from "../../../actions/comingDispatchActions";
 import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
-import TableRow from "./TableRow";
+import {ACTIVITY_HISTORY_META_DATA_KEYS} from "../../../constants/app";
 
 const ComingDispatchDetail = () => {
 
@@ -50,8 +50,7 @@ const ComingDispatchDetail = () => {
                             {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
                         </Button>
                         <Button variant="secondary" classemail="m-1 mb-4" style={{ marginRight: '10px' }}>
-                            Sửa
-                            {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
+                            <Link to={`/coming-dispatch/edit/${id}`}> Sửa </Link>
                         </Button>
                         <Button variant="danger" classemail="m-1 mb-4">
                             Xóa
@@ -159,7 +158,7 @@ const ComingDispatchDetail = () => {
                                             <td>{item.action?.actionName}</td>
                                             <td>{item.user?.fullName}</td>
                                             <td>{item?.metaData && Object.keys(item.metaData).map((key, value) => (
-                                                `${item.user?.fullName} ${key}: ${item.metaData[key].fullName}`
+                                                `${ACTIVITY_HISTORY_META_DATA_KEYS[key]}: ${item.metaData[key].fullName}`
                                             ))}</td>
                                         </tr>
                                     ))

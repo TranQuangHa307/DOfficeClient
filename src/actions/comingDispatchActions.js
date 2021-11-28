@@ -39,6 +39,25 @@ function getComingDispatchById(id) {
     }
 }
 
+function getEditingComingDispatchById(id) {
+    return (dispatch) => {
+        dispatch({type: 'EDITING_COMING_DISPATCH_LOADING',})
+        return comingDispatchServices.getComingDispatchById(id)
+            .then((result) => {
+                dispatch({
+                    type: 'EDITING_COMING_DISPATCH_LOADED',
+                    payload: result.data,
+                });
+                return result.data;
+            })
+            .catch((err) => {
+                dispatch({
+                    type: 'EDITING_COMING_DISPATCH_FAILED',
+                });
+            })
+    }
+}
+
 
 function getAllDocumentType() {
     return (dispatch) => {
@@ -113,6 +132,18 @@ function createDispatchByForm(data) {
     }
 }
 
+function updateDispatchByForm(dispatchId, data) {
+    return () => {
+        return comingDispatchServices.updateDispatchByForm(dispatchId, data)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
 function getDispatchStream(dispatchId) {
     return (dispatch) => {
         dispatch({type: 'ACTIVITY_HISTORY_LOADING',})
@@ -136,11 +167,13 @@ function getDispatchStream(dispatchId) {
 const comingDispatchActions = {
     getAll,
     getComingDispatchById,
+    getEditingComingDispatchById,
     getAllDocumentType,
     getAllStorageLocation,
     getAllReleaseDepartment,
     createDispatchByForm,
     getDispatchStream,
+    updateDispatchByForm,
 }
 
 export default comingDispatchActions;

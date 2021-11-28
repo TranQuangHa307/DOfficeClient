@@ -40,6 +40,23 @@ const comingDispatchReducer = (state = defaultState, action) => {
                 ...state,
                 loading: true,
             };
+
+        case 'EDITING_COMING_DISPATCH_LOADED':
+            return {
+                ...state,
+                editingComingDispatch: action.payload,
+                loading: false,
+            };
+        case 'EDITING_COMING_DISPATCH_FAILED':
+            return {
+                ...state,
+                loading: false,
+            };
+        case 'EDITING_COMING_DISPATCH_LOADING':
+            return {
+                ...state,
+                loading: true,
+            };
         default:
             return state;
     }

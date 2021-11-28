@@ -27,7 +27,7 @@
     display: flex;
     justify-content: space-between;
     .body__left {
-      background-color: #61DAFB;
+      //background-color: #61DAFB;
         width: calc(100% - 100px);
       .body__left__1 {
         .body__left__1__content {
@@ -43,8 +43,9 @@
       }
     }
     .body__right {
-      background-color: #f5b759;
+      //background-color: #f5b759;
       width: 300px;
+      margin-left: 18px;
       .body__right__field {
         margin-bottom: 20px;
         .body__right__field__title {
@@ -58,3 +59,21 @@
   }
 }
 
+
+.deleteFileIcon {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.attachmentItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.addAttachmentBtn {
+  margin-bottom: 10px;
+}
+
+.listAttachmentLabel {
+  display: block;
+}

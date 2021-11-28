@@ -51,6 +51,7 @@ import ComingDispatchDetail from "./components/ComingDispatch/ComingDispatchDeta
 import Helmet from 'react-helmet';
 
 import '../index.scss';
+import EditComingDispatch from "./components/ComingDispatch/EditComingDispatch";
 
 const RouteWithLoader = ({component: Component, ...rest}) => {
     const [loaded, setLoaded] = useState(false);
@@ -162,6 +163,7 @@ export default () => (
         <RouteWithSidebar exact path={Routes.ComingDispatchManagement.path} component={ComingDispatchManagement}/>
         <RouteWithSidebar exact path={Routes.AddComingDispatch.path} component={AddComingDispatch}/>
         <RouteWithSidebar exact path={Routes.ComingDispatchDetail.path} component={ComingDispatchDetail}/>
+        <RouteWithSidebar exact path={Routes.EditComingDispatch.path} component={EditComingDispatch}/>
 
         {/*Out going dispatch*/}
         <RouteWithSidebar exact path={Routes.OutGoingDispatchManagement.path} component={OutGoingDispatchManagement}/>
