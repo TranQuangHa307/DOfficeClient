@@ -5,6 +5,7 @@ import comingDispatchActions from "../../../actions/comingDispatchActions";
 import userActions from "../../../actions/userActions";
 import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
+import LoadingOverlay from 'react-loading-overlay';
 
 const AddComingDispatch = () => {
 
@@ -81,7 +82,7 @@ const AddComingDispatch = () => {
         }
         if (!isValid) {
             setError(errorData);
-            toast.error("Vui lòng điền đầy đủ các trường thông tin");
+            toast.error("Vui lòng điền đầy đủ các trường thông tin", { autoClose: 3000, hideProgressBar : true });
             return;
         }
         setError({});
@@ -101,13 +102,13 @@ const AddComingDispatch = () => {
         });
         dispatch(comingDispatchActions.createDispatchByForm(formData))
             .then(() => {
-                toast.success("Thêm mới văn bản đến thành công");
+                toast.success("Thêm mới văn bản đến thành công", { autoClose: 3000, hideProgressBar : true });
                 history.push("/coming-dispatch");
                 setSubmiting(false);
             })
             .catch((err) => {
                 console.log(err);
-                toast.error("Đã xảy ra lỗi. Vui lòng liên hệ quản trị viên để được hỗ trợ");
+                toast.error("Đã xảy ra lỗi. Vui lòng liên hệ quản trị viên để được hỗ trợ", { autoClose: 3000, hideProgressBar : true });
                 setSubmiting(false);
             });
     }
@@ -119,18 +120,7 @@ const AddComingDispatch = () => {
 
     return (
         <>
-
             <Form className="mt-4" onSubmit={onSubmit}>
-                {submiting &&
-                <div style={{ width: '100%', height: '100%', backgroundColor: 'rgba(255,255,255,0.5)', position: 'absolute', top: 0, left: 0 }}>
-                    <span style={{ position: 'absolute', transform: 'translate(-50%,-50%)', left: '50%', top: '50%' }} >
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                    </span>
-                </div>
-                }
-                
                 <Form.Group className="mb-3">
                     <Form.Label>Số văn bản</Form.Label>
                     <Form.Control type="text" placeholder="Số văn bản" name="documentNumber" onChange={onChange}/>
@@ -232,6 +222,14 @@ const AddComingDispatch = () => {
                 </Form.Group>
 
                 <Button variant="primary" type="submit" className="w-100">
+                    {
+                        submiting &&
+                        <Spinner
+                            animation="border"
+                            role="status"
+                            size="sm">
+                        </Spinner>
+                    }
                     Lưu lại
                 </Button>
 

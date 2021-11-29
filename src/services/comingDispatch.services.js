@@ -1,4 +1,4 @@
-import {get, post, put} from './sender';
+import {del, get, post, put} from './sender';
 
 function getAll() {
     return get('/api/official-dispatch/coming-dispatch');
@@ -32,6 +32,10 @@ function getDispatchStream(dispatchId) {
     return get(`/api/official-dispatch/get-official-dispatch-stream/${dispatchId}`);
 }
 
+function deleteComingDispatch(dispatchId) {
+    return del(`/api/official-dispatch/coming-dispatch/${dispatchId}`);
+}
+
 const comingDispatchServices = {
     getAll,
     getComingDispatchById,
@@ -41,6 +45,7 @@ const comingDispatchServices = {
     createDispatchByForm,
     getDispatchStream,
     updateDispatchByForm,
+    deleteComingDispatch,
 }
 
 export default comingDispatchServices;

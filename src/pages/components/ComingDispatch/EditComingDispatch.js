@@ -127,7 +127,7 @@ const EditComingDispatch = () => {
         }
         if (!isValid) {
             setError(errorData);
-            toast.error("Vui lòng điền đầy đủ các trường thông tin");
+            toast.error("Vui lòng điền đầy đủ các trường thông tin", { autoClose: 3000, hideProgressBar : true });
             return;
         }
         setError({});
@@ -149,13 +149,13 @@ const EditComingDispatch = () => {
         });
         dispatch(comingDispatchActions.updateDispatchByForm(id, formData))
             .then(() => {
-                toast.success("Cập nhật văn bản đến thành công");
+                toast.success("Cập nhật văn bản đến thành công", { autoClose: 3000, hideProgressBar : true });
                 history.push(`/coming-dispatch/${id}`);
                 setSubmiting(false);
             })
             .catch((err) => {
                 console.log(err);
-                toast.error("Đã xảy ra lỗi. Vui lòng liên hệ quản trị viên để được hỗ trợ");
+                toast.error("Đã xảy ra lỗi. Vui lòng liên hệ quản trị viên để được hỗ trợ", { autoClose: 3000, hideProgressBar : true });
                 setSubmiting(false);
             });
     }

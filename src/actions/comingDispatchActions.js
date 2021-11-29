@@ -164,6 +164,18 @@ function getDispatchStream(dispatchId) {
     }
 }
 
+function deleteComingDispatch(dispatchId) {
+    return () => {
+        return comingDispatchServices.deleteComingDispatch(dispatchId)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
 const comingDispatchActions = {
     getAll,
     getComingDispatchById,
@@ -174,6 +186,7 @@ const comingDispatchActions = {
     createDispatchByForm,
     getDispatchStream,
     updateDispatchByForm,
+    deleteComingDispatch,
 }
 
 export default comingDispatchActions;

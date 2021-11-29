@@ -1,10 +1,11 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Link, useHistory, useParams} from "react-router-dom";
-import {Button, Card, Table} from "@themesberg/react-bootstrap";
+import {Button, Card, Table, Modal, Spinner} from "@themesberg/react-bootstrap";
 import comingDispatchActions from "../../../actions/comingDispatchActions";
 import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
-import {ACTIVITY_HISTORY_META_DATA_KEYS} from "../../../constants/app";
+import {ACTION_ON_DISPATCH_META_DATA_KEYS, ACTIVITY_HISTORY_META_DATA_KEYS} from "../../../constants/app";
+import {toast} from "react-toastify";
 
 const ComingDispatchDetail = () => {
 
@@ -30,8 +31,63 @@ const ComingDispatchDetail = () => {
         return `http://localhost:8091/api${url}`;
     }
 
+    const [show, setShow] = useState(false);
+
+    const deleteModal = () => {
+        setShow(true);
+    }
+
+    const handleClose = () => setShow(false);
+
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const deleteDispatch = () => {
+        setIsDeleting(true);
+        dispatch(comingDispatchActions.deleteComingDispatch(id))
+            .then(() => {
+                toast.success("Xóa văn bản đến thành công", { autoClose: 3000, hideProgressBar : true });
+                history.push("/coming-dispatch");
+                setIsDeleting(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error("Đã xảy ra lỗi. Vui lòng liên hệ quản trị viên để được hỗ trợ", { autoClose: 3000, hideProgressBar : true });
+                setIsDeleting(false);
+            });
+    }
+
     return (
         <>
+            <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Xóa công văn</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Bạn có chắn chắn bạn thực sự muốn xóa công văn này?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Đóng
+                    </Button>
+                    <Button variant="primary" onClick={deleteDispatch}>
+                        {
+                            isDeleting &&
+                            <Spinner
+                                animation="border"
+                                role="status"
+                                size="sm">
+                            </Spinner>
+                        }
+                        Xác nhận
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
             {loading === true ? <div>Loading...</div> :
             <div className="mainContent">
                 <div className="nav">
@@ -52,7 +108,7 @@ const ComingDispatchDetail = () => {
                         <Button variant="secondary" classemail="m-1 mb-4" style={{ marginRight: '10px' }}>
                             <Link to={`/coming-dispatch/edit/${id}`}> Sửa </Link>
                         </Button>
-                        <Button variant="danger" classemail="m-1 mb-4">
+                        <Button variant="danger" classemail="m-1 mb-4" onClick={deleteModal}>
                             Xóa
                             {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
                         </Button>
@@ -155,7 +211,7 @@ const ComingDispatchDetail = () => {
                                         <tr key={index}>
                                             <td>{++index}</td>
                                             <td>{ moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss') }</td>
-                                            <td>{item.action?.actionName}</td>
+                                            <td>{ACTION_ON_DISPATCH_META_DATA_KEYS[item.action?.actionName]}</td>
                                             <td>{item.user?.fullName}</td>
                                             <td>{item?.metaData && Object.keys(item.metaData).map((key, value) => (
                                                 `${ACTIVITY_HISTORY_META_DATA_KEYS[key]}: ${item.metaData[key].fullName}`
@@ -187,10 +243,12 @@ const ComingDispatchDetail = () => {
                             <span className="body__right__field__result">
                                 <ul>
                                     {
-                                        (comingDispatchDetail?.processors) &&
-                                        comingDispatchDetail?.processors.map((item) => {
-                                            return `<li>item.fullName</li>`;
-                                        })
+                                        comingDispatchDetail?.processors &&
+                                        comingDispatchDetail?.processors.map((item) => (
+                                            <li>
+                                                {item.processor.fullName}
+                                            </li>
+                                        ))
                                     }
                                 </ul>
                             </span>

@@ -49,6 +49,7 @@ import OutGoingDispatchManagement from "./components/OutgoingDispatch/OutGoingDi
 import AddComingDispatch from "./components/ComingDispatch/AddComingDispatch";
 import ComingDispatchDetail from "./components/ComingDispatch/ComingDispatchDetail";
 import Helmet from 'react-helmet';
+import LoadingOverlay from 'react-loading-overlay';
 
 import '../index.scss';
 import EditComingDispatch from "./components/ComingDispatch/EditComingDispatch";
@@ -62,7 +63,11 @@ const RouteWithLoader = ({component: Component, ...rest}) => {
     }, []);
 
     return (
-        <Route {...rest} render={props => (<> <Preloader show={loaded ? false : true}/> <Component {...props} /> </>)}/>
+        <Route {...rest} render={props => (
+            <>
+                <Preloader show={loaded ? false : true}/> <Component {...props} />
+            </>
+        )}/>
     );
 };
 
@@ -106,6 +111,7 @@ const RouteWithSidebar = ({component: Component, ...rest}) => {
                 <Helmet>
                     <title>DOffice</title>
                 </Helmet>
+
                 <Preloader show={loaded ? false : true}/>
                 <Sidebar/>
 
