@@ -9,10 +9,12 @@ import storageLocationReducer from "../reducers/storageLocation.reducer";
 import userReducer from "../reducers/user.reducer";
 import releaseDepartmentReducer from "../reducers/releaseDepartment.reducer";
 import activityHistoryReducer from "../reducers/activityHistory.reducer";
+import outGoingDispatchReducer from "../reducers/outGoindDispatch.reducer";
 
 const allReducers = combineReducers({
     authentication: authenticationReducer,
     comingDispatch: comingDispatchReducer,
+    outGoingDispatch: outGoingDispatchReducer,
     documentType: documentTypeReducer,
     storageLocation: storageLocationReducer,
     user: userReducer,
