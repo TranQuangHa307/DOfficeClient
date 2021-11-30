@@ -36,6 +36,18 @@ function deleteComingDispatch(dispatchId) {
     return del(`/api/official-dispatch/coming-dispatch/${dispatchId}`);
 }
 
+function forward(data) {
+    return post(`/api/official-dispatch/coming-dispatch/forward`, data);
+}
+
+function approve(dispatchId) {
+    return get(`/api/official-dispatch/coming-dispatch/approve/${dispatchId}`);
+}
+
+function getUserViewDispatch(dispatchId) {
+    return get(`/api/official-dispatch/user-view-dispatch/${dispatchId}`);
+}
+
 const comingDispatchServices = {
     getAll,
     getComingDispatchById,
@@ -46,6 +58,9 @@ const comingDispatchServices = {
     getDispatchStream,
     updateDispatchByForm,
     deleteComingDispatch,
+    forward,
+    approve,
+    getUserViewDispatch,
 }
 
 export default comingDispatchServices;

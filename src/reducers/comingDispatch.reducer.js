@@ -3,6 +3,7 @@ const defaultState = {
     loading : false,
     editingComingDispatch : undefined,
     comingDispatchDetail : {},
+    userViewDispatch: undefined,
 };
 
 const comingDispatchReducer = (state = defaultState, action) => {
@@ -56,6 +57,11 @@ const comingDispatchReducer = (state = defaultState, action) => {
             return {
                 ...state,
                 loading: true,
+            };
+        case 'DETAIL_USER_VIEW_DISPATCH_LOADED':
+            return {
+                ...state,
+                userViewDispatch: action.payload,
             };
         default:
             return state;

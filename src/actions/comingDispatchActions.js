@@ -176,6 +176,60 @@ function deleteComingDispatch(dispatchId) {
     }
 }
 
+function forward(data) {
+    return () => {
+        return comingDispatchServices.forward(data)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            });
+    };
+}
+
+function approve(dispatchId) {
+    return (dispatch, getState) => {
+        return comingDispatchServices.approve(dispatchId)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                const state = getState();
+                const { comingDispatchDetail } = state.comingDispatch;
+                const updated = {
+                    ...comingDispatchDetail,
+                    comingDispatchResultDTO: {
+                        ...comingDispatchDetail.comingDispatchResultDTO,
+                        status: 2,
+                    },
+                };
+                dispatch({
+                    type: 'COMING_DISPATCH_DETAIL_LOADED',
+                    payload: updated,
+                })
+                return result.data;
+            });
+    };
+}
+
+function getUserViewDispatch(dispatchId) {
+    return (dispatch) => {
+        return comingDispatchServices.getUserViewDispatch(dispatchId)
+            .then((result) => {
+                dispatch({
+                    type: 'DETAIL_USER_VIEW_DISPATCH_LOADED',
+                    payload: result.data,
+                });
+                return result.data;
+            })
+            .catch((err) => {
+                console.log(err);
+                throw err;
+            });
+    };
+}
+
 const comingDispatchActions = {
     getAll,
     getComingDispatchById,
@@ -183,10 +237,13 @@ const comingDispatchActions = {
     getAllDocumentType,
     getAllStorageLocation,
     getAllReleaseDepartment,
+    getUserViewDispatch,
     createDispatchByForm,
     getDispatchStream,
     updateDispatchByForm,
     deleteComingDispatch,
+    forward,
+    approve,
 }
 
 export default comingDispatchActions;
