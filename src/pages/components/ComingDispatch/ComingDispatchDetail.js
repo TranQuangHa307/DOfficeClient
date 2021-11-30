@@ -7,6 +7,8 @@ import moment from "moment";
 import {ACTION_ON_DISPATCH_META_DATA_KEYS, ACTIVITY_HISTORY_META_DATA_KEYS} from "../../../constants/app";
 import {toast} from "react-toastify";
 import userActions from "../../../actions/userActions";
+import ForwardModal from "./ForwardModal";
+import ApproveModal from "./ApproveModal";
 
 const ComingDispatchDetail = () => {
 
@@ -14,17 +16,22 @@ const ComingDispatchDetail = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const {loading, comingDispatchDetail} = useSelector(state => state.comingDispatch);
+    const {loading, comingDispatchDetail, userViewDispatch} = useSelector(state => state.comingDispatch);
     const {activityHistories} = useSelector(state => state.activityHistory);
     const {user} = useSelector(state => state.authentication);
 
     const [isShowDelEditBtn, setIsShowDelEditBtn] = useState(false);
+    const [showForwardModal, setShowForwardModal] = useState(false);
+    const [showApproveModal, setShowApproveModal] = useState(false);
+
     // const check = user?.id === comingDispatchDetail?.comingDispatchResultDTO?.createdByUser?.id
     // console.log(111, activityHistories);
 
     useEffect(() => {
         dispatch(comingDispatchActions.getComingDispatchById(id));
         dispatch(comingDispatchActions.getDispatchStream(id));
+        dispatch(comingDispatchActions.getUserViewDispatch(id));
+        dispatch(userActions.getAllUser());
     }, []);
 
     const back = () => {
@@ -62,6 +69,26 @@ const ComingDispatchDetail = () => {
                 setIsDeleting(false);
             });
     }
+
+    const getMetaData = (metaData, key) => {
+        const keyName = ACTIVITY_HISTORY_META_DATA_KEYS[key] ?? key;
+        let value = '';
+        switch (key) {
+            case 'assignFor':
+            case 'addViewer':
+                value = metaData[key].fullName;
+                break;
+            default:
+                value = metaData[key];
+                break;
+        }
+        return `${keyName}: ${value}`;
+    };
+
+    const currentViewType = (userViewDispatch && userViewDispatch.length > 0)
+        ? userViewDispatch[0]?.userViewTypeEntity?.viewType
+        : null;
+    const actionDisabled = comingDispatchDetail?.comingDispatchResultDTO?.status === 2 || currentViewType !== 'PROCESSER';
 
     return (
         <>
@@ -104,14 +131,31 @@ const ComingDispatchDetail = () => {
                             </Button>
                         </div>
                         <div className="nav__2">
-                            <Button variant="info" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
-                                Phê duyệt
-                                {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
-                            </Button>
-                            <Button variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
-                                Chuyển tiếp
-                                {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
-                            </Button>
+                            {
+                                actionDisabled ? (
+                                    <>
+                                        <Button disabled variant="info" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
+                                            Phê duyệt
+                                            {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
+                                        </Button>
+                                        <Button disabled variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
+                                            Chuyển tiếp
+                                            {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Button onClick={() => setShowApproveModal(true)} variant="info" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
+                                            Phê duyệt
+                                            {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
+                                        </Button>
+                                        <Button onClick={() => setShowForwardModal(true)} variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
+                                            Chuyển tiếp
+                                            {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
+                                        </Button>
+                                    </>
+                                )
+                            }
                             {/*{*/}
                             {/*    isShowDelEditBtn &&*/}
                             {/*    <>*/}
@@ -239,9 +283,7 @@ const ComingDispatchDetail = () => {
                                                 <td>{moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss')}</td>
                                                 <td>{ACTION_ON_DISPATCH_META_DATA_KEYS[item.action?.actionName]}</td>
                                                 <td>{item.user?.fullName}</td>
-                                                <td>{item?.metaData && Object.keys(item.metaData).map((key, value) => (
-                                                    `${ACTIVITY_HISTORY_META_DATA_KEYS[key]}: ${item.metaData[key].fullName}`
-                                                ))}</td>
+                                                <td>{item?.metaData && Object.keys(item.metaData).map((key, value) => getMetaData(item.metaData, key))}</td>
                                             </tr>
                                         ))
                                     }
@@ -271,7 +313,7 @@ const ComingDispatchDetail = () => {
                                     {
                                         comingDispatchDetail?.processors &&
                                         comingDispatchDetail?.processors.map((item) => (
-                                            <li>
+                                            <li key={item.processor.id}>
                                                 {item.processor.fullName}
                                             </li>
                                         ))
@@ -317,6 +359,20 @@ const ComingDispatchDetail = () => {
                         </div>
                     </div>
                 </div>
+            }
+            {
+                !actionDisabled && (
+                    <>
+                        <ForwardModal
+                            show={showForwardModal}
+                            onClose={() => setShowForwardModal(false)}
+                        />
+                        <ApproveModal
+                            show={showApproveModal}
+                            onClose={() => setShowApproveModal(false)}
+                        />
+                    </>
+                )
             }
         </>
     );
