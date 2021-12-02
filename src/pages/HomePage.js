@@ -54,6 +54,7 @@ import LoadingOverlay from 'react-loading-overlay';
 import '../index.scss';
 import EditComingDispatch from "./components/ComingDispatch/EditComingDispatch";
 import AddOutGoingDispatch from "./components/OutgoingDispatch/AddOutGoingDispatch";
+import OutGoingDispatchDetail from "./components/OutgoingDispatch/OutGoingDispatchDetail";
 
 const RouteWithLoader = ({component: Component, ...rest}) => {
     const [loaded, setLoaded] = useState(false);
@@ -175,7 +176,7 @@ export default () => (
         {/*Out going dispatch*/}
         <RouteWithSidebar exact path={Routes.OutGoingDispatchManagement.path} component={OutGoingDispatchManagement}/>
         <RouteWithSidebar exact path={Routes.AddOutGoingDispatch.path} component={AddOutGoingDispatch}/>
-
+        <RouteWithSidebar exact path={Routes.OutGoingDispatchDetail.path} component={OutGoingDispatchDetail}/>
 
 
         <RouteWithSidebar exact path={Routes.Presentation.path} component={DashboardOverview}/>
