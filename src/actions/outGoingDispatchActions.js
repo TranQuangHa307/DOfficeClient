@@ -20,43 +20,43 @@ function getAll() {
     }
 }
 
-// function getComingDispatchById(id) {
-//     return (dispatch) => {
-//         dispatch({type: 'COMING_DISPATCH_DETAIL_LOADING',})
-//         return comingDispatchServices.getComingDispatchById(id)
-//             .then((result) => {
-//                 dispatch({
-//                     type: 'COMING_DISPATCH_DETAIL_LOADED',
-//                     payload: result.data,
-//                 });
-//                 return result.data;
-//             })
-//             .catch((err) => {
-//                 dispatch({
-//                     type: 'COMING_DISPATCH_DETAIL_FAILED',
-//                 });
-//             })
-//     }
-// }
-//
-// function getEditingComingDispatchById(id) {
-//     return (dispatch) => {
-//         dispatch({type: 'EDITING_COMING_DISPATCH_LOADING',})
-//         return comingDispatchServices.getComingDispatchById(id)
-//             .then((result) => {
-//                 dispatch({
-//                     type: 'EDITING_COMING_DISPATCH_LOADED',
-//                     payload: result.data,
-//                 });
-//                 return result.data;
-//             })
-//             .catch((err) => {
-//                 dispatch({
-//                     type: 'EDITING_COMING_DISPATCH_FAILED',
-//                 });
-//             })
-//     }
-// }
+function getOutGoingDispatchById(id) {
+    return (dispatch) => {
+        dispatch({type: 'OUT_GOING_DISPATCH_DETAIL_LOADING',})
+        return outGoingDispatchServices.getOutGoingDispatchById(id)
+            .then((result) => {
+                dispatch({
+                    type: 'OUT_GOING_DISPATCH_DETAIL_LOADED',
+                    payload: result.data,
+                });
+                return result.data;
+            })
+            .catch((err) => {
+                dispatch({
+                    type: 'OUT_GOING_DISPATCH_DETAIL_FAILED',
+                });
+            })
+    }
+}
+
+function getEditingOutGoingDispatchById(id) {
+    return (dispatch) => {
+        dispatch({type: 'EDITING_OUT_GOING_DISPATCH_LOADING',})
+        return outGoingDispatchServices.getOutGoingDispatchById(id)
+            .then((result) => {
+                dispatch({
+                    type: 'EDITING_OUT_GOING_DISPATCH_LOADED',
+                    payload: result.data,
+                });
+                return result.data;
+            })
+            .catch((err) => {
+                dispatch({
+                    type: 'EDITING_OUT_GOING_DISPATCH_FAILED',
+                });
+            })
+    }
+}
 //
 //
 // function getAllDocumentType() {
@@ -131,18 +131,18 @@ function createOutGoingDispatch(data) {
             })
     }
 }
-//
-// function updateDispatchByForm(dispatchId, data) {
-//     return () => {
-//         return comingDispatchServices.updateDispatchByForm(dispatchId, data)
-//             .then((result) => {
-//                 if (result.code >= 400 && result.code <= 599) {
-//                     throw new Error(result.message);
-//                 }
-//                 return result.data;
-//             })
-//     }
-// }
+
+function updateDispatchByForm(dispatchId, data) {
+    return () => {
+        return outGoingDispatchServices.updateDispatchByForm(dispatchId, data)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
 //
 // function getDispatchStream(dispatchId) {
 //     return (dispatch) => {
@@ -164,29 +164,51 @@ function createOutGoingDispatch(data) {
 //     }
 // }
 //
-// function deleteComingDispatch(dispatchId) {
-//     return () => {
-//         return comingDispatchServices.deleteComingDispatch(dispatchId)
-//             .then((result) => {
-//                 if (result.code >= 400 && result.code <= 599) {
-//                     throw new Error(result.message);
-//                 }
-//                 return result.data;
-//             })
-//     }
-// }
+function deleteOutGoingDispatch(dispatchId) {
+    return () => {
+        return outGoingDispatchServices.deleteOutGoingDispatch(dispatchId)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
+function submitToUnitLeadership(data) {
+    return () => {
+        return outGoingDispatchServices.submitToUnitLeadership(data)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
+function sign(data) {
+    return () => {
+        return outGoingDispatchServices.sign(data)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
 
 const outGoingDispatchActions = {
     getAll,
-    // getComingDispatchById,
-    // getEditingComingDispatchById,
-    // getAllDocumentType,
-    // getAllStorageLocation,
-    // getAllReleaseDepartment,
     createOutGoingDispatch,
-    // getDispatchStream,
-    // updateDispatchByForm,
-    // deleteComingDispatch,
+    getOutGoingDispatchById,
+    submitToUnitLeadership,
+    getEditingOutGoingDispatchById,
+    updateDispatchByForm,
+    deleteOutGoingDispatch,
+    sign,
 }
 
 export default outGoingDispatchActions;

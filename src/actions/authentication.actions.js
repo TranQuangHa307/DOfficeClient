@@ -9,9 +9,10 @@ function validateToken() {
                 return;
             }
             const response = await authenticateServices.validateToken();
+            // console.log("validate ne", response);
             dispatch({
                 type: 'AUTHENTICATION_VALIDATED',
-                payload: response.data,
+                payload: response.data?.userPrincipal,
             });
         } catch (e) {
             console.log(e);
@@ -27,9 +28,10 @@ function authenticate(username, password) {
     return async (dispatch) => {
         try {
             const res = await authenticateServices.authenticate(username, password);
+            console.log(111111, res);
             dispatch({
                 type: 'AUTHENTICATION_LOGGED_IN',
-                payload: username,
+                payload: res.data?.userPrincipal,
             });
             Cookie.set('authToken', res.data.jwtToken);
         } catch (e) {

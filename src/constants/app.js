@@ -20,3 +20,15 @@ export const ACTION_ON_DISPATCH_META_DATA_KEYS = {
 };
 
 
+export const ROLE_META_DATA_KEYS = {
+    unitLeadership: 7,
+    officeLeadership: 8,
+    vanThu: 3,
+};
+
+export const OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS = {
+    chuaXuLy: 1,
+    daXuLy: 2,
+    trinhLanhDaoDonViKy: 3,
+    trinhLanhDaoCoQuanKy: 4,
+};

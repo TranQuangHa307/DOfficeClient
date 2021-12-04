@@ -14,6 +14,7 @@ import authenticateServices from "../../services/authenticate.services";
 import Cookie from "js-cookie";
 import authenticationActions from "../../actions/authentication.actions";
 import {useDispatch} from "react-redux";
+import Helmet from "react-helmet";
 
 
 export default () => {
@@ -44,6 +45,9 @@ export default () => {
 
   return (
     <main>
+      <Helmet>
+        <title>Đăng nhập</title>
+      </Helmet>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
         <Container>
           {/*<p className="text-center">*/}

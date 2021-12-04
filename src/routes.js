@@ -51,4 +51,5 @@ export const Routes = {
     OutGoingDispatchManagement: { path: '/out-going-dispatch'},
     AddOutGoingDispatch: { path: '/out-going-dispatch/add'},
     OutGoingDispatchDetail: {path: '/out-going-dispatch/:id'},
+    EditOutGoingDispatch: {path: '/out-going-dispatch/edit/:id'},
 };

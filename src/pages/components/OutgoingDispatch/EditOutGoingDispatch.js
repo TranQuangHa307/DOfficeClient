@@ -9,27 +9,27 @@ import moment from "moment";
 import {AiOutlineDelete, TiDelete} from "react-icons/all";
 import utils from "../../../utils";
 import {JAVA_DATE_FORMAT} from "../../../constants/app";
+import outGoingDispatchActions from "../../../actions/outGoingDispatchActions";
 
-const EditComingDispatch = () => {
+const EditOutGoingDispatch = () => {
 
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [submiting, setSubmiting] = useState(false);
     const [ input, setInput ] = React.useState({
         documentNumber: '',
-        releaseDepartmentId: '',
+        receiveAddress: '',
         signBy: '',
         signDate: '',
-        arrivalDate: '',
+        effectiveDate: '',
         documentTypeId: '',
         totalPage: '',
         securityLevel: '',
         urgencyLevel: '',
-        effectiveDate: '',
         expirationDate: '',
+        releaseDate: '',
         storageLocationId: '',
         mainContent: '',
-        receiverId: '',
         attachments: [],
     });
 
@@ -48,28 +48,28 @@ const EditComingDispatch = () => {
         setLoading(true);
 
         Promise.all([
-            dispatch(comingDispatchActions.getEditingComingDispatchById(id)),
+            dispatch(outGoingDispatchActions.getEditingOutGoingDispatchById(id)),
             dispatch(comingDispatchActions.getAllDocumentType()),
             dispatch(comingDispatchActions.getAllStorageLocation()),
             dispatch(comingDispatchActions.getAllReleaseDepartment()),
             dispatch(userActions.getAllUser()),
         ])
             .then(async result => {
-                const comingDispatch = result[0]?.comingDispatchResultDTO ?? {};
+                const outGoingDispatch = result[0]?.outGoingDispatchResultNewDTO ?? {};
                 const inputData = {
-                    documentNumber: comingDispatch.documentNumber,
-                    releaseDepartmentId: comingDispatch.releaseDepartment?.id,
-                    signBy: comingDispatch.signBy,
-                    signDate: moment(comingDispatch.signDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
-                    arrivalDate: moment(comingDispatch.arrivalDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
-                    documentTypeId: comingDispatch.documentType?.id,
-                    totalPage: comingDispatch.totalPage,
-                    securityLevel: comingDispatch.securityLevel,
-                    urgencyLevel: comingDispatch.urgencyLevel,
-                    effectiveDate: moment(comingDispatch.effectiveDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
-                    expirationDate: moment(comingDispatch.expirationDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
-                    storageLocationId: comingDispatch.storageLocation?.id,
-                    mainContent: comingDispatch.mainContent,
+                    documentNumber: outGoingDispatch.documentNumber,
+                    receiveAddress: outGoingDispatch.receiveAddress,
+                    signBy: outGoingDispatch.signBy,
+                    signDate: moment(outGoingDispatch.signDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
+                    effectiveDate: moment(outGoingDispatch.effectiveDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
+                    documentTypeId: outGoingDispatch.documentType?.id,
+                    totalPage: outGoingDispatch.totalPage,
+                    securityLevel: outGoingDispatch.securityLevel,
+                    urgencyLevel: outGoingDispatch.urgencyLevel,
+                    expirationDate: moment(outGoingDispatch.expirationDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
+                    releaseDate: moment(outGoingDispatch.releaseDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
+                    storageLocationId: outGoingDispatch.storageLocation?.id,
+                    mainContent: outGoingDispatch.mainContent,
                 };
                 const attachmentEntities = result[0]?.attachments ?? [];
                 const attachmentFiles = new DataTransfer();
@@ -109,10 +109,6 @@ const EditComingDispatch = () => {
             errorData.documentNumber = 'Không được để trống số văn bản';
             isValid = false;
         }
-        if (!input.releaseDepartmentId) {
-            errorData.releaseDepartmentId = 'Không được để trống nơi ban hành';
-            isValid = false;
-        }
         if (!input.documentTypeId) {
             errorData.documentTypeId = 'Không được để trống loại văn bản';
             isValid = false;
@@ -147,10 +143,10 @@ const EditComingDispatch = () => {
                 formData.append(key, input[key]);
             }
         });
-        dispatch(comingDispatchActions.updateDispatchByForm(id, formData))
+        dispatch(outGoingDispatchActions.updateDispatchByForm(id, formData))
             .then(() => {
                 toast.success("Cập nhật văn bản đến thành công", { autoClose: 3000, hideProgressBar : true });
-                history.push(`/coming-dispatch/${id}`);
+                history.push(`/out-going-dispatch/${id}`);
                 setSubmiting(false);
             })
             .catch((err) => {
@@ -161,7 +157,7 @@ const EditComingDispatch = () => {
     }
 
     const back = () => {
-        history.push(`/coming-dispatch/${id}`);
+        history.push(`/out-going-dispatch/${id}`);
     }
 
     const deleteFileItem = (index) => {
@@ -176,18 +172,7 @@ const EditComingDispatch = () => {
 
     return (
         <>
-
             <Form className="mt-4" onSubmit={onSubmit}>
-                {submiting &&
-                <div style={{ width: '100%', height: '100%', backgroundColor: 'rgba(255,255,255,0.5)', position: 'absolute', top: 0, left: 0 }}>
-                    <span style={{ position: 'absolute', transform: 'translate(-50%,-50%)', left: '50%', top: '50%' }} >
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                    </span>
-                </div>
-                }
-                
                 <Form.Group className="mb-3">
                     <Form.Label>Số văn bản</Form.Label>
                     <Form.Control
@@ -200,15 +185,14 @@ const EditComingDispatch = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>Nơi ban hành</Form.Label>
-                    <Form.Select
-                        value={input.releaseDepartmentId}
-                        name="releaseDepartmentId"
-                        onChange={onChange}>
-                        <option>---Chọn nơi ban hành---</option>
-                        {releaseDepartments.map((v, i) => (<option key={i} value={v.id}>{v.departmentName}</option>))}
-                    </Form.Select>
-                    {error.releaseDepartmentId && <span style={{color: 'red'}}>{error.releaseDepartmentId}</span>}
+                    <Form.Label>Nơi nhận</Form.Label>
+                    <Form.Control
+                        value={input.receiveAddress}
+                        type="text"
+                        placeholder="Nơi nhận"
+                        name="receiveAddress"
+                        onChange={onChange}/>
+                    {error.documentNumber && <span style={{color: 'red'}}>{error.receiveAddress}</span>}
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -224,10 +208,10 @@ const EditComingDispatch = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>Ngày đến</Form.Label>
-                    <Form.Control type="date" placeholder="Ngày đến" name="arrivalDate"
+                    <Form.Label>Ngày hiệu lực</Form.Label>
+                    <Form.Control type="date" placeholder="Ngày hiệu lực" name="effectiveDate"
                                   onChange={onChange}
-                                  value={ moment(input.arrivalDate).format('YYYY-MM-DD') }/>
+                                  value={ moment(input.effectiveDate).format('YYYY-MM-DD') }/>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -263,16 +247,16 @@ const EditComingDispatch = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>Ngày hiệu lực</Form.Label>
-                    <Form.Control type="date" placeholder="Ngày hiệu lực" name="effectiveDate" onChange={onChange}
-                                  value={ moment(input.effectiveDate).format('YYYY-MM-DD') }
+                    <Form.Label>Ngày hết hiệu lực</Form.Label>
+                    <Form.Control type="date" placeholder="Ngày hết hiệu lực" name="expirationDate" onChange={onChange}
+                                  value={ moment(input.expirationDate).format('YYYY-MM-DD') }
                     />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>Ngày hết hiệu lực</Form.Label>
-                    <Form.Control type="date" placeholder="Ngày hết hiệu lực" name="expirationDate" onChange={onChange}
-                                  value={ moment(input.expirationDate).format('YYYY-MM-DD') }
+                    <Form.Label>Ngày phát hành</Form.Label>
+                    <Form.Control type="date" placeholder="Ngày phát hành" name="releaseDate" onChange={onChange}
+                                  value={ moment(input.releaseDate).format('YYYY-MM-DD') }
                     />
                 </Form.Group>
 
@@ -320,7 +304,15 @@ const EditComingDispatch = () => {
                     </ul>
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="w-100">
+                <Button variant="primary" type="submit" className="w-100" disabled={submiting}>
+                    {
+                        submiting &&
+                        <Spinner
+                            animation="border"
+                            role="status"
+                            size="sm">
+                        </Spinner>
+                    }
                     Lưu lại
                 </Button>
 
@@ -332,4 +324,4 @@ const EditComingDispatch = () => {
     );
 }
 
-export default EditComingDispatch;
+export default EditOutGoingDispatch;
