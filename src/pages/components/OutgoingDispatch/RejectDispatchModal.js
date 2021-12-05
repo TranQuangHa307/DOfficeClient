@@ -6,15 +6,13 @@ import { toast } from 'react-toastify';
 import {OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS, ROLE_META_DATA_KEYS} from "../../../constants/app";
 import outGoingDispatchActions from "../../../actions/outGoingDispatchActions";
 
-const SubmitToOfficeLeadershipModal = (props) => {
+const RejectDispatchModal = (props) => {
 	const dispatch = useDispatch();
 	const [input, setInput] = useState({
-		userId: '',
-		content: '',
+		reason: '',
 	});
 	const [error, setError] = useState({
-		userId: '',
-		content: '',
+		reason: '',
 	});
 	const [submitting, setSubmitting] = useState(false);
 
@@ -35,18 +33,13 @@ const SubmitToOfficeLeadershipModal = (props) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const errorMsg = {
-			userId: '',
-			content: '',
+			reason: '',
 		};
 		let isValid = true;
 
-		if (!input.userId) {
+		if (!input.reason) {
 			isValid = false;
-			errorMsg.userId = 'Không được để trống người tiếp nhận';
-		}
-		if (!input.content) {
-			isValid = false;
-			errorMsg.content = 'Không được để trống nội dung';
+			errorMsg.reason = 'Không được để trống lí do';
 		}
 
 		if (!isValid) {
@@ -57,17 +50,16 @@ const SubmitToOfficeLeadershipModal = (props) => {
 		// submit
 		setSubmitting(true);
 		setError({
-			userId: '',
-			content: '',
+			reason: '',
 		});
 		const data = {
 			...input,
 			dispatchId: outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.id,
 		};
 
-		dispatch(outGoingDispatchActions.sign(data))
+		dispatch(outGoingDispatchActions.reject(data))
 			.then(() => {
-				outGoingDispatchDetail.outGoingDispatchResultNewDTO.status = OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoCoQuanKy;
+				outGoingDispatchDetail.outGoingDispatchResultNewDTO.status = OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.chuaXuLy;
 				dispatch({
 					type: 'OUT_GOING_DISPATCH_DETAIL_LOADED',
 					payload: outGoingDispatchDetail,
@@ -75,11 +67,10 @@ const SubmitToOfficeLeadershipModal = (props) => {
 				dispatch(comingDispatchActions.getDispatchStream(data.dispatchId));
 				dispatch(outGoingDispatchActions.getOutGoingDispatchById(data.dispatchId));
 				setInput({
-					userId: '',
-					content: '',
+					reason: '',
 				});
 				setSubmitting(false);
-				toast.success('Ký duyệt thành công', { autoClose: 3000, hideProgressBar : true });
+				toast.success('Từ chối văn bản thành công', { autoClose: 3000, hideProgressBar : true });
 				props.onClose();
 			})
 			.catch(() => {
@@ -92,39 +83,19 @@ const SubmitToOfficeLeadershipModal = (props) => {
 		<Modal show={props.show} onHide={handleClose}>
 			<Form onSubmit={handleSubmit}>
 				<Modal.Header closeButton>
-					<Modal.Title>Xác nhận phê duyệt văn bản?</Modal.Title>
+					<Modal.Title>Xác nhận từ chối văn bản này?</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form.Group className="mb-3">
-						<Form.Label>Chuyển tiếp</Form.Label>
-						<Form.Select
-							name="userId"
-							onChange={onChange}
-							value={input.userId}
-						>
-							<option>---Chọn người tiếp nhận---</option>
-							{
-								users
-									.filter((user, index) => {
-										return user.roles.some((role) => {
-											return role?.roleCode === ROLE_META_DATA_KEYS.officeLeadership;
-										})
-									})
-									.map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))
-							}
-						</Form.Select>
-						{error.userId && <span style={{ color: 'red' }}>{error.userId}</span>}
-					</Form.Group>
-					<Form.Group className="mb-3">
-						<Form.Label>Nội dung</Form.Label>
+						<Form.Label>Lí do</Form.Label>
 						<Form.Control
 							type="textarea"
-							placeholder="Nội dung"
-							name="content"
-							value={input.content}
+							placeholder="Lí do"
+							name="reason"
+							value={input.reason}
 							onChange={onChange}
 						/>
-						{error.content && <span style={{ color: 'red' }}>{error.content}</span>}
+						{error.reason && <span style={{ color: 'red' }}>{error.reason}</span>}
 					</Form.Group>
 				</Modal.Body>
 				<Modal.Footer>
@@ -140,7 +111,7 @@ const SubmitToOfficeLeadershipModal = (props) => {
 								size="sm">
 							</Spinner>
 						}
-						Phê duyệt
+						Xác nhận
 					</Button>
 				</Modal.Footer>
 			</Form>
@@ -148,4 +119,4 @@ const SubmitToOfficeLeadershipModal = (props) => {
 	);
 };
 
-export default SubmitToOfficeLeadershipModal;
+export default RejectDispatchModal;

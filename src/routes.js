@@ -52,4 +52,7 @@ export const Routes = {
     AddOutGoingDispatch: { path: '/out-going-dispatch/add'},
     OutGoingDispatchDetail: {path: '/out-going-dispatch/:id'},
     EditOutGoingDispatch: {path: '/out-going-dispatch/edit/:id'},
+
+    // published dispatch
+    PublishedDispatchDetail: { path: '/published-dispatch/:id' },
 };

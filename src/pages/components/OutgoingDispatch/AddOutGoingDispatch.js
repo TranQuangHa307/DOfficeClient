@@ -237,7 +237,7 @@ const AddOutGoingDispatch = () => {
                     {error.attachments && <span style={{color: 'red'}}>{error.attachments}</span>}
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="w-100">
+                <Button variant="primary" type="submit" className="w-100" disabled={submiting}>
                     {
                         submiting &&
                         <Spinner

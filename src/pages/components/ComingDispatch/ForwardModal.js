@@ -56,7 +56,7 @@ const ForwardModal = (props) => {
 		setSubmitting(true);
 		setError({
 			userId: '',
-			content: '',
+			reason: '',
 		});
 		const data = {
 			...input,
@@ -68,15 +68,15 @@ const ForwardModal = (props) => {
 				dispatch(comingDispatchActions.getDispatchStream(data.officialDispatchId));
 				setInput({
 					userId: '',
-					content: '',
+					reason: '',
 				});
 				setSubmitting(false);
-				toast.success('Chuyển tiếp thành công');
+				toast.success('Chuyển tiếp thành công', { autoClose: 3000, hideProgressBar : true });
 				props.onClose();
 			})
 			.catch(() => {
 				setSubmitting(false);
-				toast.error('Có lỗi xảy ra trong quá trình chuyển tiếp');
+				toast.error('Có lỗi xảy ra trong quá trình chuyển tiếp', { autoClose: 3000, hideProgressBar : true });
 			});
 	};
 

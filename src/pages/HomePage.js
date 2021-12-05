@@ -56,6 +56,7 @@ import EditComingDispatch from "./components/ComingDispatch/EditComingDispatch";
 import AddOutGoingDispatch from "./components/OutgoingDispatch/AddOutGoingDispatch";
 import OutGoingDispatchDetail from "./components/OutgoingDispatch/OutGoingDispatchDetail";
 import EditOutGoingDispatch from "./components/OutgoingDispatch/EditOutGoingDispatch";
+import PublishedDispatchDetail from "./components/PublishedDispatch/PublishedDispatchDetail";
 
 const RouteWithLoader = ({component: Component, ...rest}) => {
     const [loaded, setLoaded] = useState(false);
@@ -129,6 +130,22 @@ const RouteWithSidebar = ({component: Component, ...rest}) => {
     );
 };
 
+const PublicRoute = ({component: Component, ...rest}) => {
+    return (
+        <Route {...rest} render={props => (
+            <>
+                <Helmet>
+                    <title>DOffice</title>
+                </Helmet>
+                <main className="content">
+                    <Component {...props} />
+                </main>
+            </>
+        )}
+        />
+    );
+};
+
 export default () => (
     <Switch>
         <RouteWithLoader exact path={Routes.Signin.path} component={Signin}/>
@@ -180,6 +197,7 @@ export default () => (
         <RouteWithSidebar exact path={Routes.OutGoingDispatchDetail.path} component={OutGoingDispatchDetail}/>
         <RouteWithSidebar exact path={Routes.EditOutGoingDispatch.path} component={EditOutGoingDispatch}/>
 
+        <PublicRoute exact path={Routes.PublishedDispatchDetail.path} component={PublishedDispatchDetail}/>
 
         <RouteWithSidebar exact path={Routes.Presentation.path} component={DashboardOverview}/>
         <Redirect to={Routes.NotFound.path}/>

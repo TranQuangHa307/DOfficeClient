@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import moment from "moment";
 import {
     ACTION_ON_DISPATCH_META_DATA_KEYS,
-    ACTIVITY_HISTORY_META_DATA_KEYS, OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS,
+    ACTIVITY_HISTORY_META_DATA_KEYS, OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS, PUBLISHED_DISPATCH_URL,
     ROLE_META_DATA_KEYS
 } from "../../../constants/app";
 import {toast} from "react-toastify";
@@ -14,6 +14,8 @@ import userActions from "../../../actions/userActions";
 import outGoingDispatchActions from "../../../actions/outGoingDispatchActions";
 import SubmitToUnitLeadershipModal from "./SubmitToUnitLeadershipModal";
 import SubmitToOfficeLeadershipModal from "./SubmitToOfficeLeadershipModal";
+import RejectDispatchModal from "./RejectDispatchModal";
+import SubmitToVanThuModal from "./SubmitToVanThuModal";
 
 
 const OutGoingDispatchDetail = () => {
@@ -28,11 +30,8 @@ const OutGoingDispatchDetail = () => {
 
     const [showSubmitToLeadershipModal, setShowSubmitToLeadershipModal] = useState(false);
     const [showSubmitToOfficeLeadershipModal, setShowSubmitToOfficeLeadershipModal] = useState(false);
-
-    // const check = user?.id === comingDispatchDetail?.comingDispatchResultDTO?.createdByUser?.id
-    // console.log(111, activityHistories);
-
-    // console.log(11111, outGoingDispatchDetail);
+    const [showRejectDispatchModal, setShowRejectDispatchModal] = useState(false);
+    const [showSubmitToVanThuModal, setShowSubmitToVanThuModal] = useState(false);
 
     useEffect(() => {
         dispatch(outGoingDispatchActions.getOutGoingDispatchById(id));
@@ -84,6 +83,8 @@ const OutGoingDispatchDetail = () => {
             case 'assignFor':
             case 'addViewer':
             case 'Trình lãnh đạo đơn vị' :
+            case 'signBy' :
+            case 'forwardTo' :
                 value = metaData[key].fullName;
                 break;
             default:
@@ -93,7 +94,43 @@ const OutGoingDispatchDetail = () => {
         return `${keyName}: ${value}`;
     };
 
-    // Từ chối dùng chung
+    const generateDispatchNumber = () => {
+        dispatch(outGoingDispatchActions.generateDispatchNumber(id))
+            .then(() => {
+                dispatch(comingDispatchActions.getDispatchStream(id));
+                dispatch(outGoingDispatchActions.getOutGoingDispatchById(id));
+                toast.success('Cấp số thành công', {autoClose: 3000, hideProgressBar: true});
+            })
+            .catch(() => {
+                toast.error('Đã có lỗi xảy ra, vui lòng thử lại', {autoClose: 3000, hideProgressBar: true});
+            })
+    }
+
+    const publishedDispatchLink = PUBLISHED_DISPATCH_URL + `${id}`;
+
+    const publishedDispatch = () => {
+        dispatch(outGoingDispatchActions.publish(id))
+            .then(() => {
+                dispatch(comingDispatchActions.getDispatchStream(id));
+                dispatch(outGoingDispatchActions.getOutGoingDispatchById(id));
+                toast.success('Phát hành văn bản thành công', {autoClose: 3000, hideProgressBar: true});
+            })
+            .catch(() => {
+                toast.error('Đã có lỗi xảy ra, vui lòng thử lại', {autoClose: 3000, hideProgressBar: true});
+            })
+    }
+
+    const archiveDispatch = () => {
+        dispatch(outGoingDispatchActions.archive(id))
+            .then(() => {
+                dispatch(comingDispatchActions.getDispatchStream(id));
+                dispatch(outGoingDispatchActions.getOutGoingDispatchById(id));
+                toast.success('Lưu trữ văn bản thành công', {autoClose: 3000, hideProgressBar: true});
+            })
+            .catch(() => {
+                toast.error('Đã có lỗi xảy ra, vui lòng thử lại', {autoClose: 3000, hideProgressBar: true});
+            })
+    }
 
     const renderCreatorButtons = () => {
         return (
@@ -102,17 +139,27 @@ const OutGoingDispatchDetail = () => {
                     variant="secondary"
                     classemail="m-1 mb-4"
                     style={{marginRight: '10px'}}
-                    // disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status === OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoDonViKy}
+                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status !== OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.chuaXuLy}
                     onClick={() => setShowSubmitToLeadershipModal(true)}
                 >
                     Trình lãnh đạo đơn vị
                 </Button>
 
-                <Button variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
+                <Button
+                    variant="secondary"
+                    classemail="m-1 mb-4"
+                    style={{marginRight: '10px'}}
+
+                >
                     <Link to={`/out-going-dispatch/edit/${id}`}> Sửa </Link>
                 </Button>
 
-                <Button variant="danger" classemail="m-1 mb-4" onClick={deleteModal}>
+                <Button
+                    variant="danger"
+                    classemail="m-1 mb-4"
+                    onClick={deleteModal}
+
+                >
                     Xóa
                 </Button>
             </>
@@ -126,7 +173,7 @@ const OutGoingDispatchDetail = () => {
                     variant="secondary"
                     classemail="m-1 mb-4"
                     style={{marginRight: '10px'}}
-                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status === OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoCoQuanKy}
+                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status !== OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoDonViKy}
                     onClick={() => setShowSubmitToOfficeLeadershipModal(true)}
                 >
                     Phê duyệt
@@ -136,7 +183,8 @@ const OutGoingDispatchDetail = () => {
                     variant="secondary"
                     classemail="m-1 mb-4"
                     style={{marginRight: '10px'}}
-                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status === OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoCoQuanKy}
+                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status !== OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoDonViKy}
+                    onClick={() => setShowRejectDispatchModal(true)}
                 >
                     Từ chối
                 </Button>
@@ -147,12 +195,24 @@ const OutGoingDispatchDetail = () => {
     const renderOfficeLeadershipButtons = () => {
         return (
             <>
-                <Button variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
-                    <Link to={`#`}> Phê duyệt </Link>
+                <Button
+                    variant="secondary"
+                    classemail="m-1 mb-4"
+                    style={{marginRight: '10px'}}
+                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status !== OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoCoQuanKy}
+                    onClick={() => setShowSubmitToVanThuModal(true)}
+                >
+                    Phê duyệt
                 </Button>
 
-                <Button variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
-                    <Link to={`#`}> Từ chối </Link>
+                <Button
+                    variant="secondary"
+                    classemail="m-1 mb-4"
+                    style={{marginRight: '10px'}}
+                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status !== OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoCoQuanKy}
+                    onClick={() => setShowRejectDispatchModal(true)}
+                >
+                    Từ chối
                 </Button>
             </>
         );
@@ -165,24 +225,27 @@ const OutGoingDispatchDetail = () => {
                     variant="secondary"
                     classemail="m-1 mb-4" style={{marginRight: '10px'}}
                     disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.isTakenNumber}
+                    onClick={generateDispatchNumber}
                 >
-                    <Link to={`#`}> Cấp số </Link>
+                    Cấp số
                 </Button>
 
                 <Button
                     variant="secondary"
                     classemail="m-1 mb-4" style={{marginRight: '10px'}}
-                    disabled={false}
+                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.isPublished}
+                    onClick={publishedDispatch}
                 >
-                    <Link to={`#`}> Phát hành </Link>
+                    Phát hành
                 </Button>
 
                 <Button
                     variant="secondary"
                     classemail="m-1 mb-4" style={{marginRight: '10px'}}
-                    disabled={false}
+                    disabled={!outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.isPublished}
+                    onClick={archiveDispatch}
                 >
-                    <Link to={`#`}> Lưu trữ </Link>
+                    Lưu trữ
                 </Button>
             </>
         );
@@ -228,6 +291,17 @@ const OutGoingDispatchDetail = () => {
         return "Chưa xử lý";
     }
 
+    const renderProcessor = () => {
+        const processors = outGoingDispatchDetail?.processors;
+        const processorsSet = [...new Map(processors?.map(v => [v?.processor?.id, v])).values()]  // Xử lí trùng lặp
+        return processorsSet.map((item) => (
+            <li key={item?.processor?.id}>
+                {item?.processor?.fullName}
+            </li>
+        ))
+    }
+
+
     return (
         <>
             <SubmitToUnitLeadershipModal
@@ -238,6 +312,16 @@ const OutGoingDispatchDetail = () => {
             <SubmitToOfficeLeadershipModal
                 show={showSubmitToOfficeLeadershipModal}
                 onClose={() => setShowSubmitToOfficeLeadershipModal(false)}
+            />
+
+            <RejectDispatchModal
+                show={showRejectDispatchModal}
+                onClose={() => setShowRejectDispatchModal(false)}
+            />
+
+            <SubmitToVanThuModal
+                show={showSubmitToVanThuModal}
+                onClose={() => setShowSubmitToVanThuModal(false)}
             />
 
             <Modal
@@ -279,53 +363,6 @@ const OutGoingDispatchDetail = () => {
                             </Button>
                         </div>
                         <div className="nav__2">
-                            {/*{*/}
-                            {/*    actionDisabled ? (*/}
-                            {/*        <>*/}
-                            {/*            <Button disabled variant="info" classemail="m-1 mb-4" style={{marginRight: '10px'}}>*/}
-                            {/*                Phê duyệt*/}
-                            {/*                /!*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*!/*/}
-                            {/*            </Button>*/}
-                            {/*            <Button disabled variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>*/}
-                            {/*                Chuyển tiếp*/}
-                            {/*                /!*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*!/*/}
-                            {/*            </Button>*/}
-                            {/*        </>*/}
-                            {/*    ) : (*/}
-                            {/*        <>*/}
-                            {/*            <Button onClick={() => setShowApproveModal(true)} variant="info" classemail="m-1 mb-4" style={{marginRight: '10px'}}>*/}
-                            {/*                Phê duyệt*/}
-                            {/*                /!*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*!/*/}
-                            {/*            </Button>*/}
-                            {/*            <Button onClick={() => setShowForwardModal(true)} variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>*/}
-                            {/*                Chuyển tiếp*/}
-                            {/*                /!*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*!/*/}
-                            {/*            </Button>*/}
-                            {/*        </>*/}
-                            {/*    )*/}
-                            {/*}*/}
-                            {/*{*/}
-                            {/*    isShowDelEditBtn &&*/}
-                            {/*    <>*/}
-                            {/*        <Button variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>*/}
-                            {/*            <Link to={`/coming-dispatch/edit/${id}`}> Sửa </Link>*/}
-                            {/*        </Button>*/}
-                            {/*        <Button variant="danger" classemail="m-1 mb-4" onClick={deleteModal}>*/}
-                            {/*            Xóa*/}
-                            {/*            /!*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*!/*/}
-                            {/*        </Button>*/}
-                            {/*    </>*/}
-                            {/*}*/}
-
-
-                            {/*<Button variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>*/}
-                            {/*    <Link to={`/coming-dispatch/edit/${id}`}> Sửa </Link>*/}
-                            {/*</Button>*/}
-                            {/*<Button variant="danger" classemail="m-1 mb-4" onClick={deleteModal}>*/}
-                            {/*    Xóa*/}
-                            {/*    /!*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*!/*/}
-                            {/*</Button>*/}
-
 
                             {renderButtonGroup()}
 
@@ -352,7 +389,7 @@ const OutGoingDispatchDetail = () => {
                                         </div>
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Người ký:</p>
-                                            <p className="body__left__1__content__left__field__result">{outGoingDispatchDetail.outGoingDispatchResultNewDTO?.signBy}</p>
+                                            <p className="body__left__1__content__left__field__result">{outGoingDispatchDetail.outGoingDispatchResultNewDTO?.signByUser?.fullName}</p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Ngày ký:</p>
@@ -360,13 +397,6 @@ const OutGoingDispatchDetail = () => {
                                                 {moment(outGoingDispatchDetail.outGoingDispatchResultNewDTO?.signDate).format('YYYY-MM-DD')}
                                             </p>
                                         </div>
-                                        {/*<div className="body__left__1__content__left__field">*/}
-                                        {/*    <p className="body__left__1__content__left__field__title">Bộ phận phát*/}
-                                        {/*        hành:</p>*/}
-                                        {/*    <p className="body__left__1__content__left__field__result">*/}
-                                        {/*        {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.releaseDepartment?.departmentName}*/}
-                                        {/*    </p>*/}
-                                        {/*</div>*/}
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Số trang:</p>
                                             <p className="body__left__1__content__left__field__result">{outGoingDispatchDetail.outGoingDispatchResultNewDTO?.totalPage}</p>
@@ -442,7 +472,8 @@ const OutGoingDispatchDetail = () => {
                                                 <td>{moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss')}</td>
                                                 <td>{ACTION_ON_DISPATCH_META_DATA_KEYS[item.action?.actionName]}</td>
                                                 <td>{item.user?.fullName}</td>
-                                                <td>{item?.metaData && Object.keys(item.metaData).map((key, keyIndex) => <div key={keyIndex}>{getMetaData(item.metaData, key)}</div>)}</td>
+                                                <td>{item?.metaData && Object.keys(item.metaData).map((key, keyIndex) =>
+                                                    <div key={keyIndex}>{getMetaData(item.metaData, key)}</div>)}</td>
                                             </tr>
                                         ))
                                     }
@@ -470,12 +501,7 @@ const OutGoingDispatchDetail = () => {
                                 <span className="body__right__field__result">
                                 <ul>
                                     {
-                                        outGoingDispatchDetail?.processors &&
-                                        outGoingDispatchDetail?.processors.map((item) => (
-                                            <li key={item.processor.id}>
-                                                {item.processor.fullName}
-                                            </li>
-                                        ))
+                                        renderProcessor()
                                     }
                                 </ul>
                             </span>
@@ -504,37 +530,34 @@ const OutGoingDispatchDetail = () => {
                             </span>
                             </div>
 
-                            <div className="body__right__field">
-                                <div className="body__right__field__title">Người duyệt</div>
-                                <span className="body__right__field__result">
-                                {outGoingDispatchDetail?.approveBy}
-                            </span>
-                            </div>
+                            {/*<div className="body__right__field">*/}
+                            {/*    <div className="body__right__field__title">Người duyệt</div>*/}
+                            {/*    <span className="body__right__field__result">*/}
+                            {/*    {outGoingDispatchDetail?.approveBy}*/}
+                            {/*</span>*/}
+                            {/*</div>*/}
 
-                            <div className="body__right__field">
-                                <div className="body__right__field__title">Ngày duyệt</div>
-                                <span className="body__right__field__result">
-                                {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.approveDate && moment(outGoingDispatchDetail.outGoingDispatchResultNewDTO?.approveDate).format('YYYY-MM-DD HH:mm:ss')}
-                            </span>
-                            </div>
+                            {/*<div className="body__right__field">*/}
+                            {/*    <div className="body__right__field__title">Ngày duyệt</div>*/}
+                            {/*    <span className="body__right__field__result">*/}
+                            {/*    {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.approveDate && moment(outGoingDispatchDetail.outGoingDispatchResultNewDTO?.approveDate).format('YYYY-MM-DD HH:mm:ss')}*/}
+                            {/*    </span>*/}
+                            {/*</div>*/}
+
+                            {
+                                outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.isPublished &&
+                                <div className="body__right__field">
+                                    <div className="body__right__field__title">Đường dẫn phát hành</div>
+                                    <span className="body__right__field__result">
+                                        <a href={publishedDispatchLink}>{publishedDispatchLink}</a>
+                                    </span>
+                                </div>
+                            }
+
                         </div>
                     </div>
                 </div>
             }
-            {/*{*/}
-            {/*    !actionDisabled && (*/}
-            {/*        <>*/}
-            {/*            <ForwardModal*/}
-            {/*                show={showForwardModal}*/}
-            {/*                onClose={() => setShowForwardModal(false)}*/}
-            {/*            />*/}
-            {/*            <ApproveModal*/}
-            {/*                show={showApproveModal}*/}
-            {/*                onClose={() => setShowApproveModal(false)}*/}
-            {/*            />*/}
-            {/*        </>*/}
-            {/*    )*/}
-            {/*}*/}
         </>
     );
 }

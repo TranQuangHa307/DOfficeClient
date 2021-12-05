@@ -44,6 +44,29 @@ function sign(data) {
     return post('/api/official-dispatch/out-going-dispatch/sign', data);
 }
 
+function reject(data) {
+    return post('/api/official-dispatch/out-going-dispatch/reject', data);
+}
+
+// Cấp số
+function generateDispatchNumber(dispatchId) {
+    return post(`/api/official-dispatch/out-going-dispatch/generate-dispatch-number/${dispatchId}`);
+}
+
+// Xuất bản
+function publish(dispatchId) {
+    return post(`/api/official-dispatch/out-going-dispatch/publish-dispatch/${dispatchId}`);
+}
+
+// Lưu trữ
+function archive(dispatchId) {
+    return post(`/api/official-dispatch/out-going-dispatch/archive/${dispatchId}`);
+}
+
+function getPublishedDispatch(id) {
+    return get(`/api/official-dispatch/out-going-dispatch/published-dispatch/${id}`);
+}
+
 const outGoingDispatchServices = {
     getAll,
     createOutGoingDispatch,
@@ -52,6 +75,11 @@ const outGoingDispatchServices = {
     updateDispatchByForm,
     deleteOutGoingDispatch,
     sign,
+    reject,
+    generateDispatchNumber,
+    publish,
+    archive,
+    getPublishedDispatch,
 }
 
 export default outGoingDispatchServices;

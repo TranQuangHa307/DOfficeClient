@@ -73,17 +73,18 @@ const SubmitToUnitLeadershipModal = (props) => {
 					payload: outGoingDispatchDetail,
 				})
 				dispatch(comingDispatchActions.getDispatchStream(data.officialDispatchId));
+				dispatch(outGoingDispatchActions.getOutGoingDispatchById(data.officialDispatchId));
 				setInput({
 					userId: '',
 					content: '',
 				});
 				setSubmitting(false);
-				toast.success('Trình ký thành công');
+				toast.success('Trình ký thành công', { autoClose: 3000, hideProgressBar : true });
 				props.onClose();
 			})
 			.catch(() => {
 				setSubmitting(false);
-				toast.error('Đã có lỗi xảy ra, vui lòng thử lại');
+				toast.error('Đã có lỗi xảy ra, vui lòng thử lại', { autoClose: 3000, hideProgressBar : true });
 			});
 	};
 

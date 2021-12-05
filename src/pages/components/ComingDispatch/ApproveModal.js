@@ -22,12 +22,12 @@ const ApproveModal = (props) => {
 			.then(() => {
 				dispatch(comingDispatchActions.getDispatchStream(dispatchId));
 				setSubmitting(false);
-				toast.success('Duyệt thành công');
+				toast.success('Duyệt thành công', { autoClose: 3000, hideProgressBar : true });
 				props.onClose();
 			})
 			.catch(() => {
 				setSubmitting(false);
-				toast.error('Có lỗi xảy ra trong quá trình duyệt');
+				toast.error('Có lỗi xảy ra trong quá trình duyệt', { autoClose: 3000, hideProgressBar : true });
 			});
 	};
 

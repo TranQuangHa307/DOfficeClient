@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import {OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS, ROLE_META_DATA_KEYS} from "../../../constants/app";
 import outGoingDispatchActions from "../../../actions/outGoingDispatchActions";
 
-const SubmitToOfficeLeadershipModal = (props) => {
+const SubmitToVanThuModal = (props) => {
 	const dispatch = useDispatch();
 	const [input, setInput] = useState({
 		userId: '',
@@ -107,7 +107,7 @@ const SubmitToOfficeLeadershipModal = (props) => {
 								users
 									.filter((user, index) => {
 										return user.roles.some((role) => {
-											return role?.roleCode === ROLE_META_DATA_KEYS.officeLeadership;
+											return role?.roleCode === ROLE_META_DATA_KEYS.vanThu;
 										})
 									})
 									.map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))
@@ -148,4 +148,4 @@ const SubmitToOfficeLeadershipModal = (props) => {
 	);
 };
 
-export default SubmitToOfficeLeadershipModal;
+export default SubmitToVanThuModal;

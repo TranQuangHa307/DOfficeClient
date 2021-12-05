@@ -57,6 +57,7 @@ function getEditingOutGoingDispatchById(id) {
             })
     }
 }
+
 //
 //
 // function getAllDocumentType() {
@@ -143,6 +144,7 @@ function updateDispatchByForm(dispatchId, data) {
             })
     }
 }
+
 //
 // function getDispatchStream(dispatchId) {
 //     return (dispatch) => {
@@ -195,6 +197,84 @@ function sign(data) {
                 if (result.code >= 400 && result.code <= 599) {
                     throw new Error(result.message);
                 }
+                if (result?.success === false) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
+function reject(data) {
+    return () => {
+        return outGoingDispatchServices.reject(data)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                if (result?.success === false) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
+function generateDispatchNumber(dispatchId) {
+    return () => {
+        return outGoingDispatchServices.generateDispatchNumber(dispatchId)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                if (result?.success === false) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
+function publish(dispatchId) {
+    return () => {
+        return outGoingDispatchServices.publish(dispatchId)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                if (result?.success === false) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
+function archive(dispatchId) {
+    return () => {
+        return outGoingDispatchServices.archive(dispatchId)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                if (result?.success === false) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
+function getPublishedDispatch(dispatchId) {
+    return () => {
+        return outGoingDispatchServices.getPublishedDispatch(dispatchId)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                if (result?.success === false) {
+                    throw new Error(result.message);
+                }
                 return result.data;
             })
     }
@@ -209,6 +289,11 @@ const outGoingDispatchActions = {
     updateDispatchByForm,
     deleteOutGoingDispatch,
     sign,
+    reject,
+    generateDispatchNumber,
+    publish,
+    archive,
+    getPublishedDispatch,
 }
 
 export default outGoingDispatchActions;
