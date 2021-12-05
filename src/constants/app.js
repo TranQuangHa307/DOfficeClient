@@ -6,6 +6,8 @@ export const ACTIVITY_HISTORY_META_DATA_KEYS = {
     signBy: 'Ký bởi',
     forwardTo: 'Chuyển tiếp',
     reason: 'Lí do',
+    publishedBy: 'Xuất bản bởi',
+    archivedBy: 'Lưu trữ bởi'
 };
 
 export const ACTION_ON_DISPATCH_META_DATA_KEYS = {

@@ -16,6 +16,7 @@ import SubmitToUnitLeadershipModal from "./SubmitToUnitLeadershipModal";
 import SubmitToOfficeLeadershipModal from "./SubmitToOfficeLeadershipModal";
 import RejectDispatchModal from "./RejectDispatchModal";
 import SubmitToVanThuModal from "./SubmitToVanThuModal";
+import FileViewerModal from "../FileViewer/FileViewerModal";
 
 
 const OutGoingDispatchDetail = () => {
@@ -32,6 +33,7 @@ const OutGoingDispatchDetail = () => {
     const [showSubmitToOfficeLeadershipModal, setShowSubmitToOfficeLeadershipModal] = useState(false);
     const [showRejectDispatchModal, setShowRejectDispatchModal] = useState(false);
     const [showSubmitToVanThuModal, setShowSubmitToVanThuModal] = useState(false);
+    const [showFileViewerModal, setShowFileViewerModal] = useState(false);
 
     useEffect(() => {
         dispatch(outGoingDispatchActions.getOutGoingDispatchById(id));
@@ -301,6 +303,14 @@ const OutGoingDispatchDetail = () => {
         ))
     }
 
+    const [selectedFileUrl, setSelectedFileUrl] = useState(undefined);
+
+    const processFileModal = (item) => {
+        setShowFileViewerModal(true);
+        const url = processUrlAttachment(item?.url);
+        console.log(11111, url)
+        setSelectedFileUrl(url);
+    }
 
     return (
         <>
@@ -322,6 +332,12 @@ const OutGoingDispatchDetail = () => {
             <SubmitToVanThuModal
                 show={showSubmitToVanThuModal}
                 onClose={() => setShowSubmitToVanThuModal(false)}
+            />
+
+            <FileViewerModal
+                show={showFileViewerModal}
+                onClose={() => setShowFileViewerModal(false)}
+                selectedFileUrl={selectedFileUrl}
             />
 
             <Modal
@@ -440,11 +456,15 @@ const OutGoingDispatchDetail = () => {
                                 <ul>
                                     {outGoingDispatchDetail.attachments &&
                                     outGoingDispatchDetail.attachments.map((item) => (
-                                        <li key={item.id}>
-                                            <a href={processUrlAttachment(item.url)} target="_blank"
-                                               rel="noopener noreferrer">
-                                                {item.fileName}
-                                            </a>
+                                        // <li key={item.id} onClick={() => setShowFileViewerModal(true)}>
+                                        //     <a href={processUrlAttachment(item.url)} target="_blank"
+                                        //        rel="noopener noreferrer">
+                                        //         {item.fileName}
+                                        //     </a>
+                                        // </li>
+
+                                        <li style={{cursor: 'pointer'}} key={item.id} onClick={() => processFileModal(item)}>
+                                            {item.fileName}
                                         </li>
                                     ))}
                                 </ul>
