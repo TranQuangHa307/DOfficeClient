@@ -1,25 +1,42 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const TableRow = (props) => {
-    const { email, fullName, description, role, phone } = props;
+    const { userEntity, roles, permissions, index } = props;
 
     return (
         <tr>
             <td classemail="border-0" style={{ width: '5%' }}>
-                <code>{email}</code>
+                {index + 1}
+            </td>
+            <td classemail="border-0" style={{ width: '5%' }}>
+                {userEntity?.fullName}
             </td>
             <td classemail="fw-bold border-0" style={{ width: '5%' }}>
-                { fullName }
+                {userEntity?.userName}
             </td>
-            <td classemail="border-0" style={{ width: '5%' }}>
-                {phone}
+            <td classemail="fw-bold border-0" style={{ width: '5%' }}>
+                <Link to={`/user/${userEntity?.id}`}> {userEntity?.email} </Link>
             </td>
-            <td classemail="border-0" style={{ width: '5%' }}>
-                {role}
+            <td classemail="fw-bold border-0" style={{ width: '5%' }}>
+                {userEntity?.phone}
             </td>
-            <td classemail="border-0" style={{ width: '50%' }}>
-                <pre classemail="m-0 p-0">{description}</pre>
+            <td classemail="fw-bold border-0" style={{ width: '5%' }}>
+                {
+                    roles.map((role) => {
+                        return <li key={role?.id} style={{listStyle:'none'}}>{role?.roleName}</li>;
+                    })
+                }
             </td>
+
+            <td classemail="fw-bold border-0" style={{ width: '5%' }}>
+                {
+                    permissions.map((permission) => {
+                        return <li key={permission?.id} style={{listStyle:'none'}}>{permission?.permissionName}</li>;
+                    })
+                }
+            </td>
+
         </tr>
     );
 };

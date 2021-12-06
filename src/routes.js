@@ -38,8 +38,9 @@ export const Routes = {
     WidgetsComponent: { path: "/components/widgets" },
 
     // dashboard
-    User: { path: '/dashboard/user' },
-    AddUser: { path: '/dashboard/user/add' },
+    User: { path: '/user' },
+    AddUser: { path: '/user/add' },
+    UserDetail: {path: '/user/:id'},
 
     // Coming dispatch management
     ComingDispatchManagement: { path: '/coming-dispatch'},

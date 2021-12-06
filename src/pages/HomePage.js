@@ -57,6 +57,7 @@ import AddOutGoingDispatch from "./components/OutgoingDispatch/AddOutGoingDispat
 import OutGoingDispatchDetail from "./components/OutgoingDispatch/OutGoingDispatchDetail";
 import EditOutGoingDispatch from "./components/OutgoingDispatch/EditOutGoingDispatch";
 import PublishedDispatchDetail from "./components/PublishedDispatch/PublishedDispatchDetail";
+import UserDetail from "./components/users/UserDetail";
 
 const RouteWithLoader = ({component: Component, ...rest}) => {
     const [loaded, setLoaded] = useState(false);
@@ -181,9 +182,10 @@ export default () => (
         <RouteWithSidebar exact path={Routes.Tooltips.path} component={Tooltips}/>
         <RouteWithSidebar exact path={Routes.Toasts.path} component={Toasts}/>
 
+        {/*  User  */}
         <RouteWithSidebar exact path={Routes.User.path} component={User}/>
-
         <RouteWithSidebar exact path={Routes.AddUser.path} component={AddUser}/>
+        <RouteWithSidebar exact path={Routes.UserDetail.path} component={UserDetail}/>
 
         {/*  Coming dispatch  */}
         <RouteWithSidebar exact path={Routes.ComingDispatchManagement.path} component={ComingDispatchManagement}/>
@@ -191,7 +193,7 @@ export default () => (
         <RouteWithSidebar exact path={Routes.ComingDispatchDetail.path} component={ComingDispatchDetail}/>
         <RouteWithSidebar exact path={Routes.EditComingDispatch.path} component={EditComingDispatch}/>
 
-        {/*Out going dispatch*/}
+        {/*  Out going dispatch  */}
         <RouteWithSidebar exact path={Routes.OutGoingDispatchManagement.path} component={OutGoingDispatchManagement}/>
         <RouteWithSidebar exact path={Routes.AddOutGoingDispatch.path} component={AddOutGoingDispatch}/>
         <RouteWithSidebar exact path={Routes.OutGoingDispatchDetail.path} component={OutGoingDispatchDetail}/>

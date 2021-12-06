@@ -1,109 +1,202 @@
-import React from 'react';
-import { Col, Row, Form, Card, Button, FormCheck, Container, InputGroup } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faUnlockAlt, faUser, faPhone } from '@fortawesome/free-solid-svg-icons';
+import React, {useState} from 'react';
+import {Button, Form, InputGroup, Spinner} from '@themesberg/react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEnvelope, faPhone, faUnlockAlt, faUser} from '@fortawesome/free-solid-svg-icons';
 
-import { Link, useHistory } from 'react-router-dom';
-import { Routes } from '../../../routes';
+import {useHistory} from 'react-router-dom';
+import {Routes} from '../../../routes';
+import {useDispatch} from "react-redux";
+import {toast} from "react-toastify";
+import userActions from "../../../actions/userActions";
 
-const fakeRole = [
-    {
-        id: 'someId1',
-        name: 'Admin'
-    },
-    {
-        id: 'someId2',
-        name: 'Moderator'
-    }
-];
 
 export default () => {
-    const [ input, setInput ] = React.useState({ email: '', password: '', passwordConfirmation: '', fullName: '', phone: '', roleId: '' });
-
     const history = useHistory();
+    const dispatch = useDispatch();
+
+    const [submiting, setSubmiting] = useState(false);
+    const [error, setError] = React.useState({})
+
+    const [input, setInput] = React.useState({
+        fullName: '',
+        userName: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        phone: '',
+        description: '',
+    });
+
 
     const onChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-    
-        setInput({ ...input, [name]: value });
+        setInput({...input, [name]: value});
     }
-    
+
     const onSubmit = (e) => {
         e.preventDefault();
-        // console.log(input);
-        history.push(Routes.User.path);
+        const errorData = {};
+        let isValid = true;
+        if (!input.fullName) {
+            errorData.fullName = 'Không được để trống tên';
+            isValid = false;
+        }
+        if (!input.userName) {
+            errorData.userName = 'Không được để trống tên tài khoản';
+            isValid = false;
+        }
+        if (!input.email) {
+            errorData.email = 'Không được để trống email';
+            isValid = false;
+        }
+        if (!input.password) {
+            errorData.password = 'Không được để trống mật khẩu';
+            isValid = false;
+        }
+        if (!input.confirmPassword) {
+            errorData.confirmPassword = 'Không được để trống nhập lại mật khẩu';
+            isValid = false;
+        }
+        if (!input.phone) {
+            errorData.phone = 'Không được để trống số điện thoại';
+            isValid = false;
+        }
+        // if (!input.description) {
+        //     errorData.description = 'Không được để trống mô tả';
+        //     isValid = false;
+        // }
+        if (input.password !== input.confirmPassword) {
+            errorData.confirmPassword = 'Mật khẩu không khớp';
+            isValid = false;
+        }
+        if (!isValid) {
+            setError(errorData);
+            toast.error("Vui lòng điền đầy đủ các trường thông tin", {autoClose: 3000, hideProgressBar: true});
+            return;
+        }
+        setError({});
+
+        // submit...
+        setSubmiting(true);
+        const data = {};
+        Object.keys(input).forEach((key) => {
+            console.log(key, "--->", input[key]);
+            if (key !== 'confirmPassword') {
+                data[`${key}`] = input[key];
+            }
+        });
+        dispatch(userActions.createUser(data))
+            .then(() => {
+                toast.success("Thêm mới người dùng thành công", {autoClose: 3000, hideProgressBar: true});
+                history.push("/user");
+                setSubmiting(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error("Đã xảy ra lỗi. Vui lòng liên hệ quản trị viên để được hỗ trợ", {
+                    autoClose: 3000,
+                    hideProgressBar: true
+                });
+                setSubmiting(false);
+            });
     }
 
     return (
         <>
             <Form className="mt-4" onSubmit={onSubmit}>
-                  <Form.Group id="email" className="mb-4">
-                    <Form.Label>Your Email</Form.Label>
+                <Form.Group id="fullName" className="mb-4">
+                    <Form.Label>Full Name</Form.Label>
                     <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faEnvelope} />
-                      </InputGroup.Text>
-                      <Form.Control autoFocus required type="text" placeholder="example@company.com" name='email' onChange={onChange}/>
+                        {/*<InputGroup.Text>*/}
+                        {/*  <FontAwesomeIcon icon={faUser} />*/}
+                        {/*</InputGroup.Text>*/}
+                        <Form.Control type="text" placeholder="Full Name" name='fullName' onChange={onChange}/>
                     </InputGroup>
-                  </Form.Group>
-
-                  <Form.Group>
-                    <Form.Group id="password" className="mb-4">
-                      <Form.Label>Your Password</Form.Label>
-                      <InputGroup>
-                        <InputGroup.Text>
-                          <FontAwesomeIcon icon={faUnlockAlt} />
-                        </InputGroup.Text>
-                        <Form.Control required type="password" placeholder="Password" name='password' onChange={onChange}/>
-                      </InputGroup>
-                    </Form.Group>
-                  </Form.Group>
-
-                  <Form.Group>
-                    <Form.Group id="passwordConfirmation" className="mb-4">
-                      <Form.Label>Confirm Your Password</Form.Label>
-                      <InputGroup>
-                        <InputGroup.Text>
-                          <FontAwesomeIcon icon={faUnlockAlt} />
-                        </InputGroup.Text>
-                        <Form.Control required type="password" placeholder="Password Confirmation" name='passwordConfirmation' onChange={onChange}/>
-                      </InputGroup>
-                    </Form.Group>
-                  </Form.Group>
-
-                  <Form.Group id="email" className="mb-4">
-                    <Form.Label>Your Full Name</Form.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faUser} />
-                      </InputGroup.Text>
-                      <Form.Control type="text" placeholder="Full Name" name='fullName' onChange={onChange}/>
-                    </InputGroup>
-                  </Form.Group>
-
-                  <Form.Group id="email" className="mb-4">
-                    <Form.Label>Your Phone Number</Form.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faPhone} />
-                      </InputGroup.Text>
-                      <Form.Control type="text" placeholder="Phone Number" name='phone' onChange={onChange}/>
-                    </InputGroup>
-                  </Form.Group>
-
-                <Form.Group className="mb-3">
-                    <Form.Label>Role</Form.Label>
-                    <Form.Select name='roleId' onChange={onChange}>
-                        <option defaultValue>Select Role</option>
-                        { fakeRole.map((v, i) => (<option key={i} value={v.id}>{ v.name }</option>)) }
-                    </Form.Select>
+                    {error.fullName && <span style={{color: 'red'}}>{error.fullName}</span>}
                 </Form.Group>
 
-                  <Button variant="primary" type="submit" className="w-100">
-                    Add User
-                  </Button>
-                </Form>
+                <Form.Group id="userName" className="mb-4">
+                    <Form.Label>User Name</Form.Label>
+                    <InputGroup>
+                        <InputGroup.Text>
+                            <FontAwesomeIcon icon={faUser}/>
+                        </InputGroup.Text>
+                        <Form.Control type="text" placeholder="User Name" name='userName' onChange={onChange}/>
+                    </InputGroup>
+                    {error.userName && <span style={{color: 'red'}}>{error.userName}</span>}
+                </Form.Group>
+
+                <Form.Group id="email" className="mb-4">
+                    <Form.Label>Email</Form.Label>
+                    <InputGroup>
+                        <InputGroup.Text>
+                            <FontAwesomeIcon icon={faEnvelope}/>
+                        </InputGroup.Text>
+                        <Form.Control type="text" placeholder="example@company.com" name='email'
+                                      onChange={onChange}/>
+                    </InputGroup>
+                    {error.email && <span style={{color: 'red'}}>{error.email}</span>}
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Group id="password" className="mb-4">
+                        <Form.Label>Password</Form.Label>
+                        <InputGroup>
+                            <InputGroup.Text>
+                                <FontAwesomeIcon icon={faUnlockAlt}/>
+                            </InputGroup.Text>
+                            <Form.Control type="password" placeholder="Password" name='password'
+                                          onChange={onChange}/>
+                        </InputGroup>
+                        {error.password && <span style={{color: 'red'}}>{error.password}</span>}
+                    </Form.Group>
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Group id="confirmPassword" className="mb-4">
+                        <Form.Label>Confirm Password</Form.Label>
+                        <InputGroup>
+                            <InputGroup.Text>
+                                <FontAwesomeIcon icon={faUnlockAlt}/>
+                            </InputGroup.Text>
+                            <Form.Control type="password" placeholder="Password Confirmation"
+                                          name='confirmPassword' onChange={onChange}/>
+                        </InputGroup>
+                        {error.confirmPassword && <span style={{color: 'red'}}>{error.confirmPassword}</span>}
+                    </Form.Group>
+                </Form.Group>
+
+                <Form.Group id="email" className="mb-4">
+                    <Form.Label>Phone Number</Form.Label>
+                    <InputGroup>
+                        <InputGroup.Text>
+                            <FontAwesomeIcon icon={faPhone}/>
+                        </InputGroup.Text>
+                        <Form.Control type="text" placeholder="Phone Number" name='phone' onChange={onChange}/>
+                    </InputGroup>
+                    {error.phone && <span style={{color: 'red'}}>{error.phone}</span>}
+                </Form.Group>
+
+                <Form.Group id="description" className="mb-4">
+                    <Form.Label>Description</Form.Label>
+                    <InputGroup>
+                        <Form.Control type="text" placeholder="Description" name='description' onChange={onChange}/>
+                    </InputGroup>
+                </Form.Group>
+
+                <Button variant="primary" type="submit" className="w-100" disabled={submiting}>
+                    {
+                        submiting &&
+                        <Spinner
+                            animation="border"
+                            role="status"
+                            size="sm">
+                        </Spinner>
+                    }
+                    Lưu lại
+                </Button>
+            </Form>
         </>
     )
 }

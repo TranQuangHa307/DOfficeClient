@@ -52,4 +52,9 @@
   display: block;
 }
 
+.body__left__1__content__left__field__result--password-field {
+  word-break: break-all;
+  width: 400px;
+}
+
 /*# sourceMappingURL=index.css.map */

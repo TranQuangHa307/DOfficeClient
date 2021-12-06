@@ -4,7 +4,7 @@ import SimpleBar from 'simplebar-react';
 import { useLocation } from "react-router-dom";
 import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faBoxOpen, faChartPie, faFileAlt, faHandHoldingUsd, faSignOutAlt, faTable, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faBoxOpen, faChartPie, faFileAlt, faHandHoldingUsd, faSignOutAlt, faTable, faTimes, faFile } from "@fortawesome/free-solid-svg-icons";
 import { Nav, Badge, Image, Button, Dropdown, Accordion, Navbar } from '@themesberg/react-bootstrap';
 import { Link } from 'react-router-dom';
 import Cookie from 'js-cookie';
@@ -107,9 +107,9 @@ export default (props = {}) => {
               <NavItem title="D Office" link={Routes.Presentation.path} image={ReactHero} />
 
               {/* <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faChartPie} /> */}
-              <NavItem title="User" link={Routes.User.path} icon={faUser} />
-              <NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faUser} />
-              <NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faUser} />
+              <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />
+              <NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faFile} />
+              <NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
 
               {/*<CollapsableNavItem eventKey="tables/" title="Tables" icon={faTable}>*/}
               {/*  <NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faUser} />*/}
