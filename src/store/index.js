@@ -10,6 +10,7 @@ import userReducer from "../reducers/user.reducer";
 import releaseDepartmentReducer from "../reducers/releaseDepartment.reducer";
 import activityHistoryReducer from "../reducers/activityHistory.reducer";
 import outGoingDispatchReducer from "../reducers/outGoindDispatch.reducer";
+import roleReducer from "../reducers/role.reducer";
 
 const allReducers = combineReducers({
     authentication: authenticationReducer,
@@ -20,6 +21,7 @@ const allReducers = combineReducers({
     user: userReducer,
     releaseDepartment: releaseDepartmentReducer,
     activityHistory: activityHistoryReducer,
+    role: roleReducer,
 });
 
 const middlewares = [applyMiddleware(thunk, createLogger())];

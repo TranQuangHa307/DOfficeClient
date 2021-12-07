@@ -4,12 +4,16 @@ import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import userActions from "../../../actions/userActions";
 import moment from "moment";
+import SubmitToVanThuModal from "../OutgoingDispatch/SubmitToVanThuModal";
+import EditRoleModal from "./EditRoleModal";
 
 const UserDetail = () => {
     const {id} = useParams();
     const {loading, userDetail} = useSelector(state => state.user);
     const history = useHistory();
     const dispatch = useDispatch();
+
+    const [showEditRoleModal, setShowEditRoleModal] = useState(false);
 
     const back = () => {
         history.push("/user");
@@ -21,6 +25,13 @@ const UserDetail = () => {
 
     return (
         <>
+
+            <EditRoleModal
+                show={showEditRoleModal}
+                onClose={() => setShowEditRoleModal(false)}
+                userId={id}
+            />
+
             {loading === true ? <div>Loading...</div> :
                 <div className="mainContent">
                     <div className="nav">
@@ -30,7 +41,14 @@ const UserDetail = () => {
                             </Button>
                         </div>
                         <div className="nav__2">
-
+                            <Button
+                                variant="secondary"
+                                classemail="m-1 mb-4"
+                                style={{marginRight: '10px'}}
+                                onClick={() => setShowEditRoleModal(true)}
+                            >
+                                Chỉnh sửa Role
+                            </Button>
                             <Button variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
                                 {/*<Link to={`/coming-dispatch/edit/${id}`}> Sửa </Link>*/}
                                 Sửa
