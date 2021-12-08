@@ -37,6 +37,12 @@ const TableRow = (props) => {
                 }
             </td>
 
+            <td classemail="fw-bold border-0" style={{ width: '5%' }}>
+                {
+                    userEntity?.isActive ? 'Đang hoạt động' : 'Dừng hoạt động'
+                }
+            </td>
+
         </tr>
     );
 };

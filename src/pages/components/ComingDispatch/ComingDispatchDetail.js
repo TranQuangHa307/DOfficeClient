@@ -9,6 +9,8 @@ import {toast} from "react-toastify";
 import userActions from "../../../actions/userActions";
 import ForwardModal from "./ForwardModal";
 import ApproveModal from "./ApproveModal";
+import FileViewerModal from "../FileViewer/FileViewerModal";
+import AddViewerToDispatchModal from "../OutgoingDispatch/AddViewerToDispatchModal";
 
 const ComingDispatchDetail = () => {
 
@@ -23,7 +25,9 @@ const ComingDispatchDetail = () => {
     const [isShowDelEditBtn, setIsShowDelEditBtn] = useState(false);
     const [showForwardModal, setShowForwardModal] = useState(false);
     const [showApproveModal, setShowApproveModal] = useState(false);
-
+    const [showFileViewerModal, setShowFileViewerModal] = useState(false);
+    const [selectedFileUrl, setSelectedFileUrl] = useState(undefined);
+    const [showAddViewerToDispatchModal, setShowAddViewerToDispatchModal] = useState(false);
     // const check = user?.id === comingDispatchDetail?.comingDispatchResultDTO?.createdByUser?.id
     // console.log(111, activityHistories);
 
@@ -85,13 +89,40 @@ const ComingDispatchDetail = () => {
         return `${keyName}: ${value}`;
     };
 
+    const processFileModal = (item) => {
+        setShowFileViewerModal(true);
+        const url = processUrlAttachment(item?.url);
+        console.log(11111, url)
+        setSelectedFileUrl(url);
+    }
+
     const currentViewType = (userViewDispatch && userViewDispatch.length > 0)
         ? userViewDispatch[0]?.userViewTypeEntity?.viewType
         : null;
     const actionDisabled = comingDispatchDetail?.comingDispatchResultDTO?.status === 2 || currentViewType !== 'PROCESSER';
 
+    const renderViewers = () => {
+        const viewers = comingDispatchDetail?.viewers;
+        const viewersSet = [...new Map(viewers?.map(v => [v?.viewer?.id, v])).values()]  // Xử lí trùng lặp
+        return viewersSet.map((item) => (
+            <li key={item?.viewer?.id}>
+                {item?.viewer?.fullName}
+            </li>
+        ))
+    }
+
     return (
         <>
+            <AddViewerToDispatchModal
+                show={showAddViewerToDispatchModal}
+                onClose={() => setShowAddViewerToDispatchModal(false)}
+            />
+            
+            <FileViewerModal
+                show={showFileViewerModal}
+                onClose={() => setShowFileViewerModal(false)}
+                selectedFileUrl={selectedFileUrl}
+            />
             <Modal
                 show={show}
                 onHide={handleClose}
@@ -251,11 +282,15 @@ const ComingDispatchDetail = () => {
                                 <ul>
                                     {comingDispatchDetail.attachments &&
                                     comingDispatchDetail.attachments.map((item) => (
-                                        <li key={item.id}>
-                                            <a href={processUrlAttachment(item.url)} target="_blank"
-                                               rel="noopener noreferrer">
-                                                {item.fileName}
-                                            </a>
+                                        // <li key={item.id}>
+                                        //     <a href={processUrlAttachment(item.url)} target="_blank"
+                                        //        rel="noopener noreferrer">
+                                        //         {item.fileName}
+                                        //     </a>
+                                        // </li>
+                                        <li style={{cursor: 'pointer'}} key={item.id}
+                                            onClick={() => processFileModal(item)}>
+                                            {item.fileName}
                                         </li>
                                     ))}
                                 </ul>
@@ -353,9 +388,23 @@ const ComingDispatchDetail = () => {
                             <div className="body__right__field">
                                 <div className="body__right__field__title">Ngày duyệt</div>
                                 <span className="body__right__field__result">
-                                {comingDispatchDetail.comingDispatchResultDTO?.approveDate && moment(comingDispatchDetail.comingDispatchResultDTO?.approveDate).format('YYYY-MM-DD HH:mm:ss')}
-                            </span>
+                                    {comingDispatchDetail.comingDispatchResultDTO?.approveDate && moment(comingDispatchDetail.comingDispatchResultDTO?.approveDate).format('YYYY-MM-DD HH:mm:ss')}
+                                </span>
                             </div>
+
+                            <div className="body__right__field">
+                                <div className="body__right__field__title">Người theo dõi</div>
+                                <span className="body__right__field__result">
+                                    {
+                                        renderViewers()
+                                    }
+                                    <p
+                                        style={{cursor:'pointer', color: '#c88094'}}
+                                        onClick={() => setShowAddViewerToDispatchModal(true)}
+                                    >Thêm người theo dõi?</p>
+                                </span>
+                            </div>
+
                         </div>
                     </div>
                 </div>

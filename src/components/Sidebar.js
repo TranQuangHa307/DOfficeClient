@@ -14,6 +14,8 @@ import ThemesbergLogo from "../assets/img/themesberg.svg";
 import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "../assets/img/team/profile-picture-3.jpg";
 import authenticationActions from "../actions/authentication.actions";
+import {useSelector} from "react-redux";
+import {ROLE_META_DATA_KEYS} from "../constants/app";
 
 export default (props = {}) => {
   const location = useLocation();
@@ -22,6 +24,7 @@ export default (props = {}) => {
   const showClass = show ? "show" : "";
 
   const onCollapse = () => setShow(!show);
+  const {user} = useSelector(state => state.authentication);
 
   const signOut = () => {
     Cookie.remove('authToken');
@@ -107,7 +110,15 @@ export default (props = {}) => {
               <NavItem title="D Office" link={Routes.Presentation.path} image={ReactHero} />
 
               {/* <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faChartPie} /> */}
+
+              {/* Tạm thời comment lại */}
+              {/*{ user?.roles?.some((role) => {*/}
+              {/*  return role === ROLE_META_DATA_KEYS.systemAdmin;*/}
+              {/*}) && (<NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />)}*/}
+
+
               <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />
+
               <NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faFile} />
               <NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
 

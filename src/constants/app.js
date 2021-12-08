@@ -2,7 +2,7 @@ export const JAVA_DATE_FORMAT = "MMM DD, YYYY HH:mm:ss A";
 
 export const ACTIVITY_HISTORY_META_DATA_KEYS = {
     assignFor: 'Giao cho',
-    addViewer: 'Thêm người xem',
+    addViewer: 'Thêm người theo dõi',
     signBy: 'Ký bởi',
     forwardTo: 'Chuyển tiếp',
     reason: 'Lí do',
@@ -29,6 +29,7 @@ export const ROLE_META_DATA_KEYS = {
     unitLeadership: 7,
     officeLeadership: 8,
     vanThu: 3,
+    systemAdmin: 5,
 };
 
 export const OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS = {

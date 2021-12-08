@@ -12,13 +12,23 @@ const FileViewerModal = (props) => {
 	console.log(filePath)
 	console.log(abc)
 
+	const summary = () => {
+
+	}
+
 	return (
 		<Modal fullscreen={true} className="filePreviewModal" show={props.show} onHide={handleClose}>
 				<Modal.Header closeButton>
-					<Modal.Title>File Viewer</Modal.Title>
+					{/*<Modal.Title>File Viewer</Modal.Title>*/}
+					<Button type="button" variant="secondary">
+						<a href={filePath}>Tải xuống</a>
+					</Button>
+					<Button type="button" variant="secondary" onClick={summary} style={{marginLeft : '10px'}}>
+						Tóm tắt
+					</Button>
 				</Modal.Header>
 				<Modal.Body>
-					<FileViewer fileType={abc && abc[1].toLowerCase()} filePath={filePath}/>
+					<FileViewer fileType={abc && abc[abc.length - 1].toLowerCase()} filePath={filePath}/>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button type="button" variant="secondary" onClick={handleClose}>

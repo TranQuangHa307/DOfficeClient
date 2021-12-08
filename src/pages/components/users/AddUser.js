@@ -102,6 +102,10 @@ export default () => {
             });
     }
 
+    const back = () => {
+        history.push(`/user`);
+    }
+
     return (
         <>
             <Form className="mt-4" onSubmit={onSubmit}>
@@ -195,6 +199,10 @@ export default () => {
                         </Spinner>
                     }
                     Lưu lại
+                </Button>
+
+                <Button style={{marginTop: '10px'}} variant="light" className="w-100" onClick={back}>
+                    Quay lại
                 </Button>
             </Form>
         </>

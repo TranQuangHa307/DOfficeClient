@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Button} from "@themesberg/react-bootstrap";
-import {useHistory, useParams} from "react-router-dom";
+import {Link, useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import userActions from "../../../actions/userActions";
 import moment from "moment";
-import SubmitToVanThuModal from "../OutgoingDispatch/SubmitToVanThuModal";
 import EditRoleModal from "./EditRoleModal";
+import ActivateUserModal from "./ActivateUserModal";
+import DeactivateUserModal from "./DeactivateUserModal";
 
 const UserDetail = () => {
     const {id} = useParams();
@@ -14,6 +15,8 @@ const UserDetail = () => {
     const dispatch = useDispatch();
 
     const [showEditRoleModal, setShowEditRoleModal] = useState(false);
+    const [showActivateModal, setShowActivateModal] = useState(false);
+    const [showDeactivateModal, setShowDeactivateModal] = useState(false);
 
     const back = () => {
         history.push("/user");
@@ -29,6 +32,18 @@ const UserDetail = () => {
             <EditRoleModal
                 show={showEditRoleModal}
                 onClose={() => setShowEditRoleModal(false)}
+                userId={id}
+            />
+
+            <ActivateUserModal
+                show={showActivateModal}
+                onClose={() => setShowActivateModal(false)}
+                userId={id}
+            />
+
+            <DeactivateUserModal
+                show={showDeactivateModal}
+                onClose={() => setShowDeactivateModal(false)}
                 userId={id}
             />
 
@@ -50,14 +65,18 @@ const UserDetail = () => {
                                 Chỉnh sửa Role
                             </Button>
                             <Button variant="secondary" classemail="m-1 mb-4" style={{marginRight: '10px'}}>
-                                {/*<Link to={`/coming-dispatch/edit/${id}`}> Sửa </Link>*/}
-                                Sửa
+                                <Link to={`/user/edit/${id}`}> Sửa </Link>
                             </Button>
-                            <Button variant="danger" classemail="m-1 mb-4">
-                                Xóa
-                                {/*<Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>*/}
-                            </Button>
-
+                            {
+                                userDetail?.userEntity?.isActive === true ? (
+                                    <Button variant="danger" classemail="m-1 mb-4" onClick={() => setShowDeactivateModal(true)}>
+                                        Deactivate account
+                                    </Button>)
+                                    :
+                                    (<Button variant="danger" classemail="m-1 mb-4" onClick={() => setShowActivateModal(true)}>
+                                        Activate account
+                                    </Button>)
+                            }
                         </div>
 
                     </div>
@@ -83,7 +102,6 @@ const UserDetail = () => {
                                             <p className="body__left__1__content__left__field__title">Phone:</p>
                                             <p className="body__left__1__content__left__field__result">
                                                 {userDetail?.userEntity?.phone}
-                                                {/*{moment(comingDispatchDetail.comingDispatchResultDTO?.signDate).format('YYYY-MM-DD')}*/}
                                             </p>
                                         </div>
                                     </div>
@@ -97,12 +115,12 @@ const UserDetail = () => {
                                                 {userDetail?.userEntity?.userName}
                                             </p>
                                         </div>
-                                        <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Mật khẩu:</p>
-                                            <p className="body__left__1__content__left__field__result body__left__1__content__left__field__result--password-field">
-                                                {userDetail?.userEntity?.password}
-                                            </p>
-                                        </div>
+                                        {/*<div className="body__left__1__content__left__field">*/}
+                                        {/*    <p className="body__left__1__content__left__field__title">Mật khẩu:</p>*/}
+                                        {/*    <p className="body__left__1__content__left__field__result body__left__1__content__left__field__result--password-field">*/}
+                                        {/*        {userDetail?.userEntity?.password}*/}
+                                        {/*    </p>*/}
+                                        {/*</div>*/}
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">
                                                 Mô tả

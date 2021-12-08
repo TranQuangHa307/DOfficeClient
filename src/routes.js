@@ -41,6 +41,7 @@ export const Routes = {
     User: { path: '/user' },
     AddUser: { path: '/user/add' },
     UserDetail: {path: '/user/:id'},
+    EditUser: {path: '/user/edit/:id'},
 
     // Coming dispatch management
     ComingDispatchManagement: { path: '/coming-dispatch'},

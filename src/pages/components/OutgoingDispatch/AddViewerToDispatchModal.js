@@ -17,6 +17,7 @@ const AddViewerToDispatchModal = (props) => {
 
 	const { users } = useSelector(state => state.user);
 	const { outGoingDispatchDetail } = useSelector(state => state.outGoingDispatch);
+	const { comingDispatchDetail } = useSelector(state => state.comingDispatch);
 
 	const handleClose = () => {
 		props.onClose();
@@ -49,26 +50,49 @@ const AddViewerToDispatchModal = (props) => {
 		setError({
 			userId: '',
 		});
-		const data = {
-			...input,
-			officialDispatchId: outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.id,
-		};
+		if (outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.id) {  // nếu là văn bản đi
+			const data = {
+				...input,
+				officialDispatchId: outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.id,
+			};
 
-		dispatch(outGoingDispatchActions.addViewerToDispatch(data))
-			.then(() => {
-				dispatch(comingDispatchActions.getDispatchStream(data.officialDispatchId));
-				dispatch(outGoingDispatchActions.getOutGoingDispatchById(data.officialDispatchId));
-				setInput({
-					userId: '',
+			dispatch(outGoingDispatchActions.addViewerToDispatch(data))
+				.then(() => {
+					dispatch(comingDispatchActions.getDispatchStream(data.officialDispatchId));
+					dispatch(outGoingDispatchActions.getOutGoingDispatchById(data.officialDispatchId));
+					setInput({
+						userId: '',
+					});
+					setSubmitting(false);
+					toast.success('Thêm người theo dõi thành công', { autoClose: 3000, hideProgressBar : true });
+					props.onClose();
+				})
+				.catch(() => {
+					setSubmitting(false);
+					toast.error('Đã có lỗi xảy ra, vui lòng thử lại', { autoClose: 3000, hideProgressBar : true });
 				});
-				setSubmitting(false);
-				toast.success('Thêm người theo dõi thành công', { autoClose: 3000, hideProgressBar : true });
-				props.onClose();
-			})
-			.catch(() => {
-				setSubmitting(false);
-				toast.error('Đã có lỗi xảy ra, vui lòng thử lại', { autoClose: 3000, hideProgressBar : true });
-			});
+		} else {  // nếu là văn bản đến
+			const data = {
+				...input,
+				officialDispatchId: comingDispatchDetail?.comingDispatchResultDTO?.id,
+			};
+
+			dispatch(outGoingDispatchActions.addViewerToDispatch(data))
+				.then(() => {
+					dispatch(comingDispatchActions.getDispatchStream(data.officialDispatchId));
+					dispatch(comingDispatchActions.getComingDispatchById(data.officialDispatchId));
+					setInput({
+						userId: '',
+					});
+					setSubmitting(false);
+					toast.success('Thêm người theo dõi thành công', { autoClose: 3000, hideProgressBar : true });
+					props.onClose();
+				})
+				.catch(() => {
+					setSubmitting(false);
+					toast.error('Đã có lỗi xảy ra, vui lòng thử lại', { autoClose: 3000, hideProgressBar : true });
+				});
+		}
 	};
 
 	return (

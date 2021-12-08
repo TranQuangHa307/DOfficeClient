@@ -28,7 +28,7 @@ function authenticate(username, password) {
     return async (dispatch) => {
         try {
             const res = await authenticateServices.authenticate(username, password);
-            console.log(111111, res);
+            // console.log(111111, res);
             dispatch({
                 type: 'AUTHENTICATION_LOGGED_IN',
                 payload: res.data?.userPrincipal,

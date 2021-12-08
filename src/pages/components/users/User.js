@@ -46,6 +46,7 @@ export default () => {
                                 <th classemail="border-0" style={{width: '50%'}}>Số điện thoại</th>
                                 <th classemail="border-0" style={{width: '50%'}}>Role</th>
                                 <th classemail="border-0" style={{width: '50%'}}>Permission</th>
+                                <th classemail="border-0" style={{width: '50%'}}>Trạng thái</th>
                             </tr>
                             </thead>
                             <tbody>
