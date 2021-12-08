@@ -280,6 +280,21 @@ function getPublishedDispatch(dispatchId) {
     }
 }
 
+function addViewerToDispatch(data) {
+    return () => {
+        return outGoingDispatchServices.addViewerToDispatch(data)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                if (result?.success === false) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
 const outGoingDispatchActions = {
     getAll,
     createOutGoingDispatch,
@@ -294,6 +309,7 @@ const outGoingDispatchActions = {
     publish,
     archive,
     getPublishedDispatch,
+    addViewerToDispatch,
 }
 
 export default outGoingDispatchActions;

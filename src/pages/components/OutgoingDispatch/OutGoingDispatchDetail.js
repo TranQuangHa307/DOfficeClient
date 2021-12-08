@@ -17,6 +17,7 @@ import SubmitToOfficeLeadershipModal from "./SubmitToOfficeLeadershipModal";
 import RejectDispatchModal from "./RejectDispatchModal";
 import SubmitToVanThuModal from "./SubmitToVanThuModal";
 import FileViewerModal from "../FileViewer/FileViewerModal";
+import AddViewerToDispatchModal from "./AddViewerToDispatchModal";
 
 
 const OutGoingDispatchDetail = () => {
@@ -34,6 +35,7 @@ const OutGoingDispatchDetail = () => {
     const [showRejectDispatchModal, setShowRejectDispatchModal] = useState(false);
     const [showSubmitToVanThuModal, setShowSubmitToVanThuModal] = useState(false);
     const [showFileViewerModal, setShowFileViewerModal] = useState(false);
+    const [showAddViewerToDispatchModal, setShowAddViewerToDispatchModal] = useState(false);
 
     useEffect(() => {
         dispatch(outGoingDispatchActions.getOutGoingDispatchById(id));
@@ -286,7 +288,7 @@ const OutGoingDispatchDetail = () => {
     // const actionDisabled = comingDispatchDetail?.comingDispatchResultDTO?.status === 2 || currentViewType !== 'PROCESSER';
 
     const renderStatus = () => {
-        const status = outGoingDispatchDetail.outGoingDispatchResultNewDTO?.status;
+        const status = outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status;
         if (status === OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.daXuLy) {
             return "Đã xử lý";
         }
@@ -299,6 +301,16 @@ const OutGoingDispatchDetail = () => {
         return processorsSet.map((item) => (
             <li key={item?.processor?.id}>
                 {item?.processor?.fullName}
+            </li>
+        ))
+    }
+
+    const renderViewers = () => {
+        const viewers = outGoingDispatchDetail?.viewers;
+        const viewersSet = [...new Map(viewers?.map(v => [v?.viewer?.id, v])).values()]  // Xử lí trùng lặp
+        return viewersSet.map((item) => (
+            <li key={item?.viewer?.id}>
+                {item?.viewer?.fullName}
             </li>
         ))
     }
@@ -338,6 +350,11 @@ const OutGoingDispatchDetail = () => {
                 show={showFileViewerModal}
                 onClose={() => setShowFileViewerModal(false)}
                 selectedFileUrl={selectedFileUrl}
+            />
+
+            <AddViewerToDispatchModal
+                show={showAddViewerToDispatchModal}
+                onClose={() => setShowAddViewerToDispatchModal(false)}
             />
 
             <Modal
@@ -394,28 +411,28 @@ const OutGoingDispatchDetail = () => {
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Số văn bản:</p>
                                             <p className="body__left__1__content__left__field__result">
-                                                {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.documentNumber}
+                                                {outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.documentNumber}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Nơi nhận:</p>
                                             <p className="body__left__1__content__left__field__result">
-                                                {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.receiveAddress}
+                                                {outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.receiveAddress}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Người ký:</p>
-                                            <p className="body__left__1__content__left__field__result">{outGoingDispatchDetail.outGoingDispatchResultNewDTO?.signByUser?.fullName}</p>
+                                            <p className="body__left__1__content__left__field__result">{outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.signByUser?.fullName}</p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Ngày ký:</p>
                                             <p className="body__left__1__content__left__field__result">
-                                                {moment(outGoingDispatchDetail.outGoingDispatchResultNewDTO?.signDate).format('YYYY-MM-DD')}
+                                                {moment(outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.signDate).format('YYYY-MM-DD')}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Số trang:</p>
-                                            <p className="body__left__1__content__left__field__result">{outGoingDispatchDetail.outGoingDispatchResultNewDTO?.totalPage}</p>
+                                            <p className="body__left__1__content__left__field__result">{outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.totalPage}</p>
                                         </div>
                                     </div>
 
@@ -425,27 +442,27 @@ const OutGoingDispatchDetail = () => {
                                             <p className="body__left__1__content__left__field__title">Mức độ bảo
                                                 mật:</p>
                                             <p className="body__left__1__content__left__field__result">
-                                                {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.securityLevel === 1 ? 'Bình thường' : 'Cao'}
+                                                {outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.securityLevel === 1 ? 'Bình thường' : 'Cao'}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Mức độ khẩn
                                                 cấp:</p>
                                             <p className="body__left__1__content__left__field__result">
-                                                {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.urgencyLevel === 1 ? 'Bình thường' : 'Cao'}
+                                                {outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.urgencyLevel === 1 ? 'Bình thường' : 'Cao'}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Ngày hiệu lực:</p>
                                             <p className="body__left__1__content__left__field__result">
-                                                {moment(outGoingDispatchDetail.outGoingDispatchResultNewDTO?.effectiveDate).format('YYYY-MM-DD')}
+                                                {moment(outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.effectiveDate).format('YYYY-MM-DD')}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
                                             <p className="body__left__1__content__left__field__title">Ngày hết hiệu
                                                 lực:</p>
                                             <p className="body__left__1__content__left__field__result">
-                                                {moment(outGoingDispatchDetail.outGoingDispatchResultNewDTO?.expirationDate).format('YYYY-MM-DD')}
+                                                {moment(outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.expirationDate).format('YYYY-MM-DD')}
                                             </p>
                                         </div>
                                     </div>
@@ -454,8 +471,8 @@ const OutGoingDispatchDetail = () => {
                             <div className="body__left__2">
                                 <h2>Tệp đính kèm</h2>
                                 <ul>
-                                    {outGoingDispatchDetail.attachments &&
-                                    outGoingDispatchDetail.attachments.map((item) => (
+                                    {outGoingDispatchDetail?.attachments &&
+                                    outGoingDispatchDetail?.attachments.map((item) => (
                                         // <li key={item.id} onClick={() => setShowFileViewerModal(true)}>
                                         //     <a href={processUrlAttachment(item.url)} target="_blank"
                                         //        rel="noopener noreferrer">
@@ -463,7 +480,8 @@ const OutGoingDispatchDetail = () => {
                                         //     </a>
                                         // </li>
 
-                                        <li style={{cursor: 'pointer'}} key={item.id} onClick={() => processFileModal(item)}>
+                                        <li style={{cursor: 'pointer'}} key={item.id}
+                                            onClick={() => processFileModal(item)}>
                                             {item.fileName}
                                         </li>
                                     ))}
@@ -505,14 +523,14 @@ const OutGoingDispatchDetail = () => {
                             <div className="body__right__field">
                                 <div className="body__right__field__title">Loại văn bản</div>
                                 <span className="body__right__field__result">
-                                {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.documentType?.typeName}
+                                {outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.documentType?.typeName}
                             </span>
                             </div>
 
                             <div className="body__right__field">
                                 <div className="body__right__field__title">Vị trí lưu trữ</div>
                                 <span className="body__right__field__result">
-                                {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.storageLocation?.locationName}
+                                {outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.storageLocation?.locationName}
                             </span>
                             </div>
 
@@ -539,15 +557,15 @@ const OutGoingDispatchDetail = () => {
                             <div className="body__right__field">
                                 <div className="body__right__field__title">Người tạo</div>
                                 <span className="body__right__field__result">
-                                {outGoingDispatchDetail.outGoingDispatchResultNewDTO?.createdByUser?.fullName}
+                                {outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.createdByUser?.fullName}
                             </span>
                             </div>
 
                             <div className="body__right__field">
                                 <div className="body__right__field__title">Ngày tạo</div>
                                 <span className="body__right__field__result">
-                                {moment(outGoingDispatchDetail.outGoingDispatchResultNewDTO?.createdAt).format('YYYY-MM-DD HH:mm:ss')}
-                            </span>
+                                    {moment(outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+                                </span>
                             </div>
 
                             {/*<div className="body__right__field">*/}
@@ -573,6 +591,19 @@ const OutGoingDispatchDetail = () => {
                                     </span>
                                 </div>
                             }
+
+                            <div className="body__right__field">
+                                <div className="body__right__field__title">Người theo dõi</div>
+                                <span className="body__right__field__result">
+                                    {
+                                        renderViewers()
+                                    }
+                                    <p
+                                        style={{cursor:'pointer', color: '#c88094'}}
+                                        onClick={() => setShowAddViewerToDispatchModal(true)}
+                                    >Thêm người theo dõi?</p>
+                                </span>
+                            </div>
 
                         </div>
                     </div>

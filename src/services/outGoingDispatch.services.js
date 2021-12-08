@@ -67,6 +67,10 @@ function getPublishedDispatch(id) {
     return get(`/api/official-dispatch/out-going-dispatch/published-dispatch/${id}`);
 }
 
+function addViewerToDispatch(data) {
+    return post('/api/official-dispatch/add-viewer', data);
+}
+
 const outGoingDispatchServices = {
     getAll,
     createOutGoingDispatch,
@@ -80,6 +84,7 @@ const outGoingDispatchServices = {
     publish,
     archive,
     getPublishedDispatch,
+    addViewerToDispatch,
 }
 
 export default outGoingDispatchServices;
