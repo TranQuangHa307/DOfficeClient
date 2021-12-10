@@ -1,10 +1,10 @@
 import outGoingDispatchServices from "../services/outGoingDispatch.services";
 
 // Return ve 1 ham. Nen duoc goi la higher order function
-function getAll() {
+function getAll(data) {
     return (dispatch) => {
         dispatch({type: 'OUT_GOING_DISPATCH_LOADING',})
-        return outGoingDispatchServices.getAll()
+        return outGoingDispatchServices.getAll(data)
             .then((result) => {
                 dispatch({
                     type: 'OUT_GOING_DISPATCH_LOADED',

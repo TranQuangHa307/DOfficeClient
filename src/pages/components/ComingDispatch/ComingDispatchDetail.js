@@ -117,7 +117,7 @@ const ComingDispatchDetail = () => {
                 show={showAddViewerToDispatchModal}
                 onClose={() => setShowAddViewerToDispatchModal(false)}
             />
-            
+
             <FileViewerModal
                 show={showFileViewerModal}
                 onClose={() => setShowFileViewerModal(false)}

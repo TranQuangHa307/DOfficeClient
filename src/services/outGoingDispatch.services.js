@@ -1,7 +1,7 @@
 import {del, get, post, put} from './sender';
 
-function getAll() {
-    return get('/api/official-dispatch/out-going-dispatch');
+function getAll(data) {
+    return post('/api/official-dispatch/out-going-dispatch', data);
 }
 
 function getOutGoingDispatchById(id) {
@@ -21,9 +21,9 @@ function getOutGoingDispatchById(id) {
 // }
 //
 function createOutGoingDispatch(data) {
-    return post('/api/official-dispatch/out-going-dispatch', data);
+    return post('/api/official-dispatch/out-going-dispatch/add', data);
 }
-//
+
 function updateDispatchByForm(dispatchId, data) {
     return put(`/api/official-dispatch/out-going-dispatch/update/${dispatchId}`, data);
 }

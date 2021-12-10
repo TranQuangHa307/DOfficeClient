@@ -119,16 +119,23 @@ export default (props = {}) => {
 
               <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />
 
+              <CollapsableNavItem eventKey="tables/" title="Văn bản đến" icon={faFile}>
+                <NavItem title="Tất cả" link={`${Routes.ComingDispatchManagement.path}`} icon={faFile} />
+                <NavItem title="Đã xử lý" link={`${Routes.ComingDispatchManagement.path}?status=DA_XU_LY`} icon={faFile} />
+                <NavItem title="Chưa xử lý" link={`${Routes.ComingDispatchManagement.path}?status=CHUA_XU_LY`} icon={faFile} />
+              </CollapsableNavItem>
+
+              <CollapsableNavItem eventKey="tables/" title="Văn bản đi" icon={faFile}>
+                <NavItem title="Tất cả" link={`${Routes.OutGoingDispatchManagement.path}`} icon={faFile} />
+                <NavItem title="Chờ lãnh đơn vị" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
+                <NavItem title="Chờ lãnh cơ quan" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
+                <NavItem title="Chờ xử lý" link={`${Routes.OutGoingDispatchManagement.path}?status=CHUA_XU_LY`} icon={faFile} />
+                <NavItem title="Đã xử lý" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
+                {/*<NavItem title="Đã ban hành" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />*/}
+              </CollapsableNavItem>
+
               <NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faFile} />
               <NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
-
-              {/*<CollapsableNavItem eventKey="tables/" title="Tables" icon={faTable}>*/}
-              {/*  <NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faUser} />*/}
-              {/*</CollapsableNavItem>*/}
-
-              {/*<CollapsableNavItem eventKey="tables/" title="Tables" icon={faTable}>*/}
-              {/*  <NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faUser} />*/}
-              {/*</CollapsableNavItem>*/}
 
 
 

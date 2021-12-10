@@ -1,59 +1,120 @@
 import React from "react";
 import TableRow from "./TableRow";
-import {Button, Card, Table} from "@themesberg/react-bootstrap";
-import {Link} from "react-router-dom";
+import {Button, Card, Form, Table} from "@themesberg/react-bootstrap";
+import {Link, useLocation} from "react-router-dom";
 import {Routes} from "../../../routes";
 import comingDispatchActions from "../../../actions/comingDispatchActions";
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import Pagination from "react-bootstrap-4-pagination";
 
 
 const ComingDispatchManagement = () => {
     const dispatch = useDispatch();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const dispatchStatus = searchParams.get('status');
 
-    const { loading, comingDispatchs } = useSelector(state => state.comingDispatch);
+    const {loading, comingDispatchs} = useSelector(state => state.comingDispatch);
+    const [data, setData] = useState({
+        page: 1,
+        pageSize: 5,
+    });
+    const [isInit, setIsInit] = useState(false);
+    const [paginationConfig, setPaginationConfig] = useState({});
+    const [configTemp, setConfigTemp] = useState({
+        size: "md",
+    });
 
-    useEffect( () => {
-        dispatch(comingDispatchActions.getAll());
+    const pageOnclick = (page) => {
+        setData({
+            ...data,
+            page: page,
+        })
+    }
 
-    }, []);
+    const onChangePageSize = (e) => {
+        setData({
+            page: 1,
+            pageSize: parseInt(e.target.value),
+        });
+    }
+
+    useEffect(() => {
+        dispatch(comingDispatchActions.getAll({
+            page: data.page - 1,
+            pageSize: data.pageSize,
+        }))
+            .then((result) => {
+                if (!isInit) {
+                    setIsInit(true);
+                }
+                setPaginationConfig({
+                    ...configTemp,
+                    totalPages: Math.ceil(result?.total / data.pageSize),
+                    currentPage: data.page,
+                })
+            });
+    }, [data, dispatchStatus]);
 
     return (
 
-            <>
-                <div classemail="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4" style={{ marginBottom: '25px' }}>
-                    <div classemail="d-block mb-4 mb-xl-0">
-                        <h4>Quản lý văn bản đến</h4>
-                        <Button variant="secondary" classemail="m-1 mb-4">
-                            <Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>
-                        </Button>
-                    </div>
+        <>
+            <div classemail="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4"
+                 style={{marginBottom: '25px'}}>
+                <div classemail="d-block mb-4 mb-xl-0">
+                    <h4>Quản lý văn bản đến</h4>
+                    <Button variant="secondary" classemail="m-1 mb-4">
+                        <Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>
+                    </Button>
                 </div>
+            </div>
 
-                { !loading ? (
+            {loading && !isInit ? 'loading...' : (
+                <>
                     <Card border="light" classemail="shadow-sm">
                         <Card.Body classemail="p-0">
-                            <Table responsive classemail="table-centered rounded" style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
+                            <Table responsive classemail="table-centered rounded"
+                                   style={{whiteSpace: 'pre-wrap', wordWrap: 'break-word'}}>
                                 <thead classemail="thead-light">
                                 <tr>
-                                    <th classemail="border-0" style={{ width: '5%' }}>Số văn bản</th>
-                                    <th classemail="border-0" style={{ width: '5%' }}>Nơi gửi</th>
-                                    <th classemail="border-0" style={{ width: '5%' }}>Người ký</th>
-                                    <th classemail="border-0" style={{ width: '5%' }}>Ngày ký</th>
-                                    <th classemail="border-0" style={{ width: '50%' }}>Ngày đến</th>
-                                    <th classemail="border-0" style={{ width: '50%' }}>Trích yếu nội dung</th>
+                                    <th classemail="border-0">Số văn bản</th>
+                                    <th classemail="border-0">Nơi gửi</th>
+                                    <th classemail="border-0">Người ký</th>
+                                    <th classemail="border-0">Ngày ký</th>
+                                    <th classemail="border-0">Ngày đến</th>
+                                    <th classemail="border-0">Trích yếu nội dung</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {
-                                        comingDispatchs.map?.(c => <TableRow key={`command-${c.id}`} {...c} />)
-                                    }
+                                {
+                                    comingDispatchs?.content?.map?.(c => <TableRow key={`command-${c.id}`} {...c} />)
+                                }
                                 </tbody>
                             </Table>
                         </Card.Body>
                     </Card>
-                ): 'loading...' }
-            </>
+                    <div style={{
+                        marginLeft: '12px',
+                        marginTop: '12px',
+                        display: 'flex',
+                        justifyContent: 'space-between'
+                    }}>
+                        <div>
+                            Hiển thị
+                            <Form.Select value={data.pageSize} onChange={onChangePageSize}>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </Form.Select>
+                            bản ghi trên tổng số {comingDispatchs?.total} bản ghi
+                        </div>
+                        <Pagination {...paginationConfig} onClick={pageOnclick}/>
+                    </div>
+                </>
+            )}
+        </>
     );
 }
 

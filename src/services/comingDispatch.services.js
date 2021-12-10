@@ -1,7 +1,7 @@
 import {del, get, post, put} from './sender';
 
-function getAll() {
-    return get('/api/official-dispatch/coming-dispatch');
+function getAll(data) {
+    return post('/api/official-dispatch/coming-dispatch', data);
 }
 
 function getComingDispatchById(id) {
@@ -21,7 +21,7 @@ function getAllReleaseDepartment() {
 }
 
 function createDispatchByForm(data) {
-    return post('/api/official-dispatch/coming-dispatch', data);
+    return post('/api/official-dispatch/coming-dispatch/add', data);
 }
 
 function updateDispatchByForm(dispatchId, data) {
