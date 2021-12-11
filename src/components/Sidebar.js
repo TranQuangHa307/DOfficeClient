@@ -8,6 +8,7 @@ import {Accordion, Badge, Button, Image, Nav, Navbar} from '@themesberg/react-bo
 import Cookie from 'js-cookie';
 import {Routes} from "../routes";
 import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
+import DOfficeLogo from "../assets/img/348801.svg";
 import ProfilePicture from "../assets/img/team/profile-picture-3.jpg";
 import {useDispatch, useSelector} from "react-redux";
 import countDispatchActions from "../actions/countDispatchActions";
@@ -65,7 +66,7 @@ export default (props = {}) => {
         <Nav.Link {...linkProps} target={target} className={classNames}>
           <span>
             {icon ? <span className="sidebar-icon"><FontAwesomeIcon icon={icon} /> </span> : null}
-            {image ? <Image src={image} width={20} height={20} className="sidebar-icon svg-icon" /> : null}
+            {image ? <Image  style={{width : '50px', height: '50px'}} src={image} width={20} height={20} className="sidebar-icon svg-icon" /> : null}
 
             <span className="sidebar-text">{title}</span>
           </span>
@@ -81,7 +82,7 @@ export default (props = {}) => {
     <>
       <Navbar expand={false} collapseOnSelect variant="dark" className="navbar-theme-primary px-4 d-md-none">
         <Navbar.Brand className="me-lg-5" as={Link} to={Routes.DashboardOverview.path}>
-          <Image src={ReactHero} className="navbar-brand-light" />
+          <Image src={DOfficeLogo} className="navbar-brand-light" />
         </Navbar.Brand>
         <Navbar.Toggle as={Button} aria-controls="main-navbar" onClick={onCollapse}>
           <span className="navbar-toggler-icon" />
@@ -107,7 +108,7 @@ export default (props = {}) => {
               </Nav.Link>
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
-              <NavItem title="D Office" link={Routes.Presentation.path} image={ReactHero} />
+              <NavItem title="D Office" link="/" image={DOfficeLogo}/>
 
               {/* <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faChartPie} /> */}
 

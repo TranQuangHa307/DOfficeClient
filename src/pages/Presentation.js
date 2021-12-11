@@ -11,6 +11,7 @@ import GitHubButton from 'react-github-btn';
 import { Routes } from "../routes";
 import ThemesbergLogoIcon from "../assets/img/themesberg.svg";
 import ThemesbergLogo from "../assets/img/themesberg-logo.svg";
+import DOfficeLogo from "../assets/img/348801.svg";
 import MockupPresentation from "../assets/img/mockup-presentation.png";
 import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
 import MapboxImg from "../assets/img/mockup-map-presentation.png";
