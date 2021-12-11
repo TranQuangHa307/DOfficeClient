@@ -64,4 +64,8 @@
   display: block;
 }
 
+.accordion-item:last-of-type .accordion-collapse {
+  margin-left: -21px !important;
+}
+
 /*# sourceMappingURL=index.css.map */

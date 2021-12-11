@@ -7,7 +7,7 @@ const TableRow = (props) => {
     return (
         <tr>
             <td classemail="border-0" style={{ width: '5%' }}>
-                {index + 1}
+                {index}
             </td>
             <td classemail="border-0" style={{ width: '5%' }}>
                 {userEntity?.fullName}

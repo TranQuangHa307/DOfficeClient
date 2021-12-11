@@ -114,3 +114,7 @@
   //width: 150px;
   display: block;
 }
+
+.accordion-item:last-of-type .accordion-collapse  {
+  margin-left: -21px !important;
+}

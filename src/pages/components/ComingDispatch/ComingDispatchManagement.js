@@ -7,6 +7,7 @@ import comingDispatchActions from "../../../actions/comingDispatchActions";
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Pagination from "react-bootstrap-4-pagination";
+import {OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS} from "../../../constants/app";
 
 
 const ComingDispatchManagement = () => {
@@ -14,7 +15,6 @@ const ComingDispatchManagement = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const dispatchStatus = searchParams.get('status');
-
     const {loading, comingDispatchs} = useSelector(state => state.comingDispatch);
     const [data, setData] = useState({
         page: 1,
@@ -44,6 +44,7 @@ const ComingDispatchManagement = () => {
         dispatch(comingDispatchActions.getAll({
             page: data.page - 1,
             pageSize: data.pageSize,
+            status: dispatchStatus ? dispatchStatus.toString() : null,
         }))
             .then((result) => {
                 if (!isInit) {
@@ -57,13 +58,26 @@ const ComingDispatchManagement = () => {
             });
     }, [data, dispatchStatus]);
 
-    return (
+    const renderStatusLabel = () => {
+        if (dispatchStatus) {
+            if (dispatchStatus.toString() === '1') {
+                return <h4>Trạng thái: Chưa xử lý</h4>
+            }
+            if (dispatchStatus.toString() === '2') {
+                return <h4>Trạng thái: Đã xử lý</h4>
+            }
+        }
+    }
 
+    return (
         <>
             <div classemail="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4"
                  style={{marginBottom: '25px'}}>
                 <div classemail="d-block mb-4 mb-xl-0">
                     <h4>Quản lý văn bản đến</h4>
+                    {
+                        renderStatusLabel()
+                    }
                     <Button variant="secondary" classemail="m-1 mb-4">
                         <Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>
                     </Button>
@@ -94,21 +108,14 @@ const ComingDispatchManagement = () => {
                             </Table>
                         </Card.Body>
                     </Card>
-                    <div style={{
-                        marginLeft: '12px',
-                        marginTop: '12px',
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                    }}>
+                    <div style={{marginLeft: '12px', marginTop: '12px', display: 'flex', justifyContent: 'space-between'}}>
                         <div>
-                            Hiển thị
-                            <Form.Select value={data.pageSize} onChange={onChangePageSize}>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                            </Form.Select>
-                            bản ghi trên tổng số {comingDispatchs?.total} bản ghi
+                            Hiển thị <Form.Select value={data.pageSize} onChange={onChangePageSize} style={{width: '65px', display: 'inline-block'}}>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </Form.Select> bản ghi trên tổng số {comingDispatchs?.total} bản ghi
                         </div>
                         <Pagination {...paginationConfig} onClick={pageOnclick}/>
                     </div>

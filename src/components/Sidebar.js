@@ -1,35 +1,35 @@
-
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import SimpleBar from 'simplebar-react';
-import { useLocation } from "react-router-dom";
-import { CSSTransition } from 'react-transition-group';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faBoxOpen, faChartPie, faFileAlt, faHandHoldingUsd, faSignOutAlt, faTable, faTimes, faFile } from "@fortawesome/free-solid-svg-icons";
-import { Nav, Badge, Image, Button, Dropdown, Accordion, Navbar } from '@themesberg/react-bootstrap';
-import { Link } from 'react-router-dom';
+import {Link, useLocation} from "react-router-dom";
+import {CSSTransition} from 'react-transition-group';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faFile, faSignOutAlt, faTimes, faUser} from "@fortawesome/free-solid-svg-icons";
+import {Accordion, Badge, Button, Image, Nav, Navbar} from '@themesberg/react-bootstrap';
 import Cookie from 'js-cookie';
-
-import { Routes } from "../routes";
-import ThemesbergLogo from "../assets/img/themesberg.svg";
+import {Routes} from "../routes";
 import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
 import ProfilePicture from "../assets/img/team/profile-picture-3.jpg";
-import authenticationActions from "../actions/authentication.actions";
-import {useSelector} from "react-redux";
-import {ROLE_META_DATA_KEYS} from "../constants/app";
+import {useDispatch, useSelector} from "react-redux";
+import countDispatchActions from "../actions/countDispatchActions";
 
 export default (props = {}) => {
   const location = useLocation();
   const { pathname } = location;
   const [show, setShow] = useState(false);
   const showClass = show ? "show" : "";
-
+  const dispatch = useDispatch();
   const onCollapse = () => setShow(!show);
   const {user} = useSelector(state => state.authentication);
+  const {countDispatch} = useSelector(state => state.countDispatch);
 
   const signOut = () => {
     Cookie.remove('authToken');
     window.location.href = '/';
   }
+
+  useEffect(() => {
+    dispatch(countDispatchActions.getCountDispatch());
+  }, [])
 
   const CollapsableNavItem = (props) => {
     const { eventKey, title, icon, children = null } = props;
@@ -120,22 +120,22 @@ export default (props = {}) => {
               <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />
 
               <CollapsableNavItem eventKey="tables/" title="Văn bản đến" icon={faFile}>
-                <NavItem title="Tất cả" link={`${Routes.ComingDispatchManagement.path}`} icon={faFile} />
-                <NavItem title="Đã xử lý" link={`${Routes.ComingDispatchManagement.path}?status=DA_XU_LY`} icon={faFile} />
-                <NavItem title="Chưa xử lý" link={`${Routes.ComingDispatchManagement.path}?status=CHUA_XU_LY`} icon={faFile} />
+                <NavItem  title={`Tất cả (${countDispatch?.cdAll})`} link={`${Routes.ComingDispatchManagement.path}`} icon={faFile} />
+                <NavItem title={`Đã xử lý (${countDispatch?.cdDone})`} link={`${Routes.ComingDispatchManagement.path}?status=2`} icon={faFile} />
+                <NavItem title={`Chưa xử lý (${countDispatch?.cdNotDone})`} link={`${Routes.ComingDispatchManagement.path}?status=1`} icon={faFile} />
               </CollapsableNavItem>
 
               <CollapsableNavItem eventKey="tables/" title="Văn bản đi" icon={faFile}>
-                <NavItem title="Tất cả" link={`${Routes.OutGoingDispatchManagement.path}`} icon={faFile} />
-                <NavItem title="Chờ lãnh đơn vị" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
-                <NavItem title="Chờ lãnh cơ quan" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
-                <NavItem title="Chờ xử lý" link={`${Routes.OutGoingDispatchManagement.path}?status=CHUA_XU_LY`} icon={faFile} />
-                <NavItem title="Đã xử lý" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
+                <NavItem title={`Tất cả (${countDispatch?.ogAll})`} link={`${Routes.OutGoingDispatchManagement.path}`} icon={faFile} />
+                <NavItem title={`Chờ lãnh đơn vị (${countDispatch?.ogChoLanhDaoDonVi})`} link={`${Routes.OutGoingDispatchManagement.path}?status=3`} icon={faFile} />
+                <NavItem title={`Chờ lãnh cơ quan (${countDispatch?.ogChoLanhDaoCoQuan})`} link={`${Routes.OutGoingDispatchManagement.path}?status=4`} icon={faFile} />
+                <NavItem title={`Chưa xử lý (${countDispatch?.ogNotDone})`} link={`${Routes.OutGoingDispatchManagement.path}?status=1`} icon={faFile} />
+                <NavItem title={`Đã xử lý (${countDispatch?.ogDone})`} link={`${Routes.OutGoingDispatchManagement.path}?status=2`} icon={faFile} />
                 {/*<NavItem title="Đã ban hành" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />*/}
               </CollapsableNavItem>
 
-              <NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faFile} />
-              <NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />
+              {/*<NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faFile} />*/}
+              {/*<NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />*/}
 
 
 

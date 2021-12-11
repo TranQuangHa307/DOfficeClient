@@ -56,7 +56,7 @@ const DeactivateUserModal = (props) => {
 								size="sm">
 							</Spinner>
 						}
-						Deactivate
+						Dừng hoạt động
 					</Button>
 				</Modal.Footer>
 			</Form>

@@ -12,7 +12,6 @@ const OutGoingDispatchManagement = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const dispatchStatus = searchParams.get('status');
-
     const {loading, outGoingDispatchs} = useSelector(state => state.outGoingDispatch);
     const [data, setData] = useState({
         page: 1,
@@ -43,6 +42,7 @@ const OutGoingDispatchManagement = () => {
         dispatch(outGoingDispatchActions.getAll({
             page: data.page - 1,
             pageSize: data.pageSize,
+            status: dispatchStatus ? dispatchStatus.toString() : null,
         }))
             .then((result) => {
                 if (!isInit) {
@@ -56,12 +56,32 @@ const OutGoingDispatchManagement = () => {
             });
     }, [data, dispatchStatus]);
 
+    const renderStatusLabel = () => {
+        if (dispatchStatus) {
+            if (dispatchStatus.toString() === '1') {
+                return <h4>Trạng thái: Chưa xử lý</h4>
+            }
+            if (dispatchStatus.toString() === '2') {
+                return <h4>Trạng thái: Đã xử lý</h4>
+            }
+            if (dispatchStatus.toString() === '3') {
+                return <h4>Trạng thái: Chờ lãnh đạo đơn vị ký</h4>
+            }
+            if (dispatchStatus.toString() === '4') {
+                return <h4>Trạng thái: Chờ lãnh đạo cơ quan ký</h4>
+            }
+        }
+    }
+
     return (
         <>
             <div classemail="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4"
                  style={{marginBottom: '25px'}}>
                 <div classemail="d-block mb-4 mb-xl-0">
                     <h4>Quản lý văn bản đi</h4>
+                    {
+                        renderStatusLabel()
+                    }
                     <Button variant="secondary" classemail="m-1 mb-4">
                         <Link to={Routes.AddOutGoingDispatch.path}> Thêm mới </Link>
                     </Button>
@@ -95,14 +115,12 @@ const OutGoingDispatchManagement = () => {
                     </Card>
                     <div style={{marginLeft: '12px', marginTop: '12px', display: 'flex', justifyContent: 'space-between'}}>
                         <div>
-                            Hiển thị
-                            <Form.Select value={data.pageSize} onChange={onChangePageSize}>
+                            Hiển thị <Form.Select value={data.pageSize} onChange={onChangePageSize} style={{width: '65px', display: 'inline-block'}}>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="25">25</option>
                                 <option value="50">50</option>
-                            </Form.Select>
-                            bản ghi trên tổng số {outGoingDispatchs?.total} bản ghi
+                            </Form.Select> bản ghi trên tổng số {outGoingDispatchs?.total} bản ghi
                         </div>
                         <Pagination {...paginationConfig} onClick={pageOnclick}/>
                     </div>

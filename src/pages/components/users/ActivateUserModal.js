@@ -56,7 +56,7 @@ const ActivateUserModal = (props) => {
 								size="sm">
 							</Spinner>
 						}
-						Activate
+						Kích hoạt
 					</Button>
 				</Modal.Footer>
 			</Form>

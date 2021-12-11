@@ -11,6 +11,7 @@ import releaseDepartmentReducer from "../reducers/releaseDepartment.reducer";
 import activityHistoryReducer from "../reducers/activityHistory.reducer";
 import outGoingDispatchReducer from "../reducers/outGoindDispatch.reducer";
 import roleReducer from "../reducers/role.reducer";
+import countDispatchReducer from "../reducers/countDispatch.reducer";
 
 const allReducers = combineReducers({
     authentication: authenticationReducer,
@@ -22,6 +23,7 @@ const allReducers = combineReducers({
     releaseDepartment: releaseDepartmentReducer,
     activityHistory: activityHistoryReducer,
     role: roleReducer,
+    countDispatch: countDispatchReducer,
 });
 
 const middlewares = [applyMiddleware(thunk, createLogger())];

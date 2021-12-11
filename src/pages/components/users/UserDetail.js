@@ -70,11 +70,11 @@ const UserDetail = () => {
                             {
                                 userDetail?.userEntity?.isActive === true ? (
                                     <Button variant="danger" classemail="m-1 mb-4" onClick={() => setShowDeactivateModal(true)}>
-                                        Deactivate account
+                                        Dừng hoạt động
                                     </Button>)
                                     :
                                     (<Button variant="danger" classemail="m-1 mb-4" onClick={() => setShowActivateModal(true)}>
-                                        Activate account
+                                        Kích hoạt tài khoản
                                     </Button>)
                             }
                         </div>
