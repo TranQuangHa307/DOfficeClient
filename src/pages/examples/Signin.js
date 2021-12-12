@@ -29,7 +29,7 @@ export default () => {
     e.preventDefault();
     dispatch(authenticationActions.authenticate(loginInput.email, loginInput.password))
       .then((res) => {
-        history.push(Routes.User.path);
+        history.push(Routes.Presentation.path);
       })
         .catch((e) => {
           // TODO: alert error

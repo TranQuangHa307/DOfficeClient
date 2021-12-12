@@ -1,30 +1,20 @@
 import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBell, faCog, faEnvelopeOpen, faSearch, faSignOutAlt, faUserShield} from "@fortawesome/free-solid-svg-icons";
+import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
 import {faUserCircle} from "@fortawesome/free-regular-svg-icons";
-import {
-    Row,
-    Col,
-    Nav,
-    Form,
-    Image,
-    Navbar,
-    Dropdown,
-    Container,
-    ListGroup,
-    InputGroup
-} from '@themesberg/react-bootstrap';
+import {Col, Container, Dropdown, Image, ListGroup, Nav, Navbar, Row} from '@themesberg/react-bootstrap';
 
 import NOTIFICATIONS_DATA from "../data/notifications";
 import Profile3 from "../assets/img/team/male.png";
 import Cookie from "js-cookie";
 import {useSelector} from "react-redux";
+import {Link, useHistory} from "react-router-dom";
+import {Routes} from "../routes";
 
 
 export default (props) => {
     const [notifications, setNotifications] = useState(NOTIFICATIONS_DATA);
     const areNotificationsRead = notifications.reduce((acc, notif) => acc && notif.read, true);
-
     const {user} = useSelector(state => state.authentication);
 
     const markNotificationsAsRead = () => {
@@ -117,7 +107,7 @@ export default (props) => {
                             <Dropdown.Menu className="user-dropdown dropdown-menu-right mt-2">
                                 <Dropdown.Item className="fw-bold">
                                     <FontAwesomeIcon icon={faUserCircle} className="me-2"/>
-                                    Đổi mật khẩu
+                                    <Link to={Routes.ChangePassword.path}>Đổi mật khẩu</Link>
                                 </Dropdown.Item>
                                 {/*<Dropdown.Item className="fw-bold">*/}
                                 {/*  <FontAwesomeIcon icon={faCog} className="me-2" /> Settings*/}

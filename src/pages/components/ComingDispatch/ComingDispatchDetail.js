@@ -32,10 +32,17 @@ const ComingDispatchDetail = () => {
     // console.log(111, activityHistories);
 
     useEffect(() => {
-        dispatch(comingDispatchActions.getComingDispatchById(id));
-        dispatch(comingDispatchActions.getDispatchStream(id));
-        dispatch(comingDispatchActions.getUserViewDispatch(id));
-        dispatch(userActions.getAllUser());
+
+        dispatch(comingDispatchActions.getUserViewDispatch(id))
+            .then((result) => {
+                if (!result.length) {
+                    history.push('/examples/404');
+                    return;
+                }
+                dispatch(comingDispatchActions.getComingDispatchById(id));
+                dispatch(comingDispatchActions.getDispatchStream(id));
+                dispatch(userActions.getAllUser());
+            });
     }, []);
 
     const back = () => {
@@ -381,7 +388,7 @@ const ComingDispatchDetail = () => {
                             <div className="body__right__field">
                                 <div className="body__right__field__title">Người duyệt</div>
                                 <span className="body__right__field__result">
-                                {comingDispatchDetail?.approveBy}
+                                {comingDispatchDetail?.comingDispatchResultDTO?.approveByUser?.fullName}
                             </span>
                             </div>
 

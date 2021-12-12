@@ -4,9 +4,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import comingDispatchActions from '../../../actions/comingDispatchActions';
 import {toast} from 'react-toastify';
 import outGoingDispatchActions from "../../../actions/outGoingDispatchActions";
+import {useLocation} from "react-router-dom";
 
 const AddViewerToDispatchModal = (props) => {
 	const dispatch = useDispatch();
+	const location = useLocation();
 	const [input, setInput] = useState({
 		userId: '',
 	});
@@ -18,6 +20,8 @@ const AddViewerToDispatchModal = (props) => {
 	const { users } = useSelector(state => state.user);
 	const { outGoingDispatchDetail } = useSelector(state => state.outGoingDispatch);
 	const { comingDispatchDetail } = useSelector(state => state.comingDispatch);
+
+	const isComingDispatch = location.pathname.includes('coming-dispatch');
 
 	const handleClose = () => {
 		props.onClose();
@@ -50,7 +54,7 @@ const AddViewerToDispatchModal = (props) => {
 		setError({
 			userId: '',
 		});
-		if (outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.id) {  // nếu là văn bản đi
+		if (!isComingDispatch) {  // nếu là văn bản đi
 			const data = {
 				...input,
 				officialDispatchId: outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.id,
@@ -112,6 +116,21 @@ const AddViewerToDispatchModal = (props) => {
 							<option>---Chọn người theo dõi---</option>
 							{
 								users
+									.filter((user) => {
+										if (!user?.userEntity?.isActive) {
+											return false;
+										}
+										const detail = isComingDispatch ? comingDispatchDetail : outGoingDispatchDetail;
+										const processors = detail?.processors ?? [];
+										if (processors.find(x => x?.processor?.id === user?.userEntity?.id)) {
+											return false;
+										}
+										const viewers = detail?.viewers ?? [];
+										if (viewers.find(x => x?.viewer?.id === user?.userEntity?.id)) {
+											return false;
+										}
+										return true;
+									})
 									.map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))
 							}
 						</Form.Select>

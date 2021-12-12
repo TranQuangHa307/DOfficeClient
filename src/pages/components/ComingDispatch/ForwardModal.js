@@ -95,7 +95,10 @@ const ForwardModal = (props) => {
 							value={input.userId}
 						>
 							<option>---Chọn người tiếp nhận---</option>
-							{users.map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))}
+							{users
+								.filter((user) => user?.userEntity?.isActive)
+								.map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))
+							}
 						</Form.Select>
 						{error.userId && <span style={{ color: 'red' }}>{error.userId}</span>}
 					</Form.Group>

@@ -215,6 +215,9 @@ function approve(dispatchId) {
 
 function getUserViewDispatch(dispatchId) {
     return (dispatch) => {
+        dispatch({
+            type: 'DETAIL_USER_VIEW_DISPATCH_LOADING',
+        });
         return comingDispatchServices.getUserViewDispatch(dispatchId)
             .then((result) => {
                 dispatch({

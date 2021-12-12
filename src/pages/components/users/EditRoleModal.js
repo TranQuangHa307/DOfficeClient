@@ -12,6 +12,7 @@ const EditRoleModal = (props) => {
 	const [submitting, setSubmitting] = useState(false);
 
 	const {loading, roles, roleOfUser} = useSelector(state => state.role);
+	const { userDetail } = useSelector(state => state.user);
 
 	const {checked ,setChecked} = useState(false);
 
@@ -25,10 +26,10 @@ const EditRoleModal = (props) => {
 
 	useEffect(() => {
 		dispatch(roleActions.getAllRole());
-		dispatch(roleActions.getAllRoleOfUser(props.userId))
-            .then((result) => {
-
-            });
+		// dispatch(roleActions.getAllRoleOfUser(props.userId))
+        //     .then((result) => {
+		//
+        //     });
 	}, []);
 
     let roleMap = new Map();
@@ -55,6 +56,10 @@ const EditRoleModal = (props) => {
         data.listRole = roleId;
         console.log(roleId);
 		// submit
+		if (!roleId.length) {
+			toast.error("Đã xảy ra lỗi. Vui lòng liên hệ quản trị viên để được hỗ trợ", { autoClose: 3000, hideProgressBar : true });
+			return;
+		}
 		setSubmitting(true);
         dispatch(roleActions.addRoleForUser(data))
             .then(() => {
@@ -90,7 +95,7 @@ const EditRoleModal = (props) => {
 
                     {
                         roles.map((role, index) => {
-                            const check = roleOfUser.find(item => item?.id === role?.id);
+                            const check = userDetail?.roles?.find(item => item?.id === role?.id);
                             if (check) {  // nếu có --> checked= true
                                 roleMap.set(role?.id, true);
                                 return (

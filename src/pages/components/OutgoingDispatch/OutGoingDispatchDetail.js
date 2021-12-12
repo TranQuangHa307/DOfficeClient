@@ -38,10 +38,16 @@ const OutGoingDispatchDetail = () => {
     const [showAddViewerToDispatchModal, setShowAddViewerToDispatchModal] = useState(false);
 
     useEffect(() => {
-        dispatch(outGoingDispatchActions.getOutGoingDispatchById(id));
-        dispatch(comingDispatchActions.getDispatchStream(id));
-        dispatch(comingDispatchActions.getUserViewDispatch(id));
-        dispatch(userActions.getAllUser());
+        dispatch(comingDispatchActions.getUserViewDispatch(id))
+            .then((result) => {
+                if (!result.length) {
+                    history.push('/examples/404');
+                    return;
+                }
+                dispatch(outGoingDispatchActions.getOutGoingDispatchById(id));
+                dispatch(comingDispatchActions.getDispatchStream(id));
+                dispatch(userActions.getAllUser());
+            });
     }, []);
 
     const back = () => {
@@ -387,7 +393,9 @@ const OutGoingDispatchDetail = () => {
                 </Modal.Footer>
             </Modal>
 
-            {loading === true ? <div>Loading...</div> :
+            {loading === true ? <div style={{ width: '100%', textAlign: 'center' }}><Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner></div> :
                 <div className="mainContent">
                     <div className="nav">
                         <div className="nav__1">

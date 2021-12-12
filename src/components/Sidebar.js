@@ -14,133 +14,155 @@ import {useDispatch, useSelector} from "react-redux";
 import countDispatchActions from "../actions/countDispatchActions";
 
 export default (props = {}) => {
-  const location = useLocation();
-  const { pathname } = location;
-  const [show, setShow] = useState(false);
-  const showClass = show ? "show" : "";
-  const dispatch = useDispatch();
-  const onCollapse = () => setShow(!show);
-  const {user} = useSelector(state => state.authentication);
-  const {countDispatch} = useSelector(state => state.countDispatch);
+    const location = useLocation();
+    const {pathname} = location;
+    const [show, setShow] = useState(false);
+    const showClass = show ? "show" : "";
+    const dispatch = useDispatch();
+    const onCollapse = () => setShow(!show);
+    const {user} = useSelector(state => state.authentication);
+    const {countDispatch} = useSelector(state => state.countDispatch);
 
-  const signOut = () => {
-    Cookie.remove('authToken');
-    window.location.href = '/';
-  }
+    const signOut = () => {
+        Cookie.remove('authToken');
+        window.location.href = '/';
+    }
 
-  useEffect(() => {
-    dispatch(countDispatchActions.getCountDispatch());
-  }, [])
+    useEffect(() => {
+        dispatch(countDispatchActions.getCountDispatch());
+    }, [])
 
-  const CollapsableNavItem = (props) => {
-    const { eventKey, title, icon, children = null } = props;
-    const defaultKey = pathname.indexOf(eventKey) !== -1 ? eventKey : "";
+    const CollapsableNavItem = (props) => {
+        const {eventKey, title, icon, children = null} = props;
+        const defaultKey = pathname.indexOf(eventKey) !== -1 ? eventKey : "";
 
-    return (
-      <Accordion as={Nav.Item} defaultActiveKey={defaultKey}>
-        <Accordion.Item eventKey={eventKey}>
-          <Accordion.Button as={Nav.Link} className="d-flex justify-content-between align-items-center">
+        return (
+            <Accordion as={Nav.Item} defaultActiveKey={defaultKey}>
+                <Accordion.Item eventKey={eventKey}>
+                    <Accordion.Button as={Nav.Link} className="d-flex justify-content-between align-items-center">
             <span>
-              <span className="sidebar-icon"><FontAwesomeIcon icon={icon} /> </span>
+              <span className="sidebar-icon"><FontAwesomeIcon icon={icon}/> </span>
               <span className="sidebar-text">{title}</span>
             </span>
-          </Accordion.Button>
-          <Accordion.Body className="multi-level">
-            <Nav className="flex-column">
-              {children}
-            </Nav>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-    );
-  };
+                    </Accordion.Button>
+                    <Accordion.Body className="multi-level">
+                        <Nav className="flex-column">
+                            {children}
+                        </Nav>
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
+        );
+    };
 
-  const NavItem = (props) => {
-    const { title, link, external, target, icon, image, badgeText, badgeBg = "secondary", badgeColor = "primary" } = props;
-    const classNames = badgeText ? "d-flex justify-content-start align-items-center justify-content-between" : "";
-    const navItemClassName = link === pathname ? "active" : "";
-    const linkProps = external ? { href: link } : { as: Link, to: link };
+    const NavItem = (props) => {
+        const {
+            title,
+            link,
+            external,
+            target,
+            icon,
+            image,
+            badgeText,
+            badgeBg = "secondary",
+            badgeColor = "primary"
+        } = props;
+        const classNames = badgeText ? "d-flex justify-content-start align-items-center justify-content-between" : "";
+        const navItemClassName = link === pathname ? "active" : "";
+        const linkProps = external ? {href: link} : {as: Link, to: link};
+
+        return (
+            <Nav.Item className={navItemClassName} onClick={() => setShow(false)}>
+                <Nav.Link {...linkProps} target={target} className={classNames}>
+          <span>
+            {icon ? <span className="sidebar-icon"><FontAwesomeIcon icon={icon}/> </span> : null}
+              {image ? <Image style={{width: '50px', height: '50px'}} src={image} width={20} height={20}
+                              className="sidebar-icon svg-icon"/> : null}
+
+              <span className="sidebar-text">{title}</span>
+          </span>
+                    {badgeText ? (
+                        <Badge pill bg={badgeBg} text={badgeColor}
+                               className="badge-md notification-count ms-2">{badgeText}</Badge>
+                    ) : null}
+                </Nav.Link>
+            </Nav.Item>
+        );
+    };
 
     return (
-      <Nav.Item className={navItemClassName} onClick={() => setShow(false)}>
-        <Nav.Link {...linkProps} target={target} className={classNames}>
-          <span>
-            {icon ? <span className="sidebar-icon"><FontAwesomeIcon icon={icon} /> </span> : null}
-            {image ? <Image  style={{width : '50px', height: '50px'}} src={image} width={20} height={20} className="sidebar-icon svg-icon" /> : null}
-
-            <span className="sidebar-text">{title}</span>
-          </span>
-          {badgeText ? (
-            <Badge pill bg={badgeBg} text={badgeColor} className="badge-md notification-count ms-2">{badgeText}</Badge>
-          ) : null}
-        </Nav.Link>
-      </Nav.Item>
-    );
-  };
-
-  return (
-    <>
-      <Navbar expand={false} collapseOnSelect variant="dark" className="navbar-theme-primary px-4 d-md-none">
-        <Navbar.Brand className="me-lg-5" as={Link} to={Routes.DashboardOverview.path}>
-          <Image src={DOfficeLogo} className="navbar-brand-light" />
-        </Navbar.Brand>
-        <Navbar.Toggle as={Button} aria-controls="main-navbar" onClick={onCollapse}>
-          <span className="navbar-toggler-icon" />
-        </Navbar.Toggle>
-      </Navbar>
-      <CSSTransition timeout={300} in={show} classNames="sidebar-transition">
-        <SimpleBar className={`collapse ${showClass} sidebar d-md-block bg-primary text-white`}>
-          <div className="sidebar-inner px-4 pt-3">
-            <div className="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
-              <div className="d-flex align-items-center">
-                <div className="user-avatar lg-avatar me-4">
-                  <Image src={ProfilePicture} className="card-img-top rounded-circle border-white" />
-                </div>
-                <div className="d-block">
-                  <h6>Hi, Jane</h6>
-                  <Button onClick={signOut} variant="secondary" size="xs" className="text-dark">
-                    <FontAwesomeIcon icon={faSignOutAlt} className="me-2" /> Sign Out
-                  </Button>
-                </div>
-              </div>
-              <Nav.Link className="collapse-close d-md-none" onClick={onCollapse}>
-                <FontAwesomeIcon icon={faTimes} />
-              </Nav.Link>
-            </div>
-            <Nav className="flex-column pt-3 pt-md-0">
-              <NavItem title="D Office" link="/" image={DOfficeLogo}/>
-
-              {/* <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faChartPie} /> */}
-
-              {/* Tạm thời comment lại */}
-              {/*{ user?.roles?.some((role) => {*/}
-              {/*  return role === ROLE_META_DATA_KEYS.systemAdmin;*/}
-              {/*}) && (<NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />)}*/}
+        <>
+            <Navbar expand={false} variant="dark" className="navbar-theme-primary px-4 d-md-none">
+                <Navbar.Brand className="me-lg-5" as={Link} to={Routes.DashboardOverview.path}>
+                    <Image src={DOfficeLogo} className="navbar-brand-light"/>
+                </Navbar.Brand>
+                <Navbar.Toggle as={Button} aria-controls="main-navbar" onClick={onCollapse}>
+                    <span className="navbar-toggler-icon"/>
+                </Navbar.Toggle>
+            </Navbar>
 
 
-              <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />
+            <CSSTransition timeout={300} in={show} classNames="sidebar-transition">
+                <SimpleBar className={`collapse ${showClass} sidebar d-md-block bg-primary text-white`}>
+                    <div className="sidebar-inner px-4 pt-3">
+                        <div
+                            className="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
+                            <div className="d-flex align-items-center">
+                                <div className="user-avatar lg-avatar me-4">
+                                    <Image src={ProfilePicture} className="card-img-top rounded-circle border-white"/>
+                                </div>
+                                <div className="d-block">
+                                    <h6>Hi, Jane</h6>
+                                    <Button onClick={signOut} variant="secondary" size="xs" className="text-dark">
+                                        <FontAwesomeIcon icon={faSignOutAlt} className="me-2"/> Sign Out
+                                    </Button>
+                                </div>
+                            </div>
+                            <Nav.Link className="collapse-close d-md-none" onClick={onCollapse}>
+                                <FontAwesomeIcon icon={faTimes}/>
+                            </Nav.Link>
+                        </div>
+                        <Nav className="flex-column pt-3 pt-md-0">
+                            <NavItem title="D Office" link="/" image={DOfficeLogo}/>
 
-              <CollapsableNavItem eventKey="tables/" title="Văn bản đến" icon={faFile}>
-                <NavItem  title={`Tất cả (${countDispatch?.cdAll})`} link={`${Routes.ComingDispatchManagement.path}`} icon={faFile} />
-                <NavItem title={`Đã xử lý (${countDispatch?.cdDone})`} link={`${Routes.ComingDispatchManagement.path}?status=2`} icon={faFile} />
-                <NavItem title={`Chưa xử lý (${countDispatch?.cdNotDone})`} link={`${Routes.ComingDispatchManagement.path}?status=1`} icon={faFile} />
-              </CollapsableNavItem>
+                            {/* <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faChartPie} /> */}
 
-              <CollapsableNavItem eventKey="tables/" title="Văn bản đi" icon={faFile}>
-                <NavItem title={`Tất cả (${countDispatch?.ogAll})`} link={`${Routes.OutGoingDispatchManagement.path}`} icon={faFile} />
-                <NavItem title={`Chờ lãnh đơn vị (${countDispatch?.ogChoLanhDaoDonVi})`} link={`${Routes.OutGoingDispatchManagement.path}?status=3`} icon={faFile} />
-                <NavItem title={`Chờ lãnh cơ quan (${countDispatch?.ogChoLanhDaoCoQuan})`} link={`${Routes.OutGoingDispatchManagement.path}?status=4`} icon={faFile} />
-                <NavItem title={`Chưa xử lý (${countDispatch?.ogNotDone})`} link={`${Routes.OutGoingDispatchManagement.path}?status=1`} icon={faFile} />
-                <NavItem title={`Đã xử lý (${countDispatch?.ogDone})`} link={`${Routes.OutGoingDispatchManagement.path}?status=2`} icon={faFile} />
-                {/*<NavItem title="Đã ban hành" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />*/}
-              </CollapsableNavItem>
-
-              {/*<NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faFile} />*/}
-              {/*<NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />*/}
+                            {/* Tạm thời comment lại */}
+                            {/*{ user?.roles?.some((role) => {*/}
+                            {/*  return role === ROLE_META_DATA_KEYS.systemAdmin;*/}
+                            {/*}) && (<NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />)}*/}
 
 
+                            <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser}/>
 
-{/* 
+                            <CollapsableNavItem eventKey="tables/" title="Văn bản đến" icon={faFile}>
+                                <NavItem title={`Tất cả (${countDispatch?.cdAll})`}
+                                         link={`${Routes.ComingDispatchManagement.path}`} icon={faFile}/>
+                                <NavItem title={`Đã xử lý (${countDispatch?.cdDone})`}
+                                         link={`${Routes.ComingDispatchManagement.path}?status=2`} icon={faFile}/>
+                                <NavItem title={`Chưa xử lý (${countDispatch?.cdNotDone})`}
+                                         link={`${Routes.ComingDispatchManagement.path}?status=1`} icon={faFile}/>
+                            </CollapsableNavItem>
+
+                            <CollapsableNavItem eventKey="tables/" title="Văn bản đi" icon={faFile}>
+                                <NavItem title={`Tất cả (${countDispatch?.ogAll})`}
+                                         link={`${Routes.OutGoingDispatchManagement.path}`} icon={faFile}/>
+                                <NavItem title={`Chờ lãnh đơn vị (${countDispatch?.ogChoLanhDaoDonVi})`}
+                                         link={`${Routes.OutGoingDispatchManagement.path}?status=3`} icon={faFile}/>
+                                <NavItem title={`Chờ lãnh cơ quan (${countDispatch?.ogChoLanhDaoCoQuan})`}
+                                         link={`${Routes.OutGoingDispatchManagement.path}?status=4`} icon={faFile}/>
+                                <NavItem title={`Chưa xử lý (${countDispatch?.ogNotDone})`}
+                                         link={`${Routes.OutGoingDispatchManagement.path}?status=1`} icon={faFile}/>
+                                <NavItem title={`Đã xử lý (${countDispatch?.ogDone})`}
+                                         link={`${Routes.OutGoingDispatchManagement.path}?status=2`} icon={faFile}/>
+                                {/*<NavItem title="Đã ban hành" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />*/}
+                            </CollapsableNavItem>
+
+                            {/*<NavItem title="Văn bản đến" link={Routes.ComingDispatchManagement.path} icon={faFile} />*/}
+                            {/*<NavItem title="Văn bản đi" link={Routes.OutGoingDispatchManagement.path} icon={faFile} />*/}
+
+
+                            {/*
               <CollapsableNavItem eventKey="tables/" title="Tables" icon={faTable}>
                 <NavItem title="Bootstrap Table" link={Routes.BootstrapTables.path} />
               </CollapsableNavItem>
@@ -177,12 +199,10 @@ export default (props = {}) => {
               </CollapsableNavItem> */}
 
 
-
-
-            </Nav>
-          </div>
-        </SimpleBar>
-      </CSSTransition>
-    </>
-  );
+                        </Nav>
+                    </div>
+                </SimpleBar>
+            </CSSTransition>
+        </>
+    );
 };

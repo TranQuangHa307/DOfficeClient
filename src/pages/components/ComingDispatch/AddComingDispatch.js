@@ -211,7 +211,10 @@ const AddComingDispatch = () => {
                     <Form.Label>Người nhận</Form.Label>
                     <Form.Select name="receiverId" onChange={onChange}>
                         <option>---Chọn người nhận---</option>
-                        {users.map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))}
+                        {users
+                            .filter((user) => user?.userEntity?.isActive)
+                            .map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))
+                        }
                     </Form.Select>
                 </Form.Group>
 

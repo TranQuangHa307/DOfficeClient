@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {Route, Switch, Redirect, useHistory} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Redirect, Route, Switch, useHistory} from "react-router-dom";
 import {Routes} from "../routes";
 
 // pages
-import Presentation from "./Presentation";
 import Upgrade from "./Upgrade";
 import DashboardOverview from "./dashboard/DashboardOverview";
 import Transactions from "./Transactions";
@@ -41,7 +40,6 @@ import Tooltips from "./components/Tooltips";
 import Toasts from "./components/Toasts";
 import User from './components/users/User';
 import AddUser from './components/users/AddUser';
-import authenticateServices from "../services/authenticate.services";
 import {useDispatch, useSelector} from "react-redux";
 import authenticationActions from "../actions/authentication.actions";
 import ComingDispatchManagement from "./components/ComingDispatch/ComingDispatchManagement";
@@ -49,7 +47,6 @@ import OutGoingDispatchManagement from "./components/OutgoingDispatch/OutGoingDi
 import AddComingDispatch from "./components/ComingDispatch/AddComingDispatch";
 import ComingDispatchDetail from "./components/ComingDispatch/ComingDispatchDetail";
 import Helmet from 'react-helmet';
-import LoadingOverlay from 'react-loading-overlay';
 
 import '../index.scss';
 import EditComingDispatch from "./components/ComingDispatch/EditComingDispatch";
@@ -59,6 +56,7 @@ import EditOutGoingDispatch from "./components/OutgoingDispatch/EditOutGoingDisp
 import PublishedDispatchDetail from "./components/PublishedDispatch/PublishedDispatchDetail";
 import UserDetail from "./components/users/UserDetail";
 import EditUser from "./components/users/EditUser";
+import ChangePassword from "./components/users/ChangePassword";
 
 const RouteWithLoader = ({component: Component, ...rest}) => {
     const [loaded, setLoaded] = useState(false);
@@ -186,6 +184,7 @@ export default () => (
         {/*  User  */}
         <RouteWithSidebar exact path={Routes.User.path} component={User}/>
         <RouteWithSidebar exact path={Routes.AddUser.path} component={AddUser}/>
+        <RouteWithSidebar exact path={Routes.ChangePassword.path} component={ChangePassword}/>
         <RouteWithSidebar exact path={Routes.UserDetail.path} component={UserDetail}/>
         <RouteWithSidebar exact path={Routes.EditUser.path} component={EditUser}/>
 

@@ -59,16 +59,16 @@ const OutGoingDispatchManagement = () => {
     const renderStatusLabel = () => {
         if (dispatchStatus) {
             if (dispatchStatus.toString() === '1') {
-                return <h4>Trạng thái: Chưa xử lý</h4>
+                return <p>Trạng thái: Chưa xử lý</p>
             }
             if (dispatchStatus.toString() === '2') {
-                return <h4>Trạng thái: Đã xử lý</h4>
+                return <p>Trạng thái: Đã xử lý</p>
             }
             if (dispatchStatus.toString() === '3') {
-                return <h4>Trạng thái: Chờ lãnh đạo đơn vị ký</h4>
+                return <p>Trạng thái: Chờ lãnh đạo đơn vị ký</p>
             }
             if (dispatchStatus.toString() === '4') {
-                return <h4>Trạng thái: Chờ lãnh đạo cơ quan ký</h4>
+                return <p>Trạng thái: Chờ lãnh đạo cơ quan ký</p>
             }
         }
     }

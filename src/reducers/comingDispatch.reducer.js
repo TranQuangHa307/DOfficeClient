@@ -58,10 +58,16 @@ const comingDispatchReducer = (state = defaultState, action) => {
                 ...state,
                 loading: true,
             };
+        case 'DETAIL_USER_VIEW_DISPATCH_LOADING':
+            return {
+                ...state,
+                loading: true,
+            };
         case 'DETAIL_USER_VIEW_DISPATCH_LOADED':
             return {
                 ...state,
                 userViewDispatch: action.payload,
+                loading: false,
             };
         default:
             return state;
