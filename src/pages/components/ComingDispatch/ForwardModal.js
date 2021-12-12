@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Modal } from '@themesberg/react-bootstrap';
+import {Button, Form, Modal, Spinner} from '@themesberg/react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import comingDispatchActions from '../../../actions/comingDispatchActions';
 import { toast } from 'react-toastify';
@@ -65,6 +65,7 @@ const ForwardModal = (props) => {
 
 		dispatch(comingDispatchActions.forward(data))
 			.then(() => {
+				dispatch(comingDispatchActions.getComingDispatchById(data.officialDispatchId));
 				dispatch(comingDispatchActions.getDispatchStream(data.officialDispatchId));
 				setInput({
 					userId: '',
@@ -96,7 +97,22 @@ const ForwardModal = (props) => {
 						>
 							<option>---Chọn người tiếp nhận---</option>
 							{users
-								.filter((user) => user?.userEntity?.isActive)
+								.filter((user) => {
+									if (!user?.userEntity?.isActive) {
+										return false;
+									}
+									const detail = comingDispatchDetail;
+									const processors = detail?.processors ?? [];
+									if (processors.find(x => x?.processor?.id === user?.userEntity?.id)) {
+										return false;
+									}
+									const viewers = detail?.viewers ?? [];
+									if (viewers.find(x => x?.viewer?.id === user?.userEntity?.id)) {
+										return false;
+									}
+									return true;
+									return true;
+								})
 								.map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))
 							}
 						</Form.Select>
@@ -119,6 +135,14 @@ const ForwardModal = (props) => {
 						Hủy
 					</Button>
 					<Button type="submit" variant="primary" disabled={submitting}>
+						{
+							submitting &&
+							<Spinner
+								animation="border"
+								role="status"
+								size="sm">
+							</Spinner>
+						}
 						Chuyển tiếp
 					</Button>
 				</Modal.Footer>

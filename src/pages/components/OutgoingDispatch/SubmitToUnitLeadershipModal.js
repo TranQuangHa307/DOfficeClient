@@ -5,6 +5,7 @@ import comingDispatchActions from '../../../actions/comingDispatchActions';
 import { toast } from 'react-toastify';
 import {OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS, ROLE_META_DATA_KEYS} from "../../../constants/app";
 import outGoingDispatchActions from "../../../actions/outGoingDispatchActions";
+import countDispatchActions from "../../../actions/countDispatchActions";
 
 const SubmitToUnitLeadershipModal = (props) => {
 	const dispatch = useDispatch();
@@ -72,6 +73,7 @@ const SubmitToUnitLeadershipModal = (props) => {
 					type: 'OUT_GOING_DISPATCH_DETAIL_LOADED',
 					payload: outGoingDispatchDetail,
 				})
+				dispatch(countDispatchActions.getCountDispatch());
 				dispatch(comingDispatchActions.getDispatchStream(data.officialDispatchId));
 				dispatch(outGoingDispatchActions.getOutGoingDispatchById(data.officialDispatchId));
 				setInput({

@@ -1,6 +1,6 @@
 import React from "react";
 import TableRow from "./TableRow";
-import {Button, Card, Form, Table} from "@themesberg/react-bootstrap";
+import {Badge, Button, Card, Form, Spinner, Table} from "@themesberg/react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {Routes} from "../../../routes";
 import comingDispatchActions from "../../../actions/comingDispatchActions";
@@ -61,10 +61,28 @@ const ComingDispatchManagement = () => {
     const renderStatusLabel = () => {
         if (dispatchStatus) {
             if (dispatchStatus.toString() === '1') {
-                return <h4>Trạng thái: Chưa xử lý</h4>
+                return (
+                    <>
+                        <p>
+                            Trạng thái:
+                            <Badge pill bg="danger" style={{marginLeft: '7px'}} >
+                                Chưa xử lý
+                            </Badge>
+                        </p>
+                    </>
+                )
             }
             if (dispatchStatus.toString() === '2') {
-                return <h4>Trạng thái: Đã xử lý</h4>
+                return (
+                    <>
+                        <p>
+                            Trạng thái:
+                            <Badge pill bg="primary" style={{marginLeft: '7px'}}>
+                                Đã xử lý
+                            </Badge>
+                        </p>
+                    </>
+                )
             }
         }
     }
@@ -84,7 +102,13 @@ const ComingDispatchManagement = () => {
                 </div>
             </div>
 
-            {loading && !isInit ? 'loading...' : (
+            {loading && !isInit ?
+                <div style={{ width: '100%', textAlign: 'center' }}>
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
+                : (
                 <>
                     <Card border="light" classemail="shadow-sm">
                         <Card.Body classemail="p-0">

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Form, Table} from '@themesberg/react-bootstrap';
+import {Button, Card, Form, Spinner, Table} from '@themesberg/react-bootstrap';
 import {Link} from 'react-router-dom';
 import {Routes} from '../../../routes';
 import TableRow from "./TableRow";
@@ -71,7 +71,13 @@ export default () => {
                 </div>
             </div>
 
-            {loading ? 'loading...' : (
+            {loading ?
+                <div style={{ width: '100%', textAlign: 'center' }}>
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
+                : (
                 <>
                     <Card border="light" classemail="shadow-sm">
                         <Card.Body classemail="p-0">

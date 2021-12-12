@@ -6,6 +6,7 @@ import userActions from "../../../actions/userActions";
 import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
 import LoadingOverlay from 'react-loading-overlay';
+import countDispatchActions from "../../../actions/countDispatchActions";
 
 const AddComingDispatch = () => {
 
@@ -102,6 +103,7 @@ const AddComingDispatch = () => {
         });
         dispatch(comingDispatchActions.createDispatchByForm(formData))
             .then(() => {
+                dispatch(countDispatchActions.getCountDispatch());
                 toast.success("Thêm mới văn bản đến thành công", { autoClose: 3000, hideProgressBar : true });
                 history.push("/coming-dispatch");
                 setSubmiting(false);
@@ -224,7 +226,7 @@ const AddComingDispatch = () => {
                     {error.attachments && <span style={{color: 'red'}}>{error.attachments}</span>}
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="w-100">
+                <Button variant="primary" type="submit" className="w-100" disabled={submiting}>
                     {
                         submiting &&
                         <Spinner

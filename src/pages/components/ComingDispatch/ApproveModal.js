@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Modal } from '@themesberg/react-bootstrap';
+import {Button, Modal, Spinner} from '@themesberg/react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import comingDispatchActions from '../../../actions/comingDispatchActions';
 import { toast } from 'react-toastify';
+import countDispatchActions from "../../../actions/countDispatchActions";
 
 const ApproveModal = (props) => {
 	const dispatch = useDispatch();
@@ -20,6 +21,8 @@ const ApproveModal = (props) => {
 		const dispatchId = comingDispatchDetail?.comingDispatchResultDTO?.id;
 		dispatch(comingDispatchActions.approve(dispatchId))
 			.then(() => {
+				dispatch(countDispatchActions.getCountDispatch());
+				dispatch(comingDispatchActions.getComingDispatchById(dispatchId));
 				dispatch(comingDispatchActions.getDispatchStream(dispatchId));
 				setSubmitting(false);
 				toast.success('Duyệt thành công', { autoClose: 3000, hideProgressBar : true });
@@ -46,6 +49,14 @@ const ApproveModal = (props) => {
 					Hủy
 				</Button>
 				<Button type="submit" variant="primary" disabled={submitting} onClick={handleSubmit}>
+					{
+						submitting &&
+						<Spinner
+							animation="border"
+							role="status"
+							size="sm">
+						</Spinner>
+					}
 					Duyệt
 				</Button>
 			</Modal.Footer>

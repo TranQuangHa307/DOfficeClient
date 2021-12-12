@@ -243,7 +243,7 @@ const OutGoingDispatchDetail = () => {
                 <Button
                     variant="secondary"
                     classemail="m-1 mb-4" style={{marginRight: '10px'}}
-                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.isPublished}
+                    disabled={outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.isPublished || !outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.isTakenNumber}
                     onClick={publishedDispatch}
                 >
                     Phát hành
@@ -295,10 +295,16 @@ const OutGoingDispatchDetail = () => {
 
     const renderStatus = () => {
         const status = outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.status;
-        if (status === OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.daXuLy) {
-            return "Đã xử lý";
+        if (status === OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.chuaXuLy) {
+            return "Chưa xử lý";
         }
-        return "Chưa xử lý";
+        if (status === OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoDonViKy) {
+            return "Trình lãnh đạo đơn vị";
+        }
+        if (status === OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS.trinhLanhDaoCoQuanKy) {
+            return "Trình lãnh đạo cơ quan";
+        }
+        return "Đã xử lý";
     }
 
     const renderProcessor = () => {
@@ -393,9 +399,13 @@ const OutGoingDispatchDetail = () => {
                 </Modal.Footer>
             </Modal>
 
-            {loading === true ? <div style={{ width: '100%', textAlign: 'center' }}><Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner></div> :
+            {loading === true ?
+                <div style={{ width: '100%', textAlign: 'center' }}>
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
+                :
                 <div className="mainContent">
                     <div className="nav">
                         <div className="nav__1">

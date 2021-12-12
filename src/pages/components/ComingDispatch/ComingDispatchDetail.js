@@ -32,7 +32,6 @@ const ComingDispatchDetail = () => {
     // console.log(111, activityHistories);
 
     useEffect(() => {
-
         dispatch(comingDispatchActions.getUserViewDispatch(id))
             .then((result) => {
                 if (!result.length) {
@@ -160,7 +159,13 @@ const ComingDispatchDetail = () => {
                 </Modal.Footer>
             </Modal>
 
-            {loading === true ? <div>Loading...</div> :
+            {loading === true ?
+                <div style={{ width: '100%', textAlign: 'center' }}>
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
+                :
                 <div className="mainContent">
                     <div className="nav">
                         <div className="nav__1">

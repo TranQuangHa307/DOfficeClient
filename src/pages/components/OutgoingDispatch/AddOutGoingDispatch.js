@@ -6,6 +6,7 @@ import userActions from "../../../actions/userActions";
 import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
 import outGoingDispatchActions from "../../../actions/outGoingDispatchActions";
+import countDispatchActions from "../../../actions/countDispatchActions";
 
 const AddOutGoingDispatch = () => {
 
@@ -97,6 +98,7 @@ const AddOutGoingDispatch = () => {
         });
         dispatch(outGoingDispatchActions.createOutGoingDispatch(formData))
             .then(() => {
+                dispatch(countDispatchActions.getCountDispatch());
                 toast.success("Thêm mới văn bản đi thành công", { autoClose: 3000, hideProgressBar : true });
                 history.push("/out-going-dispatch");
                 setSubmiting(false);
