@@ -59,7 +59,7 @@ const EditOutGoingDispatch = () => {
                 const inputData = {
                     documentNumber: outGoingDispatch.documentNumber,
                     receiveAddress: outGoingDispatch.receiveAddress,
-                    signBy: outGoingDispatch.signBy,
+                    signBy: outGoingDispatch?.signByUser?.id,
                     signDate: moment(outGoingDispatch.signDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
                     effectiveDate: moment(outGoingDispatch.effectiveDate, JAVA_DATE_FORMAT).format('YYYY-MM-DD'),
                     documentTypeId: outGoingDispatch.documentType?.id,
@@ -145,7 +145,7 @@ const EditOutGoingDispatch = () => {
         });
         dispatch(outGoingDispatchActions.updateDispatchByForm(id, formData))
             .then(() => {
-                toast.success("Cập nhật văn bản đến thành công", { autoClose: 3000, hideProgressBar : true });
+                toast.success("Cập nhật văn bản đi thành công", { autoClose: 3000, hideProgressBar : true });
                 history.push(`/out-going-dispatch/${id}`);
                 setSubmiting(false);
             })
@@ -167,7 +167,11 @@ const EditOutGoingDispatch = () => {
 
     // console.log(1111111333, input.attachments)
     if (loading) {
-        return <div>Loading...</div>;
+        return <div style={{ width: '100%', textAlign: 'center' }}>
+            <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>
+        </div>;
     }
 
     return (
@@ -195,9 +199,18 @@ const EditOutGoingDispatch = () => {
                     {error.documentNumber && <span style={{color: 'red'}}>{error.receiveAddress}</span>}
                 </Form.Group>
 
+                {/*<Form.Group className="mb-3">*/}
+                {/*    <Form.Label>Người ký</Form.Label>*/}
+                {/*    <Form.Control type="text" placeholder="Người ký" name="signBy" onChange={onChange} value={input.signBy}/>*/}
+                {/*</Form.Group>*/}
+
                 <Form.Group className="mb-3">
                     <Form.Label>Người ký</Form.Label>
-                    <Form.Control type="text" placeholder="Người ký" name="signBy" onChange={onChange} value={input.signBy}/>
+                    <Form.Select name="signBy" onChange={onChange} value={input.signBy}>
+                        <option>---Chọn người ký---</option>
+                        {users.map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))}
+                    </Form.Select>
+                    {error.signBy && <span style={{color: 'red'}}>{error.signBy}</span>}
                 </Form.Group>
 
                 <Form.Group className="mb-3">

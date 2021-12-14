@@ -11,6 +11,7 @@ import ForwardModal from "./ForwardModal";
 import ApproveModal from "./ApproveModal";
 import FileViewerModal from "../FileViewer/FileViewerModal";
 import AddViewerToDispatchModal from "../OutgoingDispatch/AddViewerToDispatchModal";
+import countDispatchActions from "../../../actions/countDispatchActions";
 
 const ComingDispatchDetail = () => {
 
@@ -67,6 +68,7 @@ const ComingDispatchDetail = () => {
         dispatch(comingDispatchActions.deleteComingDispatch(id))
             .then(() => {
                 toast.success("Xóa văn bản đến thành công", {autoClose: 3000, hideProgressBar: true});
+                dispatch(countDispatchActions.getCountDispatch());
                 history.push("/coming-dispatch");
                 setIsDeleting(false);
             })

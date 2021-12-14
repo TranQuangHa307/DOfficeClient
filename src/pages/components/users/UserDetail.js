@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button} from "@themesberg/react-bootstrap";
+import {Button, Spinner} from "@themesberg/react-bootstrap";
 import {Link, useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import userActions from "../../../actions/userActions";
@@ -47,7 +47,11 @@ const UserDetail = () => {
                 userId={id}
             />
 
-            {loading === true ? <div>Loading...</div> :
+            {loading === true ? <div style={{ width: '100%', textAlign: 'center' }}>
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div> :
                 <div className="mainContent">
                     <div className="nav">
                         <div className="nav__1">

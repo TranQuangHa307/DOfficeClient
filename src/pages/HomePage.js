@@ -57,6 +57,7 @@ import PublishedDispatchDetail from "./components/PublishedDispatch/PublishedDis
 import UserDetail from "./components/users/UserDetail";
 import EditUser from "./components/users/EditUser";
 import ChangePassword from "./components/users/ChangePassword";
+import {Spinner} from "@themesberg/react-bootstrap";
 
 const RouteWithLoader = ({component: Component, ...rest}) => {
     const [loaded, setLoaded] = useState(false);
@@ -100,7 +101,11 @@ const RouteWithSidebar = ({component: Component, ...rest}) => {
 
     if (!userLoaded) {
         return (
-            <div>Loading...</div>
+            <div style={{ width: '100%', textAlign: 'center' }}>
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
         );
     }
 

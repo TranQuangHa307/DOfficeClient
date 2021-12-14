@@ -1,12 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope, faUnlockAlt} from "@fortawesome/free-solid-svg-icons";
-import {Button, Card, Col, Container, Form, FormCheck, InputGroup, Row} from '@themesberg/react-bootstrap';
+import {Button, Card, Col, Container, Form, FormCheck, InputGroup, Row, Spinner} from '@themesberg/react-bootstrap';
 import {useHistory} from 'react-router-dom';
 
 import {Routes} from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
-import BgImage1 from "../../assets/img/illustrations/backgroundLarge.ec2932b7609746155d6b.png";
 import authenticationActions from "../../actions/authentication.actions";
 import {useDispatch} from "react-redux";
 import Helmet from "react-helmet";
@@ -16,6 +15,7 @@ export default () => {
   const [loginInput, setLoginInput] = React.useState({ email: '', password: '' });
   const history = useHistory();
   const dispatch = useDispatch();
+  const [submiting, setSubmiting] = useState(false);
 
   const onChange = (e) => {
     const name = e.target.name;
@@ -26,14 +26,17 @@ export default () => {
 
 
   const onSubmit = (e) => {
+    setSubmiting(true);
     e.preventDefault();
     dispatch(authenticationActions.authenticate(loginInput.email, loginInput.password))
       .then((res) => {
         history.push(Routes.Presentation.path);
+        setSubmiting(false);
       })
         .catch((e) => {
           // TODO: alert error
           console.log(e);
+          setSubmiting(false);
         });
 
   }
@@ -88,7 +91,15 @@ export default () => {
                       <Card.Link className="small text-end">Quên mật khẩu?</Card.Link>
                     </div>
                   </Form.Group>
-                  <Button variant="primary" type="submit" className="w-100">
+                  <Button variant="primary" type="submit" className="w-100" disabled={submiting}>
+                    {
+                      submiting &&
+                      <Spinner
+                          animation="border"
+                          role="status"
+                          size="sm">
+                      </Spinner>
+                    }
                     Đăng nhập
                   </Button>
                 </Form>

@@ -171,7 +171,11 @@ const EditComingDispatch = () => {
 
     // console.log(1111111333, input.attachments)
     if (loading) {
-        return <div>Loading...</div>;
+        return <div style={{ width: '100%', textAlign: 'center' }}>
+            <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </Spinner>
+        </div>;
     }
 
     return (

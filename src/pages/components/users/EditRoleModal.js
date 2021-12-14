@@ -57,7 +57,7 @@ const EditRoleModal = (props) => {
         console.log(roleId);
 		// submit
 		if (!roleId.length) {
-			toast.error("Đã xảy ra lỗi. Vui lòng liên hệ quản trị viên để được hỗ trợ", { autoClose: 3000, hideProgressBar : true });
+			toast.error("Không được để trống vai trò", { autoClose: 3000, hideProgressBar : true });
 			return;
 		}
 		setSubmitting(true);
