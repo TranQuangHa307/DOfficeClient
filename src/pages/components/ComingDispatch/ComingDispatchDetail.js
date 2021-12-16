@@ -232,57 +232,55 @@ const ComingDispatchDetail = () => {
                                 <div className="body__left__1__content">
                                     <div className="body__left__1__content__left">
                                         <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Số văn bản:</p>
+                                            <p className="body__left__1__content__left__field__title" style={{width: '145px'}}>Số văn bản:</p>
                                             <p className="body__left__1__content__left__field__result">
                                                 {comingDispatchDetail.comingDispatchResultDTO?.documentNumber}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Người ký:</p>
+                                            <p className="body__left__1__content__left__field__title" style={{width: '145px'}}>Người ký:</p>
                                             <p className="body__left__1__content__left__field__result">{comingDispatchDetail.comingDispatchResultDTO?.signBy}</p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Ngày ký:</p>
+                                            <p className="body__left__1__content__left__field__title" style={{width: '145px'}}>Ngày ký:</p>
                                             <p className="body__left__1__content__left__field__result">
                                                 {moment(comingDispatchDetail.comingDispatchResultDTO?.signDate).format('YYYY-MM-DD')}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Bộ phận phát
-                                                hành:</p>
+                                            <p className="body__left__1__content__left__field__title" style={{width: '145px'}}>Bộ phận phát hành:</p>
                                             <p className="body__left__1__content__left__field__result">
                                                 {comingDispatchDetail.comingDispatchResultDTO?.releaseDepartment?.departmentName}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Số trang:</p>
+                                            <p className="body__left__1__content__left__field__title" style={{width: '145px'}}>Số trang:</p>
                                             <p className="body__left__1__content__left__field__result">{comingDispatchDetail.comingDispatchResultDTO?.totalPage}</p>
                                         </div>
                                     </div>
 
                                     <div className="body__left__1__content__right">
                                         <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Mức độ bảo
-                                                mật:</p>
+                                            <p className="body__left__1__content__left__field__title" style={{width: '145px'}}>Mức độ bảo mật:</p>
                                             <p className="body__left__1__content__left__field__result">
                                                 {comingDispatchDetail.comingDispatchResultDTO?.securityLevel === 1 ? 'Bình thường' : 'Cao'}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Mức độ khẩn
+                                            <p className="body__left__1__content__left__field__title" style={{width: '145px'}}>Mức độ khẩn
                                                 cấp:</p>
                                             <p className="body__left__1__content__left__field__result">
                                                 {comingDispatchDetail.comingDispatchResultDTO?.urgencyLevel === 1 ? 'Bình thường' : 'Cao'}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Ngày hiệu lực:</p>
+                                            <p className="body__left__1__content__left__field__title" style={{width: '145px'}}>Ngày hiệu lực:</p>
                                             <p className="body__left__1__content__left__field__result">
                                                 {moment(comingDispatchDetail.comingDispatchResultDTO?.effectiveDate).format('YYYY-MM-DD')}
                                             </p>
                                         </div>
                                         <div className="body__left__1__content__left__field">
-                                            <p className="body__left__1__content__left__field__title">Ngày hết hiệu
+                                            <p className="body__left__1__content__left__field__title" style={{width: '145px'}}>Ngày hết hiệu
                                                 lực:</p>
                                             <p className="body__left__1__content__left__field__result">
                                                 {moment(comingDispatchDetail.comingDispatchResultDTO?.expirationDate).format('YYYY-MM-DD')}

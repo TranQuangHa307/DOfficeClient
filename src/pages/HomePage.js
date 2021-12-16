@@ -101,7 +101,7 @@ const RouteWithSidebar = ({component: Component, ...rest}) => {
 
     if (!userLoaded) {
         return (
-            <div style={{ width: '100%', textAlign: 'center' }}>
+            <div style={{ width: '100%', textAlign: 'center', marginTop: '10px' }}>
                 <Spinner animation="border" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>

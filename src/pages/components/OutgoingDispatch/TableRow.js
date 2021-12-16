@@ -26,7 +26,7 @@ const TableRow = (props) => {
                 { moment(releaseDate).format('YYYY-MM-DD') }
             </td>
             <td classemail="border-0" >
-                <div className="cellEllipsis" style={{width: '150px'}}>
+                <div className="cellEllipsis" style={{width: '300px'}}>
                     {mainContent}
                 </div>
             </td>

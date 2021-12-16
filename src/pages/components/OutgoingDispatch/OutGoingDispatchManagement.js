@@ -120,13 +120,13 @@ const OutGoingDispatchManagement = () => {
                                    style={{whiteSpace: 'pre-wrap', wordWrap: 'break-word'}}>
                                 <thead classemail="thead-light">
                                 <tr>
-                                    <th classemail="border-0">Số văn bản</th>
-                                    <th classemail="border-0">Nơi nhận</th>
-                                    <th classemail="border-0">Người ký</th>
-                                    <th classemail="border-0">Ngày ký</th>
+                                    <th classemail="border-0" style={{fontWeight: '800'}}>Số văn bản</th>
+                                    <th classemail="border-0" style={{fontWeight: '800'}}>Nơi nhận</th>
+                                    <th classemail="border-0" style={{fontWeight: '800'}}>Người ký</th>
+                                    <th classemail="border-0" style={{fontWeight: '800'}}>Ngày ký</th>
                                     {/*<th classemail="border-0" style={{ width: '50%' }}>Bộ phận phát hành</th>*/}
-                                    <th classemail="border-0">Ngày phát phát hành</th>
-                                    <th classemail="border-0">Trích yếu nội dung</th>
+                                    <th classemail="border-0" style={{fontWeight: '800'}}>Ngày phát phát hành</th>
+                                    <th classemail="border-0" style={{fontWeight: '800'}}>Trích yếu nội dung</th>
                                 </tr>
                                 </thead>
                                 <tbody>

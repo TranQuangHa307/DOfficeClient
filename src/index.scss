@@ -39,7 +39,9 @@
       .body__left__1 {
         .body__left__1__content {
           display: flex;
-          justify-content: space-around;
+          justify-content: space-between;
+          margin-left: 11px;
+          margin-right: 11px;
 
           .body__left__1__content__left {
 
@@ -108,10 +110,10 @@
 }
 
 .cellEllipsis {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  //width: 150px;
+  //text-overflow: ellipsis;
+  //white-space: normal;
+  //overflow: hidden;
+  //width: 300px;
   display: block;
 }
 

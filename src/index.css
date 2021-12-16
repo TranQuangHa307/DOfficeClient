@@ -22,7 +22,9 @@
 }
 .mainContent .body .body__left .body__left__1 .body__left__1__content {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin-left: 11px;
+  margin-right: 11px;
 }
 .mainContent .body .body__right {
   width: 300px;
@@ -58,9 +60,6 @@
 }
 
 .cellEllipsis {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
   display: block;
 }
 
