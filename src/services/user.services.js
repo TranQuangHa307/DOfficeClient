@@ -24,6 +24,10 @@ function deActivateUser(userId) {
     return post(`/api/admin/user/deactivate/${userId}`);
 }
 
+function changePassword(data) {
+    return post('/api/admin/user/change-password', data);
+}
+
 const userServices = {
     getAllUser,
     createUser,
@@ -31,6 +35,7 @@ const userServices = {
     updateUser,
     activateUser,
     deActivateUser,
+    changePassword,
 }
 
 export default userServices;

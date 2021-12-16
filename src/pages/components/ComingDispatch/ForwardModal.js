@@ -138,6 +138,7 @@ const ForwardModal = (props) => {
 						{
 							submitting &&
 							<Spinner
+								style={{marginRight: '5px'}}
 								animation="border"
 								role="status"
 								size="sm">

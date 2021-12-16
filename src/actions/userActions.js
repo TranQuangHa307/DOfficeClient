@@ -120,6 +120,21 @@ function deActivateUser(userId) {
     }
 }
 
+function changePassword(data) {
+    return () => {
+        return userServices.changePassword(data)
+            .then((result) => {
+                if (result.code >= 400 && result.code <= 599) {
+                    throw new Error(result.message);
+                }
+                if (result?.success === false) {
+                    throw new Error(result.message);
+                }
+                return result.data;
+            })
+    }
+}
+
 const userActions = {
     getAllUser,
     createUser,
@@ -128,6 +143,7 @@ const userActions = {
     updateUser,
     activateUser,
     deActivateUser,
+    changePassword,
 }
 
 export default userActions;

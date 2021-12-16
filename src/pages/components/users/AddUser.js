@@ -4,7 +4,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faEnvelope, faPhone, faUnlockAlt, faUser} from '@fortawesome/free-solid-svg-icons';
 
 import {useHistory} from 'react-router-dom';
-import {Routes} from '../../../routes';
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
 import userActions from "../../../actions/userActions";
@@ -193,6 +192,7 @@ export default () => {
                     {
                         submiting &&
                         <Spinner
+                            style={{marginRight: '5px'}}
                             animation="border"
                             role="status"
                             size="sm">
