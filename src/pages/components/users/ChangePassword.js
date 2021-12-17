@@ -79,7 +79,7 @@ const ChangePassword = () => {
     }
 
     const back = () => {
-        history.push(`/user`);
+        history.push(`/`);
     }
 
     return (

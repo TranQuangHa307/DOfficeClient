@@ -84,21 +84,34 @@ const ComingDispatchManagement = () => {
                     </>
                 )
             }
+        } else {
+            return (
+                <>
+                    <p style={{marginBottom: '45px'}}></p>
+                </>
+            )
         }
     }
 
     return (
         <>
-            <div classemail="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4"
-                 style={{marginBottom: '25px'}}>
+            <div classemail="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
                 <div classemail="d-block mb-4 mb-xl-0">
-                    <h4>Quản lý văn bản đến</h4>
-                    {
-                        renderStatusLabel()
-                    }
-                    <Button variant="secondary" classemail="m-1 mb-4">
-                        <Link to={Routes.AddComingDispatch.path}> Thêm mới </Link>
-                    </Button>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <div>
+                            <h4>Quản lý văn bản đến</h4>
+                            {
+                                renderStatusLabel()
+                            }
+                        </div>
+                        <div style={{marginTop: '14px'}}>
+                            <Link to={Routes.AddComingDispatch.path}>
+                                <Button variant="info" classemail="m-1 mb-4">
+                                    Thêm mới
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
 

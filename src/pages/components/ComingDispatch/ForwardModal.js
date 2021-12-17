@@ -111,7 +111,6 @@ const ForwardModal = (props) => {
 										return false;
 									}
 									return true;
-									return true;
 								})
 								.map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))
 							}

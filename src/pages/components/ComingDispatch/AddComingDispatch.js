@@ -39,6 +39,7 @@ const AddComingDispatch = () => {
     const {storageLocations} = useSelector((state) => state.storageLocation);
     const {releaseDepartments} = useSelector((state) => state.releaseDepartment);
     const {users} = useSelector((state) => state.user);
+    const {user} = useSelector(state => state.authentication);
 
     useEffect(() => {
         dispatch(comingDispatchActions.getAllDocumentType());
@@ -214,7 +215,16 @@ const AddComingDispatch = () => {
                     <Form.Select name="receiverId" onChange={onChange}>
                         <option>---Chọn người nhận---</option>
                         {users
-                            .filter((user) => user?.userEntity?.isActive)
+                            .filter((item) => {
+                                let isOk = true;
+                                if (!item?.userEntity?.isActive) {
+                                    isOk = false;
+                                }
+                                if (item?.userEntity?.id === user?.user?.id) {  // nếu là thằng đang login
+                                    isOk = false;
+                                }
+                                return isOk;
+                            })
                             .map((v, i) => (<option key={i} value={v.userEntity.id}>{v.userEntity.fullName}</option>))
                         }
                     </Form.Select>

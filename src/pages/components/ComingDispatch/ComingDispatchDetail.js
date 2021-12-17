@@ -88,6 +88,7 @@ const ComingDispatchDetail = () => {
         switch (key) {
             case 'assignFor':
             case 'addViewer':
+            case 'Chuyển tiếp cho':
                 value = metaData[key].fullName;
                 break;
             default:
@@ -100,7 +101,7 @@ const ComingDispatchDetail = () => {
     const processFileModal = (item) => {
         setShowFileViewerModal(true);
         const url = processUrlAttachment(item?.url);
-        console.log(11111, url)
+        // console.log(11111, url)
         setSelectedFileUrl(url);
     }
 
@@ -112,7 +113,9 @@ const ComingDispatchDetail = () => {
     const renderViewers = () => {
         const viewers = comingDispatchDetail?.viewers;
         const viewersSet = [...new Map(viewers?.map(v => [v?.viewer?.id, v])).values()]  // Xử lí trùng lặp
-        return viewersSet.map((item) => (
+        return viewersSet
+            .filter((item) => item?.viewer?.id !== comingDispatchDetail?.comingDispatchResultDTO?.createdByUser?.id)
+            .map((item) => (
             <li key={item?.viewer?.id}>
                 {item?.viewer?.fullName}
             </li>
@@ -331,7 +334,13 @@ const ComingDispatchDetail = () => {
                                                 <td>{moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss')}</td>
                                                 <td>{ACTION_ON_DISPATCH_META_DATA_KEYS[item.action?.actionName]}</td>
                                                 <td>{item.user?.fullName}</td>
-                                                <td>{item?.metaData && Object.keys(item.metaData).map((key, value) => getMetaData(item.metaData, key))}</td>
+                                                {/*<td>{item?.metaData && Object.keys(item.metaData).map((key, value) => getMetaData(item.metaData, key))}</td>*/}
+                                                <td>
+                                                    {
+                                                        item?.metaData && Object.keys(item.metaData)
+                                                        .map((key, keyIndex) => <div key={keyIndex}>{getMetaData(item.metaData, key)}</div>)
+                                                    }
+                                                </td>
                                             </tr>
                                         ))
                                     }

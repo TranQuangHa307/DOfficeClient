@@ -264,6 +264,9 @@ const OutGoingDispatchDetail = () => {
     };
 
     const renderButtonGroup = () => {
+        if (removePermissionOfFollowerToDispatch()) {
+          return;
+        };
         const roles = user?.roles;
         const isCreator = user?.user?.id === outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.createdByUser?.id;
         const isUnitLeadership = roles?.some((role, index) => {
@@ -322,11 +325,23 @@ const OutGoingDispatchDetail = () => {
     const renderViewers = () => {
         const viewers = outGoingDispatchDetail?.viewers;
         const viewersSet = [...new Map(viewers?.map(v => [v?.viewer?.id, v])).values()]  // Xử lí trùng lặp
-        return viewersSet.map((item) => (
+        return viewersSet
+            .filter((item) => item?.viewer?.id !== outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.createdByUser?.id)  // lọc người tạo công văn, vì backend chưa xử lý được
+            .map((item) => (
             <li key={item?.viewer?.id}>
                 {item?.viewer?.fullName}
             </li>
         ))
+    }
+
+    const removePermissionOfFollowerToDispatch = () => {
+        const userLogin = user?.user?.id;
+        const viewers = outGoingDispatchDetail?.viewers;
+        const viewersSet = [...new Map(viewers?.map(v => [v?.viewer?.id, v])).values()]  // Xử lí trùng lặp
+        const check = viewersSet
+            .filter((item) => item?.viewer?.id !== outGoingDispatchDetail?.outGoingDispatchResultNewDTO?.createdByUser?.id)
+            .some((item) => item?.viewer?.id === userLogin) // nếu thằng đang đăng nhập có mặt trong danh sách người theo dõi --> thì loại bỏ hết quyền của nó đối với công văn.
+        return check;
     }
 
     const [selectedFileUrl, setSelectedFileUrl] = useState(undefined);
@@ -531,8 +546,11 @@ const OutGoingDispatchDetail = () => {
                                                 <td>{moment(item?.createdAt).format('YYYY-MM-DD HH:mm:ss')}</td>
                                                 <td>{ACTION_ON_DISPATCH_META_DATA_KEYS[item.action?.actionName]}</td>
                                                 <td>{item.user?.fullName}</td>
-                                                <td>{item?.metaData && Object.keys(item.metaData).map((key, keyIndex) =>
-                                                    <div key={keyIndex}>{getMetaData(item.metaData, key)}</div>)}</td>
+                                                <td>
+                                                    {item?.metaData && Object.keys(item.metaData).map((key, keyIndex) =>
+                                                        <div key={keyIndex}>{getMetaData(item.metaData, key)}</div>)
+                                                    }
+                                                </td>
                                             </tr>
                                         ))
                                     }
@@ -619,10 +637,12 @@ const OutGoingDispatchDetail = () => {
                                     {
                                         renderViewers()
                                     }
-                                    <p
-                                        style={{cursor:'pointer', color: '#c88094'}}
-                                        onClick={() => setShowAddViewerToDispatchModal(true)}
-                                    >Thêm người theo dõi?</p>
+                                    {
+                                        !removePermissionOfFollowerToDispatch() &&
+                                        <p style={{cursor:'pointer', color: '#c88094'}} onClick={() => setShowAddViewerToDispatchModal(true)}>
+                                            Thêm người theo dõi?
+                                        </p>
+                                    }
                                 </span>
                             </div>
 

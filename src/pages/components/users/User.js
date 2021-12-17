@@ -61,13 +61,20 @@ export default () => {
 
     return (
         <>
-            <div classemail="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4"
-                 style={{marginBottom: '25px'}}>
+            <div classemail="d-xl-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
                 <div classemail="d-block mb-4 mb-xl-0">
-                    <h4>Quản lý người dùng</h4>
-                    <Button variant="secondary" classemail="m-1 mb-4">
-                        <Link to={Routes.AddUser.path}> Thêm mới </Link>
-                    </Button>
+                    <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '10px'}}>
+                        <div>
+                            <h4>Quản lý người dùng</h4>
+                        </div>
+                        <div style={{marginBottom: '14px'}}>
+                            <Link to={Routes.AddUser.path}>
+                                <Button variant="info" classemail="m-1 mb-4">
+                                    Thêm mới
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
 
