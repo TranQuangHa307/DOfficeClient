@@ -7,7 +7,6 @@ import {faFile, faSignOutAlt, faTimes, faUser} from "@fortawesome/free-solid-svg
 import {Accordion, Badge, Button, Image, Nav, Navbar} from '@themesberg/react-bootstrap';
 import Cookie from 'js-cookie';
 import {Routes} from "../routes";
-import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
 import DOfficeLogo from "../assets/img/348801.svg";
 import ProfilePicture from "../assets/img/team/profile-picture-3.jpg";
 import {useDispatch, useSelector} from "react-redux";

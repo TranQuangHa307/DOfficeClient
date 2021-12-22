@@ -1,13 +1,11 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import TableRow from "./TableRow";
 import {Badge, Button, Card, Form, Spinner, Table} from "@themesberg/react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {Routes} from "../../../routes";
 import comingDispatchActions from "../../../actions/comingDispatchActions";
-import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Pagination from "react-bootstrap-4-pagination";
-import {OFFICIAL_DISPATCH_STATUS_META_DATA_KEYS} from "../../../constants/app";
 
 
 const ComingDispatchManagement = () => {
