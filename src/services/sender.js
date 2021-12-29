@@ -1,7 +1,7 @@
 import axios from'axios';
 import Cookie from 'js-cookie';
 
-const ROUTE_PATH = 'http://localhost:8091'; // services fake
+const ROUTE_PATH = 'http://13.250.40.151/do-backend'; // services fake
 
 const getAuthToken = () => Cookie.get('authToken');
 
