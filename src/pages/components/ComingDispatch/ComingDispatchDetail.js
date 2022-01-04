@@ -311,9 +311,12 @@ const ComingDispatchDetail = () => {
                                     ))}
                                 </ul>
                             </div>
-                            {/*<div className="body__left__3">*/}
-                            {/*    <h2>Trao đổi</h2>*/}
-                            {/*</div>*/}
+                            <div className="body__left__2--1">
+                                <h2>Trích yếu nội dung</h2>
+                                <div style={{marginLeft: '10px', textAlign: 'justify', marginRight: '11px'}}>
+                                    {comingDispatchDetail?.comingDispatchResultDTO?.mainContent}
+                                </div>
+                            </div>
                             <div className="body__left__3">
                                 <h2>Luồng văn bản</h2>
                                 <Table striped bordered hover>
