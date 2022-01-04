@@ -22,6 +22,9 @@ export default (props = {}) => {
     const {user} = useSelector(state => state.authentication);
     const {countDispatch} = useSelector(state => state.countDispatch);
 
+    const searchParams = new URLSearchParams(location.search);
+    const dispatchStatus = searchParams.get('status');
+
     const signOut = () => {
         Cookie.remove('authToken');
         window.location.href = '/';
@@ -34,15 +37,14 @@ export default (props = {}) => {
     const CollapsableNavItem = (props) => {
         const {eventKey, title, icon, children = null} = props;
         const defaultKey = pathname.indexOf(eventKey) !== -1 ? eventKey : "";
-
         return (
             <Accordion as={Nav.Item} defaultActiveKey={defaultKey}>
                 <Accordion.Item eventKey={eventKey}>
                     <Accordion.Button as={Nav.Link} className="d-flex justify-content-between align-items-center">
-            <span>
-              <span className="sidebar-icon"><FontAwesomeIcon icon={icon}/> </span>
-              <span className="sidebar-text">{title}</span>
-            </span>
+                    <span>
+                      <span className="sidebar-icon"><FontAwesomeIcon icon={icon}/> </span>
+                      <span className="sidebar-text">{title}</span>
+                    </span>
                     </Accordion.Button>
                     <Accordion.Body className="multi-level">
                         <Nav className="flex-column">
@@ -67,27 +69,39 @@ export default (props = {}) => {
             badgeColor = "primary"
         } = props;
         const classNames = badgeText ? "d-flex justify-content-start align-items-center justify-content-between" : "";
-        const navItemClassName = link === pathname ? "active" : "";
+        let navItemClassName = '', pathname1 = '';
+        if (dispatchStatus) { // nếu có status
+            pathname1 = pathname + '?status=' + dispatchStatus;
+            if (link === pathname1) {
+                navItemClassName = "active";
+            }
+        } else {  // nếu không có status
+            navItemClassName = link === pathname ? "active" : "";
+        }
         const linkProps = external ? {href: link} : {as: Link, to: link};
-
         return (
-            <Nav.Item className={navItemClassName} onClick={() => setShow(false)}>
+            <Nav.Item className={navItemClassName} onClick={() => navItemClick(link)}>
                 <Nav.Link {...linkProps} target={target} className={classNames}>
-          <span>
-            {icon ? <span className="sidebar-icon"><FontAwesomeIcon icon={icon}/> </span> : null}
-              {image ? <Image style={{width: '50px', height: '50px'}} src={image} width={20} height={20}
-                              className="sidebar-icon svg-icon"/> : null}
-
-              <span className="sidebar-text">{title}</span>
-          </span>
+                  <span>
+                    {icon ? <span className="sidebar-icon"><FontAwesomeIcon icon={icon}/> </span> : null}
+                      {image ? <Image style={{width: '50px', height: '50px'}} src={image} width={20} height={20}
+                                      className="sidebar-icon svg-icon"/> : null}
+                      <span className="sidebar-text">{title}</span>
+                  </span>
                     {badgeText ? (
                         <Badge pill bg={badgeBg} text={badgeColor}
-                               className="badge-md notification-count ms-2">{badgeText}</Badge>
+                               className="badge-md notification-count ms-2">{badgeText}
+                        </Badge>
                     ) : null}
                 </Nav.Link>
             </Nav.Item>
         );
     };
+
+    const navItemClick = (link) => {
+        setShow(false);
+        // console.log(1111222, link, currentNavItem);
+    }
 
     return (
         <>
@@ -134,7 +148,7 @@ export default (props = {}) => {
 
                             <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser}/>
 
-                            <CollapsableNavItem eventKey="tables/" title="Văn bản đến" icon={faFile}>
+                            <CollapsableNavItem eventKey={location.pathname} title="Văn bản đến" icon={faFile}>
                                 <NavItem title={`Tất cả (${countDispatch?.cdAll})`}
                                          link={`${Routes.ComingDispatchManagement.path}`} icon={faFile}/>
                                 <NavItem title={`Chưa xử lý (${countDispatch?.cdNotDone})`}
@@ -143,7 +157,21 @@ export default (props = {}) => {
                                          link={`${Routes.ComingDispatchManagement.path}?status=2`} icon={faFile}/>
                             </CollapsableNavItem>
 
-                            <CollapsableNavItem eventKey="tables/" title="Văn bản đi" icon={faFile}>
+                            {/*<CollapsableNavItem eventKey="tables/" title="Văn bản đi" icon={faFile}>*/}
+                            {/*    <NavItem title={`Tất cả (${countDispatch?.ogAll})`}*/}
+                            {/*             link={`${Routes.OutGoingDispatchManagement.path}`} icon={faFile}/>*/}
+                            {/*    <NavItem title={`Chưa xử lý (${countDispatch?.ogNotDone})`}*/}
+                            {/*             link={`${Routes.OutGoingDispatchManagement.path}?status=1`} icon={faFile}/>*/}
+                            {/*    <NavItem title={`Chờ lãnh đơn vị (${countDispatch?.ogChoLanhDaoDonVi})`}*/}
+                            {/*             link={`${Routes.OutGoingDispatchManagement.path}?status=3`} icon={faFile}/>*/}
+                            {/*    <NavItem title={`Chờ lãnh cơ quan (${countDispatch?.ogChoLanhDaoCoQuan})`}*/}
+                            {/*             link={`${Routes.OutGoingDispatchManagement.path}?status=4`} icon={faFile}/>*/}
+                            {/*    <NavItem title={`Đã xử lý (${countDispatch?.ogDone})`}*/}
+                            {/*             link={`${Routes.OutGoingDispatchManagement.path}?status=2`} icon={faFile}/>*/}
+                            {/*</CollapsableNavItem>*/}
+
+
+                            <CollapsableNavItem eventKey={location.pathname} title="Văn bản đi" icon={faFile}>
                                 <NavItem title={`Tất cả (${countDispatch?.ogAll})`}
                                          link={`${Routes.OutGoingDispatchManagement.path}`} icon={faFile}/>
                                 <NavItem title={`Chưa xử lý (${countDispatch?.ogNotDone})`}
