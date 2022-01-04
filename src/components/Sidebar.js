@@ -11,6 +11,7 @@ import DOfficeLogo from "../assets/img/348801.svg";
 import ProfilePicture from "../assets/img/team/profile-picture-3.jpg";
 import {useDispatch, useSelector} from "react-redux";
 import countDispatchActions from "../actions/countDispatchActions";
+import {ROLE_META_DATA_KEYS} from "../constants/app";
 
 export default (props = {}) => {
     const location = useLocation();
@@ -141,9 +142,9 @@ export default (props = {}) => {
                             {/* <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faChartPie} /> */}
 
                             {/* Tạm thời comment lại */}
-                            {/*{ user?.roles?.some((role) => {*/}
-                            {/*  return role === ROLE_META_DATA_KEYS.systemAdmin;*/}
-                            {/*}) && (<NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />)}*/}
+                            { user?.roles?.some((role) => {
+                              return role === ROLE_META_DATA_KEYS.systemAdmin;
+                            }) && (<NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />)}
 
 
                             <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser}/>
