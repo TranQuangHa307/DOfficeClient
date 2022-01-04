@@ -98,7 +98,7 @@ const EditComingDispatch = () => {
     }
 
     const processUrlAttachment = (url) => {
-        return `http://54.169.166.121/do-backend/api/uploads/${url}`;
+        return `http://localhost:8091/api/uploads/${url}`;
     }
 
     const onSubmit = (e) => {

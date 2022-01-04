@@ -50,7 +50,7 @@ const ComingDispatchDetail = () => {
     }
 
     const processUrlAttachment = (url) => {
-        return `http://54.169.166.121/do-backend/api${url}`;
+        return `http://localhost:8091/api${url}`;
     }
 
     const [show, setShow] = useState(false);
