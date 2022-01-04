@@ -83,10 +83,28 @@ const OutGoingDispatchManagement = () => {
                 )
             }
             if (dispatchStatus.toString() === '3') {
-                return <p>Trạng thái: Chờ lãnh đạo đơn vị ký</p>
+                return (
+                        <>
+                            <p>
+                                Trạng thái:
+                                <Badge pill bg="warning" style={{marginLeft: '7px'}}>
+                                    Chờ lãnh đạo đơn vị ký
+                                </Badge>
+                            </p>
+                        </>
+                    )
             }
             if (dispatchStatus.toString() === '4') {
-                return <p>Trạng thái: Chờ lãnh đạo cơ quan ký</p>
+                return (
+                    <>
+                        <p>
+                            Trạng thái:
+                            <Badge pill bg="info" style={{marginLeft: '7px'}}>
+                                Chờ lãnh đạo cơ quan ký
+                            </Badge>
+                        </p>
+                    </>
+                )
             }
         } else {
             return (

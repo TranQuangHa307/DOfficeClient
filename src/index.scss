@@ -39,16 +39,16 @@
       .body__left__1 {
         .body__left__1__content {
           display: flex;
-          justify-content: space-between;
+          //justify-content: space-between;
           margin-left: 11px;
           margin-right: 11px;
 
           .body__left__1__content__left {
-
+            width: 50%;
           }
 
           .body__left__1__content__right {
-
+            width: 50%;
           }
         }
       }

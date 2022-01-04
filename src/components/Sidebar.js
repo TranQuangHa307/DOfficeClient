@@ -150,11 +150,11 @@ export default (props = {}) => {
                             <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser}/>
 
                             <CollapsableNavItem eventKey={location.pathname} title="Văn bản đến" icon={faFile}>
-                                <NavItem title={`Tất cả (${countDispatch?.cdAll})`}
+                                <NavItem title={`Tất cả (${countDispatch?.cdAll ?? 0})`}
                                          link={`${Routes.ComingDispatchManagement.path}`} icon={faFile}/>
-                                <NavItem title={`Chưa xử lý (${countDispatch?.cdNotDone})`}
+                                <NavItem title={`Chưa xử lý (${countDispatch?.cdNotDone ?? 0})`}
                                          link={`${Routes.ComingDispatchManagement.path}?status=1`} icon={faFile}/>
-                                <NavItem title={`Đã xử lý (${countDispatch?.cdDone})`}
+                                <NavItem title={`Đã xử lý (${countDispatch?.cdDone ?? 0})`}
                                          link={`${Routes.ComingDispatchManagement.path}?status=2`} icon={faFile}/>
                             </CollapsableNavItem>
 
@@ -173,15 +173,15 @@ export default (props = {}) => {
 
 
                             <CollapsableNavItem eventKey={location.pathname} title="Văn bản đi" icon={faFile}>
-                                <NavItem title={`Tất cả (${countDispatch?.ogAll})`}
+                                <NavItem title={`Tất cả (${countDispatch?.ogAll ?? 0})`}
                                          link={`${Routes.OutGoingDispatchManagement.path}`} icon={faFile}/>
-                                <NavItem title={`Chưa xử lý (${countDispatch?.ogNotDone})`}
+                                <NavItem title={`Chưa xử lý (${countDispatch?.ogNotDone ?? 0})`}
                                          link={`${Routes.OutGoingDispatchManagement.path}?status=1`} icon={faFile}/>
-                                <NavItem title={`Chờ lãnh đơn vị (${countDispatch?.ogChoLanhDaoDonVi})`}
+                                <NavItem title={`Chờ lãnh đơn vị (${countDispatch?.ogChoLanhDaoDonVi ?? 0})`}
                                          link={`${Routes.OutGoingDispatchManagement.path}?status=3`} icon={faFile}/>
-                                <NavItem title={`Chờ lãnh cơ quan (${countDispatch?.ogChoLanhDaoCoQuan})`}
+                                <NavItem title={`Chờ lãnh cơ quan (${countDispatch?.ogChoLanhDaoCoQuan ?? 0})`}
                                          link={`${Routes.OutGoingDispatchManagement.path}?status=4`} icon={faFile}/>
-                                <NavItem title={`Đã xử lý (${countDispatch?.ogDone})`}
+                                <NavItem title={`Đã xử lý (${countDispatch?.ogDone ?? 0})`}
                                          link={`${Routes.OutGoingDispatchManagement.path}?status=2`} icon={faFile}/>
                             </CollapsableNavItem>
 

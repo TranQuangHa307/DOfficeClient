@@ -28,7 +28,8 @@ const FileViewerModal = (props) => {
 					</Button>
 				</Modal.Header>
 				<Modal.Body>
-					<FileViewer fileType={abc && abc[abc.length - 1].toLowerCase()} filePath={filePath}/>
+					{/*<FileViewer fileType={abc && abc[abc.length - 1].toLowerCase()} filePath={filePath}/>*/}
+					<embed src={filePath} type="application/pdf" style={{width: 'calc(100vw - 32px)', height: 'calc(100% - 8px)'}}/>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button type="button" variant="secondary" onClick={handleClose}>
