@@ -26,7 +26,7 @@ const PublishedDispatchDetail = (props) => {
     }, []);
 
     const processUrlAttachment = (url) => {
-        return `http://13.250.40.151/do-backend/api${url}`;
+        return `http://54.169.166.121/do-backend/api${url}`;
     }
 
     const renderStatus = () => {
