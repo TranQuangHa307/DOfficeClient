@@ -38,7 +38,7 @@ const OutGoingDispatchManagement = () => {
     }
 
     useEffect(() => {
-        console.log(111111111, dispatchStatus);
+        // console.log(111111111, dispatchStatus);
         dispatch(outGoingDispatchActions.getAll({
             page: data.page - 1,
             pageSize: data.pageSize,
