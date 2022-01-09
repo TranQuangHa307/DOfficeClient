@@ -147,7 +147,7 @@ export default (props = {}) => {
                             }) && (<NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser} />)}
 
 
-                            <NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser}/>
+                            {/*<NavItem title="Quản lý người dùng" link={Routes.User.path} icon={faUser}/>*/}
 
                             <CollapsableNavItem eventKey={location.pathname} title="Văn bản đến" icon={faFile}>
                                 <NavItem title={`Tất cả (${countDispatch?.cdAll ?? 0})`}

@@ -117,6 +117,9 @@ const AddOutGoingDispatch = () => {
 
     return (
         <>
+            <Button variant="light" classemail="m-1 mb-4" onClick={back}>
+                Quay lại
+            </Button>
             <Form className="mt-4" onSubmit={onSubmit}>
                 <Form.Group className="mb-3">
                     <Form.Label>Số văn bản</Form.Label>
@@ -253,9 +256,9 @@ const AddOutGoingDispatch = () => {
                 </Button>
 
             </Form>
-            <Button style={{marginTop: '10px'}} variant="light" className="w-100" onClick={back}>
-                Quay lại
-            </Button>
+            {/*<Button style={{marginTop: '10px'}} variant="light" className="w-100" onClick={back}>*/}
+            {/*    Quay lại*/}
+            {/*</Button>*/}
         </>
     );
 }
